@@ -1,0 +1,51 @@
+/*
+ * Wear There — shared components.
+ * Phase 2 grows this into the full design system (cards, pills, comfort chips,
+ * checkboxes, progress bar). Phase 1 needs buttons and the gradient bar only.
+ */
+
+.button {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius-button);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.button--secondary {
+  background: transparent;
+  border: 1.5px solid var(--warm-neutral);
+  color: var(--warm-neutral);
+}
+
+.button--secondary:hover,
+.button--secondary:active {
+  background: var(--warm-neutral);
+  color: #ffffff;
+}
+
+.button--primary {
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  color: #ffffff;
+}
+
+/* Decorative temperature bar. No text sits on it, so it carries the full
+   light-to-dark ramp. */
+.gradient-bar {
+  height: 8px;
+  border-radius: 5px;
+  background: var(--gradient-brand);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

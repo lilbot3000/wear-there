@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f4f4f4;font-family:'Plus Jakarta Sans',sans-serif;color:#1C1C1E}
+a{color:#E11D2E}
+a:hover{color:#B5101F}
+.wrap{padding:48px 44px;display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.fname{font:600 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9a9a9e;margin:0 0 10px}
+.phone{width:300px;background:#fff;border-radius:34px;box-shadow:0 20px 50px rgba(0,0,0,.14),0 0 0 8px #0b0b0c;overflow:hidden}
+.pscreen{padding:22px 20px 26px;display:flex;flex-direction:column;gap:16px;min-height:600px}
+.h{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;color:#1C1C1E}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:#fff}
+.grad-bar{height:8px;border-radius:5px;width:100%}
+.card{border-radius:16px;padding:14px 15px;background:#fafafa;border:1px solid rgba(0,0,0,.06)}
+.btn{border-radius:14px;padding:15px;text-align:center;font-weight:700;font-size:15px;box-sizing:border-box;border:1.5px solid #6B6560;color:#6B6560;background:transparent}
+.dot{width:8px;height:8px;border-radius:50%}
+.chk{width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(28,28,30,.35);flex:none;position:relative}
+.pill{display:inline-flex;align-items:center;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:600;border:1.5px solid rgba(28,28,30,.2);color:#1C1C1E}
+.pill.on{background:#6B6560;border-color:#6B6560;color:#fff}
+.ph{background:repeating-linear-gradient(135deg,rgba(0,0,0,.05) 0 10px,transparent 10px 20px);border-radius:12px;display:flex;align-items:center;justify-content:center;font:11px/1.2 ui-monospace,monospace;color:#9a9a9e;text-align:center}
+</style>
+</helmet>
+<div class="wrap">
+
+<div>
+<p class="fname">01 · Welcome</p>
+<div class="phone"><div class="pscreen" style="justify-content:space-between">
+<div style="display:flex;flex-direction:column;gap:18px;flex:1;justify-content:center;text-align:center">
+<div class="h" style="font-size:32px">Wear There</div>
+<div style="font-size:16px;line-height:1.5;color:#6f6f73">Your packing list, tuned to how hot or cold it actually feels to you.</div>
+<div class="grad-bar" style="background:linear-gradient(90deg,#CFE4FF,#8FBBEE,#FFD37A,#E11D2E);max-width:180px;align-self:center"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div class="btn" style-hover="background:#6B6560;color:#fff">Start my style survey</div>
+<div style="font-size:12px;color:#9a9a9e;text-align:center">2–3 minutes · answered once</div>
+</div>
+</div></div>
+</div>
+
+<div>
+<p class="fname">02 · Survey step (3 of 11)</p>
+<div class="phone"><div class="pscreen">
+<div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px"><div style="width:27%;height:4px;background:#6B6560;border-radius:2px"></div></div>
+<div style="font-size:12px;font-weight:600;color:#9a9a9e">STEP 3 OF 11</div>
+<div class="h" style="font-size:22px;line-height:1.3">Do you generally run hot, cold, or average?</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
+<div class="pill" style="width:100%;justify-content:center;padding:14px;box-sizing:border-box">Hot</div>
+<div class="pill on" style="width:100%;justify-content:center;padding:14px;box-sizing:border-box">Cold</div>
+<div class="pill" style="width:100%;justify-content:center;padding:14px;box-sizing:border-box">Average</div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:auto">
+<div style="font-size:14px;color:#9a9a9e;align-self:center">← Back</div>
+<div class="btn" style="padding:12px 22px" style-hover="background:#6B6560;color:#fff">Next</div>
+</div>
+</div></div>
+</div>
+
+<div>
+<p class="fname">03 · New trip</p>
+<div class="phone"><div class="pscreen">
+<div class="h" style="font-size:20px">Where and when?</div>
+<div class="card">Destination<br><b>Lisbon, Portugal</b></div>
+<div style="display:flex;gap:10px">
+<div class="card" style="flex:1">Depart<br><b>10 Aug</b></div>
+<div class="card" style="flex:1">Return<br><b>17 Aug</b></div>
+</div>
+<div style="font-size:12px;font-weight:600;color:#9a9a9e">TRIP PURPOSE · PICK UP TO 2</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<span class="pill on">Beach</span><span class="pill on">City break</span><span class="pill">Outdoors</span><span class="pill">Formal</span><span class="pill">Business</span><span class="pill">Family</span>
+</div>
+<div class="btn" style="margin-top:auto" style-hover="background:#6B6560;color:#fff">See my forecast</div>
+</div></div>
+</div>
+
+<div>
+<p class="fname">04 · Personalised forecast</p>
+<div class="phone"><div class="pscreen">
+<div><div class="h" style="font-size:20px">Lisbon</div><div style="font-size:13px;color:#9a9a9e">10–17 Aug · warmer &amp; stickier than home</div></div>
+<div class="grad-bar" style="background:linear-gradient(90deg,#FFE066,#FFB020,#FF6A3D,#E11D2E)"></div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+<div><b>Tue 11</b><div style="font-size:13px;color:#6f6f73">29° · 65% humid</div></div>
+<span class="chip" style="background:linear-gradient(90deg,#FFB020,#E11D2E)">Hot for you</span>
+</div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+<div><b>Wed 12</b><div style="font-size:13px;color:#6f6f73">27° · rain 60%</div></div>
+<span class="chip" style="background:linear-gradient(90deg,#FFB020,#E11D2E)">Muggy + brolly</span>
+</div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+<div><b>Thu 13</b><div style="font-size:13px;color:#6f6f73">26° · 40% humid</div></div>
+<span class="chip" style="background:#FFB020">Mild for you</span>
+</div>
+<div class="btn" style="margin-top:auto" style-hover="background:#6B6560;color:#fff">Generate my packing list</div>
+</div></div>
+</div>
+
+<div>
+<p class="fname">04b · Personalised forecast — cold example</p>
+<div class="phone"><div class="pscreen">
+<div><div class="h" style="font-size:20px">Reykjavík</div><div style="font-size:13px;color:#9a9a9e">2–6 Jun · colder than home, wind chill matters</div></div>
+<div class="grad-bar" style="background:linear-gradient(90deg,#CFE4FF,#8FBBEE,#4A82D6,#1E4FA3)"></div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+<div><b>Mon 2</b><div style="font-size:13px;color:#6f6f73">3° · feels like -2°</div></div>
+<span class="chip" style="background:linear-gradient(90deg,#8FBBEE,#1E4FA3)">Cold for you</span>
+</div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+<div><b>Tue 3</b><div style="font-size:13px;color:#6f6f73">1° · windy, feels like -4°</div></div>
+<span class="chip" style="background:linear-gradient(90deg,#8FBBEE,#1E4FA3)">Bundle up</span>
+</div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+<div><b>Wed 4</b><div style="font-size:13px;color:#6f6f73">5° · calmer</div></div>
+<span class="chip" style="background:#8FBBEE">Mild for you</span>
+</div>
+<div class="btn" style="margin-top:auto" style-hover="background:#6B6560;color:#fff">Generate my packing list</div>
+</div></div>
+</div>
+
+<div>
+<p class="fname">05 · Packing list</p>
+<div class="phone"><div class="pscreen">
+<div class="h" style="font-size:20px">Your list</div>
+<div style="font-size:12px;font-weight:600;color:#9a9a9e">TOPS</div>
+<div class="card" style="display:flex;gap:10px;align-items:flex-start"><div class="chk on" style-after="content:'✓';position:absolute;top:-12px;right:-10px;font-size:30px;font-weight:800;line-height:1;color:#E11D2E;transform:rotate(-8deg);font-family:'Bricolage Grotesque',sans-serif"></div><div><b>Linen shirts ×3</b><div style="font-size:13px;color:#6f6f73">Feels-like 31° and you're humidity-sensitive</div></div></div>
+<div style="font-size:12px;font-weight:600;color:#9a9a9e">ESSENTIALS</div>
+<div class="card" style="display:flex;gap:10px;align-items:flex-start"><div class="chk"></div><div><b>Umbrella</b><div style="font-size:13px;color:#6f6f73">60% rain chance Tue–Wed</div></div></div>
+<div class="card" style="display:flex;gap:10px;align-items:flex-start"><div class="chk"></div><div><b>Sandals</b></div></div>
+</div></div>
+</div>
+
+<div>
+<p class="fname">06 · My trips</p>
+<div class="phone"><div class="pscreen">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><div class="h" style="font-size:20px">My trips</div><div style="font-size:13px;font-weight:600;color:#6B6560">+ New</div></div>
+<div class="card" style="display:flex;gap:12px;align-items:center">
+<div class="ph" style="width:52px;height:52px">img</div>
+<div style="flex:1"><b>Lisbon</b><div style="font-size:13px;color:#6f6f73">10–17 Aug · Beach</div></div>
+<span class="dot" style="background:#E11D2E"></span>
+</div>
+<div class="card" style="display:flex;gap:12px;align-items:center">
+<div class="ph" style="width:52px;height:52px">img</div>
+<div style="flex:1"><b>Reykjavík</b><div style="font-size:13px;color:#6f6f73">2–6 Jun · Outdoors</div></div>
+<span class="dot" style="background:#1E4FA3"></span>
+</div>
+<div class="card" style="display:flex;gap:12px;align-items:center">
+<div class="ph" style="width:52px;height:52px">img</div>
+<div style="flex:1"><b>Dubai</b><div style="font-size:13px;color:#6f6f73">14–19 Mar · Formal</div></div>
+<span class="dot" style="background:#FFB020"></span>
+</div>
+</div></div>
+</div>
+
+</div>
+
+</x-dc>
+</body>
+</html>

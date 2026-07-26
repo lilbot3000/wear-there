@@ -1,0 +1,71 @@
+/*
+ * Wear There — "Bright Line" design tokens
+ * Source of truth: docs/04-ux-design-spec.md
+ */
+
+:root {
+  /* Type */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-ui: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Text */
+  --ink: #1c1c1e;
+  --text-secondary: #6f6f73;
+  --text-micro: #9a9a9e;
+
+  /* Interface */
+  --warm-neutral: #6b6560;
+  --accent: #e11d2e;
+  --accent-hover: #b5101f;
+
+  /* Surfaces */
+  --screen: #ffffff;
+  --page: #f4f4f4;
+  --card: #fafafa;
+  --card-border: rgba(0, 0, 0, 0.06);
+
+  /* Temperature ramp — cold (pale to deep blue) */
+  --cold-1: #cfe4ff;
+  --cold-2: #8fbbee;
+  --cold-3: #4a82d6;
+  --cold-4: #1e4fa3;
+  --cold-deep: #14336b;
+
+  /* Temperature ramp — hot (yellow to red) */
+  --hot-1: #ffe066;
+  --hot-2: #ffb020;
+  --hot-3: #ff6a3d;
+  --hot-4: #e11d2e;
+  --hot-deep: #8f0c18;
+
+  /*
+   * Contrast-safe segments for white chip text.
+   * `body` colours must only ever be sampled between these bounds:
+   *   cold: --cold-3 -> --cold-deep   (5.5:1 and darker)
+   *   hot:  --hot-4  -> --hot-deep    (4.8:1 and darker)
+   */
+
+  /* Mild chips — pale tint with dark text */
+  --mild-hot-bg: #fce7c2;
+  --mild-hot-text: #8a5a12;
+  --mild-cold-bg: #dce9fb;
+  --mild-cold-text: #2c5590;
+
+  /* Brand full-spectrum bar (decorative, no text sits on it) */
+  --gradient-brand: linear-gradient(90deg, #cfe4ff, #8fbbee, #ffd37a, #e11d2e);
+
+  /* Shape */
+  --radius-card: 16px;
+  --radius-button: 14px;
+  --radius-pill: 20px;
+
+  /*
+   * Chip horizontal padding. The comfort-chip gradient pins its dark stop at
+   * exactly this distance, so no text ever sits on the bright edge colour.
+   * If this changes, the gradient stop must change with it.
+   */
+  --chip-padding-x: 16px;
+
+  /* Layout */
+  --app-max-width: 430px;
+}
