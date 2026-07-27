@@ -9,9 +9,13 @@ terms and builds a packing list from there.
 
 ## Status
 
-Phase 1 of the [build guide](docs/05-build-guide.md): project skeleton and first
-deploy. The Welcome screen is live; the survey, forecast, and packing list
-follow in later phases.
+Phase 2 of the [build guide](docs/05-build-guide.md) is complete: the project
+skeleton, the Welcome screen, and the Bright Line design system, all signed
+off against the wireframes.
+
+The design system lives in [src/lib/temperature.js](src/lib/temperature.js) and
+[src/styles/](src/styles/), with a reference page at `/styleguide` (not linked
+from the app). Next up is the survey, then the forecast, then the packing list.
 
 ## Running it locally
 
