@@ -39,11 +39,15 @@
   --hot-deep: #8f0c18;
 
   /*
-   * Contrast-safe segments for white chip text.
-   * `body` colours must only ever be sampled between these bounds:
-   *   cold: --cold-3 -> --cold-deep   (5.5:1 and darker)
-   *   hot:  --hot-4  -> --hot-deep    (4.8:1 and darker)
+   * Contrast-safe segments for white chip text. A comfort chip's `body`
+   * colour (everything under the text) must only ever be sampled between
+   * these bounds. Measured against white:
+   *   cold: --cold-safe (5.5:1) -> --cold-deep (12.9:1)
+   *   hot:  --hot-4     (4.8:1) -> --hot-deep  (12.5:1)
+   * Note --cold-3 (#4A82D6) is only 3.85:1 and is therefore an EDGE colour
+   * only. Never use it under text.
    */
+  --cold-safe: #3d66b8;
 
   /* Mild chips — pale tint with dark text */
   --mild-hot-bg: #fce7c2;

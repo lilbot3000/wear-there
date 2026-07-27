@@ -1,8 +1,61 @@
 /*
- * Wear There — shared components.
- * Phase 2 grows this into the full design system (cards, pills, comfort chips,
- * checkboxes, progress bar). Phase 1 needs buttons and the gradient bar only.
+ * Wear There — the Bright Line component library.
+ * Every component here matches docs/04-ux-design-spec.md and design/wireframes.html.
  */
+
+/* ------------------------------------------------------------------ text */
+
+/*
+ * Micro-label. Distinguished by size, weight, letter-spacing and colour —
+ * never by capitals. See the copy rules in the UX spec.
+ */
+.micro-label {
+  color: var(--text-micro);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.heading {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.heading--screen {
+  font-size: 20px;
+}
+
+.heading--display {
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* ----------------------------------------------------------------- cards */
+
+.card {
+  padding: 14px 15px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: var(--card);
+}
+
+.card--row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------- buttons */
 
 .button {
   width: 100%;
@@ -18,9 +71,21 @@
     color 120ms ease;
 }
 
+.button--primary {
+  border: 1.5px solid var(--ink);
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.button--primary:hover,
+.button--primary:active {
+  border-color: #000000;
+  background: #000000;
+}
+
 .button--secondary {
-  background: transparent;
   border: 1.5px solid var(--warm-neutral);
+  background: transparent;
   color: var(--warm-neutral);
 }
 
@@ -30,22 +95,147 @@
   color: #ffffff;
 }
 
-.button--primary {
-  background: var(--ink);
-  border: 1.5px solid var(--ink);
+.button--inline {
+  width: auto;
+  padding: 12px 22px;
+}
+
+/* ------------------------------------------------------- selection pills */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1.5px solid rgba(28, 28, 30, 0.2);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+/* Full-width variant used for survey answers */
+.pill--block {
+  width: 100%;
+  padding: 14px;
+}
+
+.pill.is-selected,
+.pill[aria-pressed='true'] {
+  border-color: var(--warm-neutral);
+  background: var(--warm-neutral);
   color: #ffffff;
 }
 
-/* Decorative temperature bar. No text sits on it, so it carries the full
-   light-to-dark ramp. */
+/* --------------------------------------------------------- comfort chips */
+
+/*
+ * The chip's horizontal padding IS the gradient's dark stop position, so the
+ * bright edge colour can never reach a glyph. These two values are bound
+ * together through --chip-padding-x deliberately: change one and the other
+ * follows. Background is supplied inline by tempColour().
+ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--chip-padding-x);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ checkboxes */
+
+.checkbox {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1.5px solid rgba(28, 28, 30, 0.35);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* The one flourish in the system: an oversized hand-drawn tick that breaks
+   out of its box. */
+.checkbox.is-checked::after {
+  content: '✓';
+  position: absolute;
+  top: -12px;
+  right: -10px;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  transform: rotate(-8deg);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkbox-row__label {
+  font-weight: 700;
+}
+
+.checkbox-row.is-checked .checkbox-row__label {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* ---------------------------------------------------------- progress bar */
+
+.progress {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.progress__fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--warm-neutral);
+  transition: width 220ms ease;
+}
+
+/* --------------------------------------------------------- gradient bars */
+
+/* Decorative only — no text sits on these, so they carry the full ramp.
+   Trip bars get their background inline from temperatureBar(). */
 .gradient-bar {
   height: 8px;
   border-radius: 5px;
   background: var(--gradient-brand);
 }
 
+/* ------------------------------------------------------------------ misc */
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .button {
+  .button,
+  .pill,
+  .progress__fill {
     transition: none;
   }
 }

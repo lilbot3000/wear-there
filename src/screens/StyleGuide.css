@@ -1,0 +1,239 @@
+/* Development-only page. Not linked from the app. */
+
+.sg {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  background: var(--screen);
+}
+
+.sg-header {
+  margin-bottom: 40px;
+}
+
+.sg-header__note {
+  margin: 8px 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.sg-header__note code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--page);
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------- section */
+
+.sg-section {
+  padding-top: 28px;
+  margin-bottom: 28px;
+  border-top: 1px solid var(--card-border);
+}
+
+.sg-section__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sg-section__note {
+  max-width: 60ch;
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sg-section__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* Children that should span the column */
+.sg-section__body > .card,
+.sg-section__body > .progress,
+.sg-section__body > .gradient-bar,
+.sg-section__body > .button,
+.sg-section__body > .sg-stack,
+.sg-section__body > .sg-live,
+.sg-section__body > .sg-scale,
+.sg-section__body > .sg-controls {
+  width: 100%;
+}
+
+.sg-section__body > .button--inline {
+  width: auto;
+}
+
+/* --------------------------------------------------------------- layout */
+
+.sg-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sg-row--wrap {
+  flex-wrap: wrap;
+}
+
+.sg-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------- temperature system */
+
+.sg-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-end;
+}
+
+.sg-slider {
+  display: flex;
+  flex: 1;
+  min-width: 240px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sg-slider input {
+  width: 100%;
+  accent-color: var(--ink);
+}
+
+.sg-runs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sg-live {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+}
+
+.sg-readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin: 0;
+}
+
+.sg-readout dt {
+  color: var(--text-micro);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.sg-readout dd {
+  margin: 2px 0 0;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------- the sweep */
+
+.sg-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sg-scale__row {
+  display: grid;
+  grid-template-columns: 44px 130px 92px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.sg-scale__temp {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.sg-scale__bar {
+  min-width: 60px;
+}
+
+/* --------------------------------------------------------- contrast badge */
+
+.sg-contrast {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.sg-contrast.is-pass {
+  background: #e7f6ec;
+  color: #1c6b38;
+}
+
+.sg-contrast.is-fail {
+  background: #fdE7e9;
+  color: #a3101c;
+}
+
+/* -------------------------------------------------------------- swatches */
+
+.sg-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sg-swatch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px 8px 8px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+}
+
+.sg-swatch__chip {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.sg-swatch__name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sg-swatch__hex {
+  color: var(--text-micro);
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .sg-scale__row {
+    grid-template-columns: 40px 1fr;
+    grid-template-areas:
+      'temp chip'
+      'bar  contrast';
+  }
+}
