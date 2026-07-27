@@ -13,7 +13,7 @@ export default function Welcome() {
 
       <div className="welcome__actions">
         {/* Wired up in Phase 3, when the survey exists. */}
-        <button type="button" className="button button--secondary">
+        <button type="button" className="button">
           Start my style survey
         </button>
         <p className="welcome__hint">2–3 minutes · answered once</p>

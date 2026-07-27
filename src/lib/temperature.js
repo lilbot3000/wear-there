@@ -19,36 +19,53 @@
 
 /**
  * Full ramps. Used for decorative gradient bars only, where no text sits, so
- * they run the whole way from palest to deepest.
+ * they run the whole way from palest to deepest. Hot lingers in yellow and
+ * orange and saves red for the top; cold moves baby blue to bright blue to
+ * sapphire. Both end on a saturated jewel tone rather than a muddy dark.
  */
 const RAMP = {
-  hot: ['#FFE066', '#FFB020', '#FF6A3D', '#E11D2E', '#8F0C18'],
-  cold: ['#CFE4FF', '#8FBBEE', '#4A82D6', '#1E4FA3', '#14336B'],
+  hot: ['#FFE14D', '#FFC61A', '#FF9A1F', '#FF6A1F', '#E11D2E', '#B3122A'],
+  cold: ['#D6E9FF', '#A8D0F7', '#5B9BE8', '#2E71D6', '#1A46A8'],
 }
 
 /**
- * Edge colours — the bright flash in a chip's left padding. Light half of the
- * ramp. Never appears under text, so these are unconstrained by contrast.
+ * Edge colours — the bright flash in a chip's left padding. Never sits under
+ * text, so these are unconstrained by contrast and can stay vivid.
  */
 const EDGE = {
-  hot: ['#FFD37A', '#FFB020', '#FF6A3D'],
-  cold: ['#CFE4FF', '#8FBBEE', '#4A82D6'],
+  hot: ['#FFE14D', '#FFB020', '#FF7A1F'],
+  cold: ['#D6E9FF', '#9BC8F5', '#5B9BE8'],
 }
 
 /**
- * Body colours — everything under the text. Clamped to the contrast-safe
- * segment of each ramp. Every colour these can produce passes white text at
- * 4.5:1 or better (hot starts at 4.8:1, cold at 5.5:1, both darkening).
+ * Body colours — everything under the text, clamped to the contrast-safe
+ * segment of each ramp. Every colour here passes white text at 4.5:1 or
+ * better, so any interpolation between two of them passes too (sRGB
+ * luminance is convex, so a blend is never lighter than its lighter end).
+ *
+ *   hot:  #C24A0A burnt orange 4.91:1 -> #E11D2E red 4.76:1 -> #B3122A ruby 6.92:1
+ *   cold: #2E71D6 azure 4.72:1 -> #1E56BE 6.71:1 -> #1A46A8 sapphire 8.45:1
+ *
+ * #C24A0A is about as orange as a colour can get and still carry white text;
+ * anything more vivid drops below 4.5:1. The bright orange lives in the edge
+ * colours and the decorative bars instead.
  */
 const BODY = {
-  hot: ['#E11D2E', '#8F0C18'],
-  cold: ['#3D66B8', '#1E4FA3', '#14336B'],
+  hot: ['#C24A0A', '#E11D2E', '#B3122A'],
+  cold: ['#2E71D6', '#1E56BE', '#1A46A8'],
 }
 
-/** Mild days: pale tint with dark text, so quiet weather reads quiet. */
+/**
+ * How much of the safe segment a single chip spans. The window slides along
+ * the ramp as intensity rises, so every chip shows a pronounced gradient
+ * across its readable width rather than a flat fill.
+ */
+const CHIP_SPAN = 0.6
+
+/** Mild days: bright tint with dark text, so quiet weather reads quiet. */
 const MILD = {
-  hot: { background: '#FCE7C2', text: '#8A5A12' },
-  cold: { background: '#DCE9FB', text: '#2C5590' },
+  hot: { background: '#FFEBAD', text: '#7A4A0A' },
+  cold: { background: '#D4E8FF', text: '#1E4FA3' },
 }
 
 /**
@@ -157,18 +174,27 @@ export function tempColour(feelsLikeC, profile = DEFAULT_PROFILE) {
   }
 
   const edge = sampleRamp(EDGE[side], t)
-  const body = sampleRamp(BODY[side], t)
+
+  // A sliding window over the safe segment: the chip runs from bodyStart at
+  // the padding boundary to bodyEnd at its right edge, so the gradient is
+  // visible across the whole readable width. Both ends are contrast-safe, and
+  // so is everything between them.
+  const windowStart = t * (1 - CHIP_SPAN)
+  const bodyStart = sampleRamp(BODY[side], windowStart)
+  const bodyEnd = sampleRamp(BODY[side], windowStart + CHIP_SPAN)
 
   return {
     side,
     t,
     edge,
-    body,
+    body: bodyStart,
+    bodyStart,
+    bodyEnd,
     text: '#FFFFFF',
     chipStyle: {
-      // The dark stop lands at exactly the chip's left padding, so the bright
-      // edge colour never reaches a glyph. Keep these two in lockstep.
-      background: `linear-gradient(90deg, ${edge}, ${body} var(--chip-padding-x))`,
+      // The first stop lands at exactly the chip's left padding, so the bright
+      // edge colour never reaches a glyph. Keep those two in lockstep.
+      background: `linear-gradient(90deg, ${edge}, ${bodyStart} var(--chip-padding-x), ${bodyEnd})`,
       color: '#FFFFFF',
     },
   }

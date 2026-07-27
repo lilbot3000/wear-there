@@ -24,39 +24,40 @@
   --card: #fafafa;
   --card-border: rgba(0, 0, 0, 0.06);
 
-  /* Temperature ramp — cold (pale to deep blue) */
-  --cold-1: #cfe4ff;
-  --cold-2: #8fbbee;
-  --cold-3: #4a82d6;
-  --cold-4: #1e4fa3;
-  --cold-deep: #14336b;
+  /* Temperature ramp — cold (baby blue, to bright blue, to sapphire) */
+  --cold-1: #d6e9ff;
+  --cold-2: #a8d0f7;
+  --cold-3: #5b9be8;
+  --cold-4: #2e71d6;
+  --cold-deep: #1a46a8;
 
-  /* Temperature ramp — hot (yellow to red) */
-  --hot-1: #ffe066;
-  --hot-2: #ffb020;
-  --hot-3: #ff6a3d;
-  --hot-4: #e11d2e;
-  --hot-deep: #8f0c18;
+  /* Temperature ramp — hot (bright yellow, long through orange, to ruby) */
+  --hot-1: #ffe14d;
+  --hot-2: #ffc61a;
+  --hot-3: #ff9a1f;
+  --hot-4: #ff6a1f;
+  --hot-5: #e11d2e;
+  --hot-deep: #b3122a;
 
   /*
-   * Contrast-safe segments for white chip text. A comfort chip's `body`
-   * colour (everything under the text) must only ever be sampled between
-   * these bounds. Measured against white:
-   *   cold: --cold-safe (5.5:1) -> --cold-deep (12.9:1)
-   *   hot:  --hot-4     (4.8:1) -> --hot-deep  (12.5:1)
-   * Note --cold-3 (#4A82D6) is only 3.85:1 and is therefore an EDGE colour
-   * only. Never use it under text.
+   * Contrast-safe segments for white chip text. A comfort chip's body colours
+   * are only ever sampled between these bounds. Measured against white:
+   *   cold: --cold-4 azure (4.72:1) -> --cold-deep sapphire (8.45:1)
+   *   hot:  --hot-safe burnt orange (4.95:1) -> --hot-deep ruby (6.92:1)
+   * Anything lighter is an EDGE colour only: --cold-3 (#5B9BE8) and
+   * --hot-4 (#FF6A1F) both fail white text. Never place text on them.
    */
-  --cold-safe: #3d66b8;
+  --cold-safe: #2e71d6;
+  --hot-safe: #cc3d0e;
 
-  /* Mild chips — pale tint with dark text */
-  --mild-hot-bg: #fce7c2;
-  --mild-hot-text: #8a5a12;
-  --mild-cold-bg: #dce9fb;
-  --mild-cold-text: #2c5590;
+  /* Mild chips — bright tint with dark text */
+  --mild-hot-bg: #ffebad;
+  --mild-hot-text: #7a4a0a;
+  --mild-cold-bg: #d4e8ff;
+  --mild-cold-text: #1e4fa3;
 
   /* Brand full-spectrum bar (decorative, no text sits on it) */
-  --gradient-brand: linear-gradient(90deg, #cfe4ff, #8fbbee, #ffd37a, #e11d2e);
+  --gradient-brand: linear-gradient(90deg, #d6e9ff, #5b9be8, #ffe14d, #ff9a1f, #e11d2e);
 
   /* Shape */
   --radius-card: 16px;

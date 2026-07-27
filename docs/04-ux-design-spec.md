@@ -40,22 +40,28 @@ Both fonts are free on Google Fonts.
 
 Every gradient is computed from the trip's feels-like temperature — trivial to drive from the number. No purple, no green, ever.
 
+Both ramps end on a saturated jewel tone, never a muddy near-black. The hot ramp lingers in yellow and orange and saves red for genuine heat; the cold ramp runs baby blue, to bright blue, to sapphire.
+
 | Ramp | Stops | Applies when |
 |---|---|---|
-| Cold | `#CFE4FF → #8FBBEE → #4A82D6 → #1E4FA3` | Feels-like at the cold end |
-| Hot | `#FFE066 → #FFB020 → #FF6A3D → #E11D2E` | Feels-like at the hot end |
-| Full spectrum (brand) | `#CFE4FF → #8FBBEE → #FFD37A → #E11D2E` | Welcome screen only — the brand mark |
+| Cold | `#D6E9FF → #A8D0F7 → #5B9BE8 → #2E71D6 → #1A46A8` | Feels-like at the cold end |
+| Hot | `#FFE14D → #FFC61A → #FF9A1F → #FF6A1F → #E11D2E → #B3122A` | Feels-like at the hot end |
+| Full spectrum (brand) | `#D6E9FF → #5B9BE8 → #FFE14D → #FF9A1F → #E11D2E` | Welcome screen only — the brand mark |
 
 **The intensity function.** One small helper drives every temperature colour in the app: `tempColour(feelsLike, profile)` computes an intensity `t` from 0–1 — how far the day sits past *your* comfort thresholds (from comfort.js), so it's personal, not absolute — and returns two colours sampled from the ramp:
 
-- `edge` — sampled from the light half of the ramp. Hot: `#FFD37A → #FFB020 → #FF6A3D` as `t` rises; cold: `#CFE4FF → #8FBBEE → #4A82D6`.
-- `body` — sampled **only from the contrast-safe dark segment**. Hot: `#E11D2E → #8F0C18`; cold: `#3D66B8 → #1E4FA3 → #14336B`. Every colour in these segments passes white text at ≥ 4.5:1 (the hot segment starts at 4.8:1, the cold at 5.5:1, both darkening from there), so the chips vary freely with temperature and the contrast guarantee survives by construction.
+- `edge` — sampled from the light half of the ramp. Hot: `#FFE14D → #FFB020 → #FF7A1F` as `t` rises; cold: `#D6E9FF → #9BC8F5 → #5B9BE8`.
+- `body` — sampled **only from the contrast-safe segment**. Hot: `#C24A0A → #E11D2E → #B3122A`; cold: `#2E71D6 → #1E56BE → #1A46A8`. Every colour here passes white text at ≥ 4.5:1, so chips vary freely with temperature and the guarantee survives by construction.
+
+  A chip does not use a single body colour: it spans a **sliding window** covering 60% of the safe segment, which slides toward the deep end as intensity rises. So the gradient is visible across the chip's whole readable width, and a scorching day's chip is deeper at both ends than a merely warm one. Because both ends of the window are contrast-safe, everything between them is too — sRGB luminance is convex, so a blend is never lighter than its lighter end.
+
+  **Constraint worth knowing:** vivid orange cannot carry white text. `#C24A0A` (4.91:1) is about as orange as a text-bearing colour can get. Bright orange therefore lives in the edge colours and the decorative bars, while chips resolve orange → red → ruby.
 
 Where the colours appear:
 - **Comfort chips (intense)** — `linear-gradient(90deg, edge, body 16px)`, white text, per the approved chip screenshots in `design/`. The bright stop occupies only the left padding where no text sits. Because both stops come from `tempColour`, a 30° day and a 40° day both read "hot" but the scorcher's chip runs visibly deeper at both ends; likewise a nippy day vs. a brutal one on the blue side.
 - **Comfort chips (mild)** — days comfort.js classifies as mild switch to quiet pale tints with dark text, so colour intensity matches weather intensity (intense days shout, mild days murmur):
-  - Mild hot side: background `#FCE7C2`, text `#8A5A12` (4.9:1)
-  - Mild cold side: background `#DCE9FB`, text `#2C5590` (6.1:1)
+  - Mild hot side: background `#FFEBAD` (bright yellow), text `#7A4A0A` (6.3:1)
+  - Mild cold side: background `#D4E8FF` (baby blue), text `#1E4FA3` (6.2:1)
 - **Gradient bar** — an 8px rounded bar under the headline on forecast screens. It renders the ramp from its palest stop **up to the trip's intensity point**, so the bar itself communicates extremity: a warm week's bar ends amber, a heatwave sweeps the full ramp into deep red, a mild spring trip stays pale blue. No text sits on bars, so no contrast constraint.
 - **Trip dots** — on My trips, each trip's dot is its `body` colour (Lisbon deep red, Reykjavík deep blue, Dubai amber-red).
 
@@ -63,8 +69,7 @@ Where the colours appear:
 
 | Component | Spec |
 |---|---|
-| Primary button | Solid ink pill, white text, radius 14px, full-width ("Generate packing list") |
-| Secondary button | Transparent with 1.5px `#6B6560` outline, `#6B6560` text; fills `#6B6560` with white text on press ("Next", "See my forecast") |
+| Button (one style only) | Transparent with 1.5px `#6B6560` outline, `#6B6560` text, radius 14px; fills `#6B6560` with white text on press. Used for **every** action, primary or not — "Generate my packing list" looks the same as "Start my style survey". **Buttons are never filled with ink**, so no screen carries a heavy black slab. |
 | Selection pill | Radius 20px, 1.5px border `rgba(28,28,30,.2)`; selected state fills `#6B6560` with white text (survey options, trip-purpose chips) |
 | Comfort chip | Radius 20px. Intense: padding-pinned gradient fill, white text. Mild: pale tint fill, dark text. Exact values in the gradient system above |
 | Card | `#FAFAFA`, radius 16px, 1px hairline border; day rows and packing items live in cards |

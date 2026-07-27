@@ -204,14 +204,17 @@ export default function StyleGuide() {
       </Section>
 
       {/* --------------------------------------------------------- buttons */}
-      <Section title="Buttons">
-        <button type="button" className="button button--primary">
+      <Section
+        title="Buttons"
+        note="One style throughout. Buttons are never filled with ink, so no screen carries a heavy black slab."
+      >
+        <button type="button" className="button">
           Generate my packing list
         </button>
-        <button type="button" className="button button--secondary">
+        <button type="button" className="button">
           Start my style survey
         </button>
-        <button type="button" className="button button--secondary button--inline">
+        <button type="button" className="button button--inline">
           Next
         </button>
       </Section>
