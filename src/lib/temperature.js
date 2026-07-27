@@ -43,24 +43,29 @@ const EDGE = {
  * better, so any interpolation between two of them passes too (sRGB
  * luminance is convex, so a blend is never lighter than its lighter end).
  *
- *   hot:  #C24A0A burnt orange 4.91:1 -> #E11D2E red 4.76:1 -> #B3122A ruby 6.92:1
- *   cold: #2E71D6 azure 4.72:1 -> #1E56BE 6.71:1 -> #1A46A8 sapphire 8.45:1
+ * These segments run deliberately long — from the lightest colour that still
+ * carries white text all the way down to a near-black jewel tone. The length
+ * is what produces both a dramatic sweep inside a single chip and real tonal
+ * separation between a warm day and a scorching one.
+ *
+ *   hot:  #C24A0A 4.91:1 -> #E11D2E 4.76 -> #B3122A 6.92 -> #8A0F20 9.68 -> #5E0A16 13.7
+ *   cold: #2E71D6 4.72:1 -> #1E56BE 6.71 -> #1A46A8 8.45 -> #12327A 11.9  -> #0B1F4D 17.0
  *
  * #C24A0A is about as orange as a colour can get and still carry white text;
- * anything more vivid drops below 4.5:1. The bright orange lives in the edge
+ * anything more vivid drops below 4.5:1. Brighter orange lives in the edge
  * colours and the decorative bars instead.
  */
 const BODY = {
-  hot: ['#C24A0A', '#E11D2E', '#B3122A'],
-  cold: ['#2E71D6', '#1E56BE', '#1A46A8'],
+  hot: ['#C24A0A', '#E11D2E', '#B3122A', '#8A0F20', '#5E0A16'],
+  cold: ['#2E71D6', '#1E56BE', '#1A46A8', '#12327A', '#0B1F4D'],
 }
 
 /**
  * How much of the safe segment a single chip spans. The window slides along
- * the ramp as intensity rises, so every chip shows a pronounced gradient
- * across its readable width rather than a flat fill.
+ * the ramp as intensity rises. At 0.5 a barely-hot day and a scorching one
+ * share no colour at all, which is what gives the day-to-day variation.
  */
-const CHIP_SPAN = 0.6
+const CHIP_SPAN = 0.5
 
 /** Mild days: bright tint with dark text, so quiet weather reads quiet. */
 const MILD = {
@@ -217,6 +222,51 @@ export function temperatureBar(feelsLikeC, profile = DEFAULT_PROFILE, stopCount 
   )
 
   return `linear-gradient(90deg, ${stops.join(', ')})`
+}
+
+/* ----------------------------------------------------------------- words */
+
+/**
+ * The phrase that goes in a comfort chip.
+ *
+ * Wear There talks like a well-travelled friend, so a day gets a description
+ * rather than a reading: "Muggy + brolly", "Bundle up", "Scorching for you".
+ * Weather conditions win over raw temperature when they're the thing you'd
+ * actually mention.
+ *
+ * Phase 4 wires the real forecast into `conditions`; until then the caller
+ * can pass whatever it has, or nothing.
+ */
+export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions = {}) {
+  const { side, t, leaning } = temperatureIntensity(feelsLikeC, profile)
+  const { humidityPct = 0, rainChancePct = 0, windy = false } = conditions
+
+  const muggy = humidityPct >= 70
+  const wet = rainChancePct >= 50
+
+  if (side === 'hot') {
+    if (muggy && wet) return 'Muggy + brolly'
+    if (muggy) return t >= 0.55 ? 'Hot and sticky' : 'Warm and humid'
+    if (wet) return 'Warm + brolly'
+    if (t >= 0.85) return 'Scorching for you'
+    if (t >= 0.55) return 'Properly hot'
+    if (t >= 0.25) return 'Hot for you'
+    return 'Warm for you'
+  }
+
+  if (side === 'cold') {
+    if (windy && t >= 0.5) return 'Biting wind chill'
+    if (windy) return 'Cold and blowy'
+    if (wet) return 'Cold + brolly'
+    if (t >= 0.85) return 'Bitter, full layers'
+    if (t >= 0.55) return 'Bundle up'
+    if (t >= 0.25) return 'Cold for you'
+    return 'Cool for you'
+  }
+
+  if (wet) return 'Mild + brolly'
+  if (muggy) return 'Mild but close'
+  return leaning === 'hot' ? 'Comfortably warm' : 'Fresh but fine'
 }
 
 /* ---------------------------------------------------------- verification */

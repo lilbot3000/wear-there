@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import {
   DEFAULT_PROFILE,
+  comfortLabel,
   contrastRatio,
   tempColour,
   temperatureBar,
@@ -19,11 +20,14 @@ const RUNS = [
   { value: 'cold', label: 'Runs cold' },
 ]
 
-function chipLabel(side) {
-  if (side === 'hot') return 'Hot for you'
-  if (side === 'cold') return 'Cold for you'
-  return 'Mild for you'
-}
+/* Conditions used to demo the phrasing variants in the sweep. */
+const SAMPLE_CONDITIONS = [
+  {},
+  { humidityPct: 75 },
+  { rainChancePct: 60 },
+  { windy: true },
+  { humidityPct: 78, rainChancePct: 65 },
+]
 
 /** Shows the measured contrast so the safety invariant proves itself. */
 function ContrastBadge({ background, text }) {
@@ -115,7 +119,7 @@ export default function StyleGuide() {
           <div className="gradient-bar" style={{ background: bar }} />
           <div className="sg-row">
             <span className="chip" style={colour.chipStyle}>
-              {chipLabel(colour.side)}
+              {comfortLabel(feelsLike, profile)}
             </span>
             <ContrastBadge background={colour.body} text={colour.text} />
           </div>
@@ -147,13 +151,14 @@ export default function StyleGuide() {
         note="Every chip the system can produce with the current profile. Check for two things: no purple or green anywhere, and every contrast reading passing."
       >
         <div className="sg-scale">
-          {SCALE.map((temperature) => {
+          {SCALE.map((temperature, index) => {
             const swatch = tempColour(temperature, profile)
+            const conditions = SAMPLE_CONDITIONS[index % SAMPLE_CONDITIONS.length]
             return (
               <div key={temperature} className="sg-scale__row">
                 <span className="sg-scale__temp">{temperature}°</span>
                 <span className="chip" style={swatch.chipStyle}>
-                  {chipLabel(swatch.side)}
+                  {comfortLabel(temperature, profile, conditions)}
                 </span>
                 <ContrastBadge background={swatch.body} text={swatch.text} />
                 <span
@@ -258,7 +263,7 @@ export default function StyleGuide() {
             <div className="text-secondary">29° · 65% humid</div>
           </div>
           <span className="chip" style={tempColour(29, profile).chipStyle}>
-            {chipLabel(tempColour(29, profile).side)}
+            {comfortLabel(29, profile, { humidityPct: 65 })}
           </span>
         </div>
         <div className="card card--row">
@@ -267,7 +272,7 @@ export default function StyleGuide() {
             <div className="text-secondary">3° · feels like -2°</div>
           </div>
           <span className="chip" style={tempColour(-2, profile).chipStyle}>
-            {chipLabel(tempColour(-2, profile).side)}
+            {comfortLabel(-2, profile, { windy: true })}
           </span>
         </div>
       </Section>

@@ -51,9 +51,11 @@ Both ramps end on a saturated jewel tone, never a muddy near-black. The hot ramp
 **The intensity function.** One small helper drives every temperature colour in the app: `tempColour(feelsLike, profile)` computes an intensity `t` from 0–1 — how far the day sits past *your* comfort thresholds (from comfort.js), so it's personal, not absolute — and returns two colours sampled from the ramp:
 
 - `edge` — sampled from the light half of the ramp. Hot: `#FFE14D → #FFB020 → #FF7A1F` as `t` rises; cold: `#D6E9FF → #9BC8F5 → #5B9BE8`.
-- `body` — sampled **only from the contrast-safe segment**. Hot: `#C24A0A → #E11D2E → #B3122A`; cold: `#2E71D6 → #1E56BE → #1A46A8`. Every colour here passes white text at ≥ 4.5:1, so chips vary freely with temperature and the guarantee survives by construction.
+- `body` — sampled **only from the contrast-safe segment**, which runs deliberately long, from the lightest colour that still carries white text down to a near-black jewel tone:
+  - Hot: `#C24A0A → #E11D2E → #B3122A → #8A0F20 → #5E0A16` (4.9:1 to 13.7:1)
+  - Cold: `#2E71D6 → #1E56BE → #1A46A8 → #12327A → #0B1F4D` (4.7:1 to 17:1)
 
-  A chip does not use a single body colour: it spans a **sliding window** covering 60% of the safe segment, which slides toward the deep end as intensity rises. So the gradient is visible across the chip's whole readable width, and a scorching day's chip is deeper at both ends than a merely warm one. Because both ends of the window are contrast-safe, everything between them is too — sRGB luminance is convex, so a blend is never lighter than its lighter end.
+  A chip does not use a single body colour: it spans a **sliding window** covering half the safe segment, sliding toward the deep end as intensity rises. The long ramp is what makes this work — it produces a dramatic sweep *within* a chip and, because a barely-hot day and a scorching one share no colour at all, real tonal separation *between* days. Because both ends of the window are contrast-safe, everything between them is too: sRGB luminance is convex, so a blend is never lighter than its lighter end.
 
   **Constraint worth knowing:** vivid orange cannot carry white text. `#C24A0A` (4.91:1) is about as orange as a text-bearing colour can get. Bright orange therefore lives in the edge colours and the decorative bars, while chips resolve orange → red → ruby.
 
@@ -64,6 +66,16 @@ Where the colours appear:
   - Mild cold side: background `#D4E8FF` (baby blue), text `#1E4FA3` (6.2:1)
 - **Gradient bar** — an 8px rounded bar under the headline on forecast screens. It renders the ramp from its palest stop **up to the trip's intensity point**, so the bar itself communicates extremity: a warm week's bar ends amber, a heatwave sweeps the full ramp into deep red, a mild spring trip stays pale blue. No text sits on bars, so no contrast constraint.
 - **Trip dots** — on My trips, each trip's dot is its `body` colour (Lisbon deep red, Reykjavík deep blue, Dubai amber-red).
+
+### Chip phrasing
+
+Chips describe a day rather than reading it out, and vary with both intensity and conditions. Weather wins over temperature when it's the thing you'd actually mention: a humid, rainy 29° is "Muggy + brolly", not "Hot for you". `comfortLabel()` owns this vocabulary.
+
+| Band | Plain | With conditions |
+|---|---|---|
+| Hot, rising | Warm for you · Hot for you · Properly hot · Scorching for you | Warm and humid · Hot and sticky · Warm + brolly · Muggy + brolly |
+| Mild | Comfortably warm · Fresh but fine | Mild but close · Mild + brolly |
+| Cold, deepening | Cool for you · Cold for you · Bundle up · Bitter, full layers | Cold and blowy · Biting wind chill · Cold + brolly |
 
 ### Components
 

@@ -69,7 +69,7 @@
    * exactly this distance, so no text ever sits on the bright edge colour.
    * If this changes, the gradient stop must change with it.
    */
-  --chip-padding-x: 16px;
+  --chip-padding-x: 20px;
 
   /* Layout */
   --app-max-width: 430px;
