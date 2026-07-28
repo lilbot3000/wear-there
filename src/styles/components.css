@@ -132,6 +132,12 @@
  * bright edge colour can never reach a glyph. These two values are bound
  * together through --chip-padding-x deliberately: change one and the other
  * follows. Background is supplied inline by tempColour().
+ *
+ * Chips set `white-space: nowrap` so a label never wraps to two lines, which
+ * means a chip MUST be allowed to size to its content. Never place one in a
+ * fixed-width grid track or a flex item with a hard width: the pill background
+ * stays at the container's width and the text spills outside it. Labels run up
+ * to about 145px wide at this font size.
  */
 .chip {
   display: inline-flex;

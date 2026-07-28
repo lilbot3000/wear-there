@@ -173,9 +173,15 @@
   gap: 10px;
 }
 
+/*
+ * The chip column sizes to the widest label across every row rather than a
+ * fixed width. Chips set `white-space: nowrap`, so a fixed track let long
+ * labels spill outside the pill's rounded background. `max-content` keeps all
+ * the badges aligned while guaranteeing the pill always contains its text.
+ */
 .sg-scale__row {
   display: grid;
-  grid-template-columns: 44px 130px 92px 1fr;
+  grid-template-columns: 44px max-content 92px 1fr;
   align-items: center;
   gap: 12px;
 }

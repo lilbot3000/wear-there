@@ -79,10 +79,12 @@ Chips describe a day rather than reading it out, and vary with both intensity an
 
 Keep the phrasing plain. Mild British colour is welcome ("brolly", "properly hot"), but avoid words whose everyday meaning is regional enough to be ambiguous — "close" for muggy was cut for exactly this reason, since it reads as "close to something".
 
+Keep phrases short, too. Chips never wrap, so a long label forces the pill wider than its layout allows; around 17 characters is the practical ceiling at the chip's font size.
+
 | Band | Plain | With conditions |
 |---|---|---|
 | Hot, rising | Warm for you · Hot for you · Properly hot · Scorching for you | Warm and humid · Hot and sticky · Warm + brolly · Muggy + brolly |
-| Mild | Comfortably warm · Fresh but fine | Mild but muggy · Mild + brolly |
+| Mild | Comfortable · Fresh but fine | Mild but muggy · Mild + brolly |
 | Cold, deepening | Cool for you · Cold for you · Bundle up · Bitter, full layers | Cold and blowy · Biting wind chill · Cold + brolly |
 
 ### Components
