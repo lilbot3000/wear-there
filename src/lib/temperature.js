@@ -148,14 +148,25 @@ export function sampleRamp(stops, t) {
  * Returns `side` ('hot' | 'cold' | 'mild') and `t`, a 0–1 intensity. Mild days
  * also carry `leaning`, so they can borrow the warmer or cooler tint.
  */
-export function temperatureIntensity(feelsLikeC, profile = DEFAULT_PROFILE) {
-  // Running hot or cold nudges where the thresholds sit: if you run cold you
-  // need it warmer before you're comfortable, so both thresholds shift up.
+/**
+ * The two temperatures that divide cold from mild from hot, for this person.
+ *
+ * The survey's own thresholds do most of the work; running hot or cold nudges
+ * both by 2°, since someone who runs cold needs it warmer before they're
+ * comfortable at either end.
+ */
+export function comfortThresholds(profile = DEFAULT_PROFILE) {
   const shift =
     profile.runsHotCold === 'cold' ? 2 : profile.runsHotCold === 'hot' ? -2 : 0
 
-  const summer = (profile.summerThresholdC ?? DEFAULT_PROFILE.summerThresholdC) + shift
-  const coat = (profile.coatThresholdC ?? DEFAULT_PROFILE.coatThresholdC) + shift
+  return {
+    coat: (profile.coatThresholdC ?? DEFAULT_PROFILE.coatThresholdC) + shift,
+    summer: (profile.summerThresholdC ?? DEFAULT_PROFILE.summerThresholdC) + shift,
+  }
+}
+
+export function temperatureIntensity(feelsLikeC, profile = DEFAULT_PROFILE) {
+  const { coat, summer } = comfortThresholds(profile)
 
   if (feelsLikeC >= summer) {
     return { side: 'hot', t: clamp01((feelsLikeC - summer) / SPAN_C) }
@@ -296,7 +307,8 @@ export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions =
   }
 
   if (wet) return 'Mild + brolly'
-  if (muggy) return 'Mild but close'
+  // "Close" is regional British for muggy and reads as ambiguous; say muggy.
+  if (muggy) return 'Mild but muggy'
   return leaning === 'hot' ? 'Comfortably warm' : 'Fresh but fine'
 }
 

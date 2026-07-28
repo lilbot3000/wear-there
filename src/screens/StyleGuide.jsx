@@ -3,6 +3,7 @@ import { useState } from 'react'
 import {
   DEFAULT_PROFILE,
   comfortLabel,
+  comfortThresholds,
   contrastRatio,
   tempColour,
   temperatureBar,
@@ -11,8 +12,13 @@ import {
 
 import './StyleGuide.css'
 
-/* Sample temperatures used to show the full sweep of the system. */
-const SCALE = [-10, -5, 0, 5, 10, 14, 18, 22, 26, 30, 34, 40]
+/*
+ * Sample temperatures across the sweep. 8/11 and 21/23 straddle where the cold
+ * and hot boundaries land across the three "you" settings (7-11 and 20-24), so
+ * switching runs hot/average/cold visibly flips those rows between bands
+ * rather than only nudging their shade.
+ */
+const SCALE = [-10, -5, 0, 5, 8, 11, 14, 18, 21, 23, 26, 30, 34, 40]
 
 const RUNS = [
   { value: 'hot', label: 'Runs hot' },
@@ -70,6 +76,7 @@ export default function StyleGuide() {
   const colour = tempColour(feelsLike, profile)
   const intensity = temperatureIntensity(feelsLike, profile)
   const bar = temperatureBar(feelsLike, profile)
+  const thresholds = comfortThresholds(profile)
 
   const togglePurpose = (name) =>
     setPurposes((current) =>
@@ -159,6 +166,15 @@ export default function StyleGuide() {
         title="The whole sweep"
         note="Every chip the system can produce with the current profile. Each readout measures white text against the lightest colour the text actually sits on, ignoring the brighter edge inside the padding where no letter lands. The palette is the original mockup one, which crosses the AA floor at its bright end, so failing readings here are an accepted tradeoff shown honestly, not a bug to auto-correct."
       >
+        {/* Makes the runs hot/average/cold toggle legible: these are the two
+            temperatures the whole sweep pivots on, and they move as you switch. */}
+        <p className="sg-bands">
+          With this profile, <b>cold</b> is below {thresholds.coat}°, <b>mild</b>{' '}
+          runs {thresholds.coat}° to {thresholds.summer}°, and <b>hot</b> is
+          above {thresholds.summer}°. Switch “you” above and watch these move,
+          taking the rows below with them.
+        </p>
+
         <div className="sg-scale">
           {SCALE.map((temperature, index) => {
             const swatch = tempColour(temperature, profile)

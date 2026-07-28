@@ -150,6 +150,23 @@
 
 /* ---------------------------------------------------------- the sweep */
 
+.sg-bands {
+  width: 100%;
+  max-width: 60ch;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sg-bands b {
+  color: var(--ink);
+}
+
 .sg-scale {
   display: flex;
   flex-direction: column;
