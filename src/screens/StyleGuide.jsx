@@ -29,7 +29,16 @@ const SAMPLE_CONDITIONS = [
   { humidityPct: 78, rainChancePct: 65 },
 ]
 
-/** Shows the measured contrast so the safety invariant proves itself. */
+/**
+ * Reports a chip's contrast measured against `lightestUnderText` — the
+ * lightest colour a glyph actually sits on. The brighter edge colour inside
+ * the padding is excluded, since no letter ever lands there.
+ *
+ * The palette knowingly crosses the AA floor to match the design mockups, so
+ * these readouts are expected to fail in places. Show the real number, never
+ * round it up, hide it, or suppress the fail state: the point is that the
+ * tradeoff stays visible over time rather than quietly becoming invisible.
+ */
 function ContrastBadge({ background, text }) {
   const ratio = contrastRatio(background, text)
   const passes = ratio >= 4.5
@@ -121,7 +130,7 @@ export default function StyleGuide() {
             <span className="chip" style={colour.chipStyle}>
               {comfortLabel(feelsLike, profile)}
             </span>
-            <ContrastBadge background={colour.body} text={colour.text} />
+            <ContrastBadge background={colour.lightestUnderText} text={colour.text} />
           </div>
 
           <dl className="sg-readout">
@@ -148,7 +157,7 @@ export default function StyleGuide() {
       {/* -------------------------------------------------- the whole sweep */}
       <Section
         title="The whole sweep"
-        note="Every chip the system can produce with the current profile. Check for two things: no purple or green anywhere, and every contrast reading passing."
+        note="Every chip the system can produce with the current profile. Each readout measures white text against the lightest colour the text actually sits on, ignoring the brighter edge inside the padding where no letter lands. The palette is the original mockup one, which crosses the AA floor at its bright end, so failing readings here are an accepted tradeoff shown honestly, not a bug to auto-correct."
       >
         <div className="sg-scale">
           {SCALE.map((temperature, index) => {
@@ -160,7 +169,7 @@ export default function StyleGuide() {
                 <span className="chip" style={swatch.chipStyle}>
                   {comfortLabel(temperature, profile, conditions)}
                 </span>
-                <ContrastBadge background={swatch.body} text={swatch.text} />
+                <ContrastBadge background={swatch.lightestUnderText} text={swatch.text} />
                 <span
                   className="gradient-bar sg-scale__bar"
                   style={{ background: temperatureBar(temperature, profile) }}

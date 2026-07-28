@@ -8,11 +8,17 @@
  * personal comfort thresholds, not by an absolute temperature. So 24°C can
  * read as "hot for you" for one traveller and "mild" for another.
  *
- * The safety invariant: a comfort chip's `body` colour is what sits under the
- * text, so it is only ever sampled from the dark segment of a ramp where white
- * text passes WCAG AA. The bright `edge` colour lives only in the chip's left
- * padding, where no glyph ever lands. Contrast therefore holds by
- * construction, at any temperature and any text length.
+ * How a chip is painted: `edge` is a bright flash in the chip's left padding,
+ * `body` is the gradient under the text. Intensity slides both toward the deep
+ * end of the ramp, so a barely-warm day reads light and a scorching one reads
+ * deep — the switch point being personal, driven by the traveller's own
+ * thresholds rather than an absolute temperature.
+ *
+ * ON CONTRAST: earlier revisions clamped `body` to a WCAG-safe segment so
+ * white text always passed. That is no longer the case. The palette now
+ * matches the original design mockups, whose bright ends fall below 4.5:1
+ * against white. This is an accepted, deliberate tradeoff — see the comments
+ * on BODY and MILD below before changing any colour here.
  */
 
 /* ------------------------------------------------------------------ ramps */
@@ -24,8 +30,8 @@
  * sapphire. Both end on a saturated jewel tone rather than a muddy dark.
  */
 const RAMP = {
-  hot: ['#FFE14D', '#FFC61A', '#FF9A1F', '#FF6A1F', '#E11D2E', '#B3122A'],
-  cold: ['#D6E9FF', '#A8D0F7', '#5B9BE8', '#2E71D6', '#1A46A8'],
+  hot: ['#F7D46A', '#F5B841', '#F0952F', '#E2662F', '#D13C37'],
+  cold: ['#D6E9FF', '#B9D2F5', '#8FB0E4', '#4E75C4', '#3558A5'],
 }
 
 /**
@@ -33,8 +39,8 @@ const RAMP = {
  * text, so these are unconstrained by contrast and can stay vivid.
  */
 const EDGE = {
-  hot: ['#FFE14D', '#FFB020', '#FF7A1F'],
-  cold: ['#D6E9FF', '#9BC8F5', '#5B9BE8'],
+  hot: ['#F7D46A', '#F5B841', '#F0952F'],
+  cold: ['#C3D9F5', '#A8C4EE', '#8FB0E4'],
 }
 
 /**
@@ -43,21 +49,24 @@ const EDGE = {
  * better, so any interpolation between two of them passes too (sRGB
  * luminance is convex, so a blend is never lighter than its lighter end).
  *
- * These segments run deliberately long — from the lightest colour that still
- * carries white text all the way down to a near-black jewel tone. The length
- * is what produces both a dramatic sweep inside a single chip and real tonal
- * separation between a warm day and a scorching one.
+ * These are the original mockup ramps. A mid-intensity chip resolves to the
+ * mockup's sampled colours at its deep end: cold ~#3558A5, hot ~#D13C37.
  *
- *   hot:  #C24A0A 4.91:1 -> #E11D2E 4.76 -> #B3122A 6.92 -> #8A0F20 9.68 -> #5E0A16 13.7
- *   cold: #2E71D6 4.72:1 -> #1E56BE 6.71 -> #1A46A8 8.45 -> #12327A 11.9  -> #0B1F4D 17.0
+ * ACCEPTED CONTRAST EXCEPTION — do not "fix" this.
+ * Unlike earlier revisions, these ramps are NOT clamped to the WCAG-safe
+ * segment. The bright ends carry white text below 4.5:1 (roughly 1.9:1 at the
+ * lightest orange and 2.6:1 at the lightest periwinkle). That is deliberate:
+ * it keeps the brighter, more editorial palette of the original mockups, and
+ * it applies to every chip, not just the mild ones. Do NOT auto-darken these
+ * ramps and do NOT switch any chip to dark text. /styleguide reports each
+ * chip's real worst-case ratio on purpose, as an ongoing reminder.
  *
- * #C24A0A is about as orange as a colour can get and still carry white text;
- * anything more vivid drops below 4.5:1. Brighter orange lives in the edge
- * colours and the decorative bars instead.
+ *   hot:  #F5B841 1.9:1 -> #F0952F 2.3 -> #E2662F 3.2 -> #D13C37 4.8 -> #B02A2E 6.6
+ *   cold: #8FB0E4 2.6:1 -> #6E93D8 3.3 -> #4E75C4 4.3 -> #3558A5 6.8 -> #2A4585 9.4
  */
 const BODY = {
-  hot: ['#C24A0A', '#E11D2E', '#B3122A', '#8A0F20', '#5E0A16'],
-  cold: ['#2E71D6', '#1E56BE', '#1A46A8', '#12327A', '#0B1F4D'],
+  hot: ['#F5B841', '#F0952F', '#E2662F', '#D13C37', '#B02A2E'],
+  cold: ['#8FB0E4', '#6E93D8', '#4E75C4', '#3558A5', '#2A4585'],
 }
 
 /**
@@ -67,10 +76,21 @@ const BODY = {
  */
 const CHIP_SPAN = 0.5
 
-/** Mild days: bright tint with dark text, so quiet weather reads quiet. */
+/**
+ * Mild days: the bright solid chips from the original mockups, white bold text.
+ *
+ * ACCEPTED CONTRAST EXCEPTION — do not "fix" this.
+ * Against white text, mild cool (#98BAEA) measures ~1.99:1 and mild warm
+ * (#F4B446) ~1.83:1. Both fail WCAG AA, which needs 4.5:1. This is an
+ * intentional design decision to keep the brighter, more editorial palette of
+ * the original mockups. Do NOT auto-darken these backgrounds and do NOT
+ * auto-switch the text colour on these two chips. The /styleguide page reports
+ * the real failing ratios on purpose, as an ongoing reminder rather than a
+ * one-time note.
+ */
 const MILD = {
-  hot: { background: '#FFEBAD', text: '#7A4A0A' },
-  cold: { background: '#D4E8FF', text: '#1E4FA3' },
+  hot: { background: '#F4B446', text: '#FFFFFF' },
+  cold: { background: '#98BAEA', text: '#FFFFFF' },
 }
 
 /**
@@ -173,6 +193,8 @@ export function tempColour(feelsLikeC, profile = DEFAULT_PROFILE) {
       t: 0,
       background: tint.background,
       body: tint.background,
+      // Solid fill, so the colour under the text is simply the background.
+      lightestUnderText: tint.background,
       text: tint.text,
       chipStyle: { background: tint.background, color: tint.text },
     }
@@ -195,6 +217,15 @@ export function tempColour(feelsLikeC, profile = DEFAULT_PROFILE) {
     body: bodyStart,
     bodyStart,
     bodyEnd,
+    /*
+     * The lightest colour any glyph actually sits on, and therefore the right
+     * value to judge readability by. The chip's left padding and the
+     * gradient's first stop are both --chip-padding-x, so text begins exactly
+     * at bodyStart; the brighter `edge` colour is entirely inside the padding
+     * and never touches a letter. From bodyStart rightward the gradient only
+     * darkens, so this is the worst case under text.
+     */
+    lightestUnderText: bodyStart,
     text: '#FFFFFF',
     chipStyle: {
       // The first stop lands at exactly the chip's left padding, so the bright

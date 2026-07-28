@@ -24,37 +24,49 @@
   --card: #fafafa;
   --card-border: rgba(0, 0, 0, 0.06);
 
-  /* Temperature ramp — cold (baby blue, to bright blue, to sapphire) */
+  /* Temperature ramp — cold (periwinkle to deep blue), from the mockups */
   --cold-1: #d6e9ff;
-  --cold-2: #a8d0f7;
-  --cold-3: #5b9be8;
-  --cold-4: #2e71d6;
-  --cold-deep: #1a46a8;
+  --cold-2: #b9d2f5;
+  --cold-3: #8fb0e4;
+  --cold-4: #6e93d8;
+  --cold-5: #4e75c4;
+  --cold-6: #3558a5;
+  --cold-deep: #2a4585;
 
-  /* Temperature ramp — hot (bright yellow, long through orange, to ruby) */
-  --hot-1: #ffe14d;
-  --hot-2: #ffc61a;
-  --hot-3: #ff9a1f;
-  --hot-4: #ff6a1f;
-  --hot-5: #e11d2e;
-  --hot-deep: #b3122a;
+  /* Temperature ramp — hot (yellow through orange to red), from the mockups */
+  --hot-1: #f7d46a;
+  --hot-2: #f5b841;
+  --hot-3: #f0952f;
+  --hot-4: #e2662f;
+  --hot-5: #d13c37;
+  --hot-deep: #b02a2e;
 
   /*
-   * Contrast-safe segments for white chip text. A comfort chip's body colours
-   * are only ever sampled between these bounds. Measured against white:
-   *   cold: --cold-4 azure (4.72:1) -> --cold-deep sapphire (8.45:1)
-   *   hot:  --hot-safe burnt orange (4.95:1) -> --hot-deep ruby (6.92:1)
-   * Anything lighter is an EDGE colour only: --cold-3 (#5B9BE8) and
-   * --hot-4 (#FF6A1F) both fail white text. Never place text on them.
+   * ACCEPTED CONTRAST EXCEPTION — do not "fix" this.
+   * These ramps are NOT clamped to the WCAG-safe range. Chips carry white
+   * bold text throughout, and the bright ends fall below AA's 4.5:1 (about
+   * 1.9:1 at --hot-2 and 2.6:1 at --cold-3). This is deliberate, to keep the
+   * brighter, more editorial palette of the original mockups. Do NOT
+   * auto-darken these values and do NOT switch any chip to dark text.
+   * /styleguide reports each chip's real worst-case ratio on purpose.
    */
-  --cold-safe: #2e71d6;
-  --hot-safe: #cc3d0e;
 
-  /* Mild chips — bright tint with dark text */
-  --mild-hot-bg: #ffebad;
-  --mild-hot-text: #7a4a0a;
-  --mild-cold-bg: #d4e8ff;
-  --mild-cold-text: #1e4fa3;
+  /*
+   * Mild chips — the bright solid colours from the original mockups, with
+   * white bold text.
+   *
+   * ACCEPTED CONTRAST EXCEPTION — do not "fix" this.
+   * Against white text, mild cool (#98BAEA) measures ~1.99:1 and mild warm
+   * (#F4B446) ~1.83:1. Both fail WCAG AA, which needs 4.5:1. This is an
+   * intentional design decision to keep the brighter, more editorial palette
+   * of the original mockups. Do NOT auto-darken these backgrounds and do NOT
+   * auto-switch the text colour on these two chips. /styleguide reports the
+   * real failing ratios on purpose, as an ongoing reminder.
+   */
+  --mild-hot-bg: #f4b446;
+  --mild-hot-text: #ffffff;
+  --mild-cold-bg: #98baea;
+  --mild-cold-text: #ffffff;
 
   /* Brand full-spectrum bar (decorative, no text sits on it) */
   --gradient-brand: linear-gradient(90deg, #d6e9ff, #5b9be8, #ffe14d, #ff9a1f, #e11d2e);

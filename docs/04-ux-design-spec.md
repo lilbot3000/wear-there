@@ -44,26 +44,32 @@ Both ramps end on a saturated jewel tone, never a muddy near-black. The hot ramp
 
 | Ramp | Stops | Applies when |
 |---|---|---|
-| Cold | `#D6E9FF → #A8D0F7 → #5B9BE8 → #2E71D6 → #1A46A8` | Feels-like at the cold end |
-| Hot | `#FFE14D → #FFC61A → #FF9A1F → #FF6A1F → #E11D2E → #B3122A` | Feels-like at the hot end |
+| Cold | `#D6E9FF → #B9D2F5 → #8FB0E4 → #4E75C4 → #3558A5` | Feels-like at the cold end |
+| Hot | `#F7D46A → #F5B841 → #F0952F → #E2662F → #D13C37` | Feels-like at the hot end |
 | Full spectrum (brand) | `#D6E9FF → #5B9BE8 → #FFE14D → #FF9A1F → #E11D2E` | Welcome screen only — the brand mark |
 
 **The intensity function.** One small helper drives every temperature colour in the app: `tempColour(feelsLike, profile)` computes an intensity `t` from 0–1 — how far the day sits past *your* comfort thresholds (from comfort.js), so it's personal, not absolute — and returns two colours sampled from the ramp:
 
-- `edge` — sampled from the light half of the ramp. Hot: `#FFE14D → #FFB020 → #FF7A1F` as `t` rises; cold: `#D6E9FF → #9BC8F5 → #5B9BE8`.
-- `body` — sampled **only from the contrast-safe segment**, which runs deliberately long, from the lightest colour that still carries white text down to a near-black jewel tone:
-  - Hot: `#C24A0A → #E11D2E → #B3122A → #8A0F20 → #5E0A16` (4.9:1 to 13.7:1)
-  - Cold: `#2E71D6 → #1E56BE → #1A46A8 → #12327A → #0B1F4D` (4.7:1 to 17:1)
+- `edge` — the bright flash inside the chip's left padding, where no glyph lands. Hot: `#F7D46A → #F5B841 → #F0952F` as `t` rises; cold: `#C3D9F5 → #A8C4EE → #8FB0E4`.
+- `body` — the gradient under the text, sampled from the **original mockup ramps**. These are deliberately *not* clamped to the WCAG-safe range; see the accepted exception below.
+  - Hot: `#F5B841 → #F0952F → #E2662F → #D13C37 → #B02A2E` (1.9:1 to 6.6:1)
+  - Cold: `#8FB0E4 → #6E93D8 → #4E75C4 → #3558A5 → #2A4585` (2.6:1 to 9.4:1)
 
-  A chip does not use a single body colour: it spans a **sliding window** covering half the safe segment, sliding toward the deep end as intensity rises. The long ramp is what makes this work — it produces a dramatic sweep *within* a chip and, because a barely-hot day and a scorching one share no colour at all, real tonal separation *between* days. Because both ends of the window are contrast-safe, everything between them is too: sRGB luminance is convex, so a blend is never lighter than its lighter end.
+  A chip does not use a single body colour: it spans a **sliding window** covering half the ramp, sliding toward the deep end as intensity rises. That produces a visible sweep *within* a chip and tonal separation *between* days — a barely-warm day reads light yellow-orange, a scorching one deep red, with the switch point personal rather than absolute.
 
-  **Constraint worth knowing:** vivid orange cannot carry white text. `#C24A0A` (4.91:1) is about as orange as a text-bearing colour can get. Bright orange therefore lives in the edge colours and the decorative bars, while chips resolve orange → red → ruby.
+  **Reference bands** (from the mockups, sampled at the chip's deep end): a mid-cold chip resolves to ≈ `#3558A5`, a mid-hot chip to ≈ `#D13C37`. The exact temperature producing those depends on the traveller's thresholds — the Lisbon mockup treats 26° as mild, implying a summer threshold near 26, so 29° lands mid-intensity there and higher-intensity for someone whose threshold is 22. That is the system working as intended.
+
+  **Accepted contrast exception — do not "fix" this.** These ramps are not clamped to the WCAG-safe range. Chips carry white bold text throughout, and at the bright end that falls below AA's 4.5:1 (about 1.8:1 on the lightest orange, 2.6:1 on the lightest periwinkle). This is deliberate, to keep the brighter, more editorial palette of the original mockups. Do **not** auto-darken the ramps and do **not** switch any chip to dark text.
+
+  **How readability is measured.** The right value to judge a chip by is the lightest colour a glyph *actually* sits on, not the lightest pixel in the chip. The chip's left padding and the gradient's first stop are pinned to the same token (`--chip-padding-x`), so text begins exactly at the body colour and the brighter edge never touches a letter; from there the gradient only darkens. `tempColour()` exposes that value as `lightestUnderText`, and `/styleguide` reports it per chip — real ratios, never rounded up, hidden, or suppressed, so the tradeoff stays visible over time.
 
 Where the colours appear:
 - **Comfort chips (intense)** — `linear-gradient(90deg, edge, body 16px)`, white text, per the approved chip screenshots in `design/`. The bright stop occupies only the left padding where no text sits. Because both stops come from `tempColour`, a 30° day and a 40° day both read "hot" but the scorcher's chip runs visibly deeper at both ends; likewise a nippy day vs. a brutal one on the blue side.
-- **Comfort chips (mild)** — days comfort.js classifies as mild switch to quiet pale tints with dark text, so colour intensity matches weather intensity (intense days shout, mild days murmur):
-  - Mild hot side: background `#FFEBAD` (bright yellow), text `#7A4A0A` (6.3:1)
-  - Mild cold side: background `#D4E8FF` (baby blue), text `#1E4FA3` (6.2:1)
+- **Comfort chips (mild)** — days comfort.js classifies as mild use the bright solid colours from the original mockups, with white bold text:
+  - Mild warm: background `#F4B446` (yellow-orange), text white
+  - Mild cool: background `#98BAEA` (baby blue), text white
+
+  **Accepted contrast exception.** These two measure ~1.83:1 and ~1.99:1 against white, both failing WCAG AA's 4.5:1. This is a deliberate choice to keep the brighter, more editorial palette of the mockups, and it is the only place in the app where the contrast floor is knowingly crossed. Do **not** resolve it by darkening the backgrounds or switching these two chips to dark text. The `/styleguide` page reports their real failing ratios rather than hiding or rounding them, so the tradeoff stays visible instead of quietly becoming invisible.
 - **Gradient bar** — an 8px rounded bar under the headline on forecast screens. It renders the ramp from its palest stop **up to the trip's intensity point**, so the bar itself communicates extremity: a warm week's bar ends amber, a heatwave sweeps the full ramp into deep red, a mild spring trip stays pale blue. No text sits on bars, so no contrast constraint.
 - **Trip dots** — on My trips, each trip's dot is its `body` colour (Lisbon deep red, Reykjavík deep blue, Dubai amber-red).
 
@@ -201,7 +207,9 @@ White screen, the trip's gradient bar animating (shimmer left to right), status 
 ## 6. Accessibility
 
 - Ink `#1C1C1E` on white passes contrast easily; secondary `#6F6F73` passes for body sizes.
-- **Comfort chips are contrast-safe by construction:** the bright stop lives only in the text-free padding, and the `body` colour under the text is sampled exclusively from the ramp segments that pass white text at ≥ 4.5:1 (hot from `#E11D2E`, cold from `#3D66B8`, both darkening with intensity). Mild tints pair with their specified dark text (4.9:1 / 6.1:1). Two build rules: the gradient's pixel stop (16px) must never exceed the chip's left padding, and `tempColour` must clamp `body` sampling to the safe segments — those two invariants make per-chip contrast checking unnecessary.
+- **Comfort chips knowingly sit below AA**, by design decision rather than oversight — see the accepted exception in the gradient system section above. Measured on `lightestUnderText`, chips range from ~1.8:1 at the mild-warm end to ~9:1 at bitter cold; roughly a third clear 4.5:1 outright, and every chip's deep end does. The `/styleguide` readout keeps the real numbers visible rather than letting the tradeoff fade from view.
+- One build rule still holds and matters: the gradient's pixel stop must never exceed the chip's left padding, so the bright edge colour stays off the text. Both are bound to `--chip-padding-x` for exactly this reason.
+- **Everything outside the chips clears 4.5:1** — body copy, headings, secondary text, micro-labels, and buttons are all unaffected by this exception.
 - Colour never carries meaning alone: every chip says its meaning in words ("Hot for you"), and gradient bars are decorative reinforcement.
 - Tap targets: full-row for checkboxes, ≥ 44px; survey pills ≥ 48px tall.
 - Respects `prefers-reduced-motion` (gradient shimmer and tick flourish become simple fades).
