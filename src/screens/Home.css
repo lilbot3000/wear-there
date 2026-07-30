@@ -26,6 +26,8 @@
 
 .home__bar {
   max-width: 140px;
+  /* The brand mark gets clear air before the first section starts. */
+  margin-bottom: 16px;
 }
 
 .home__warning {
@@ -100,7 +102,12 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 6px;
+}
+
+/* Sections stand well apart, so each heading clearly opens its own group
+   rather than trailing the card above it. */
+.home__section + .home__section {
+  margin-top: 16px;
 }
 
 .home__section-head {

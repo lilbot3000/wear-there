@@ -63,7 +63,7 @@ export default function Home() {
       ) : (
         <section className="home__section">
           <div className="home__section-head">
-            <h2 className="heading heading--screen">My style</h2>
+            <h2 className="heading heading--screen">My comfort zone</h2>
           </div>
           <button type="button" className="home__style-card card" onClick={() => navigate('/style')}>
             <span className="home__style-text">

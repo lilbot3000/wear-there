@@ -36,8 +36,10 @@ export default function MyStyle({ justSaved }) {
   return (
     <main className="style-screen">
       <header className="style-screen__header">
+        {/* Named to match the card on Home that leads here — a link should
+            say where it goes. */}
         <h1 className="heading heading--screen">
-          {justSaved ? 'Your style, saved' : 'My style'}
+          {justSaved ? 'Your comfort zone, saved' : 'My comfort zone'}
         </h1>
         <p className="style-screen__intro">
           {justSaved
