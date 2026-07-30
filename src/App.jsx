@@ -1,3 +1,4 @@
+import Home from './screens/Home.jsx'
 import MyStyle from './screens/MyStyle.jsx'
 import StyleGuide from './screens/StyleGuide.jsx'
 import Welcome from './screens/Welcome.jsx'
@@ -35,7 +36,9 @@ function Screen({ path, query }) {
     return <SurveyRoute path={path} />
   }
 
-  return <Welcome />
+  // Welcome is the pitch, and only first-timers need it. Anyone who has
+  // started the survey lands on Home instead.
+  return loadProfile() ? <Home /> : <Welcome />
 }
 
 /**

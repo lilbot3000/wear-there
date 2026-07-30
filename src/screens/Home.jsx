@@ -1,0 +1,97 @@
+import { QUESTIONS } from '../survey/questions.js'
+import { isProfileComplete, isStorageAvailable, loadProfile } from '../lib/profile.js'
+import { navigate } from '../lib/router.js'
+
+import './Home.css'
+
+/**
+ * S3 · Home.
+ *
+ * Where you land once your style is saved. Three jobs: get to your profile,
+ * start a trip, and see the trips you already have. The trips list is empty
+ * until Phase 6 gives trips somewhere to live, so it shows its empty state for
+ * now — the shape is here so the screen doesn't have to be rebuilt later.
+ */
+export default function Home() {
+  const profile = loadProfile()
+  const complete = isProfileComplete(profile)
+  const storageWorks = isStorageAvailable()
+  const trips = [] // Phase 6 loads these from storage.
+
+  return (
+    <main className="home">
+      <header className="home__header">
+        <h1 className="home__masthead">Wear There</h1>
+        <button type="button" className="home__link" onClick={() => navigate('/style')}>
+          My style
+        </button>
+      </header>
+
+      <div className="gradient-bar home__bar" role="presentation" />
+
+      {!storageWorks ? (
+        <div className="card home__warning">
+          <b>This browser is not letting us save.</b>
+          <div className="text-secondary">
+            Anything you enter will disappear when you close the tab. Private
+            browsing is the usual cause.
+          </div>
+        </div>
+      ) : null}
+
+      {/* Someone can reach Home with a half-finished profile by going back
+          mid-survey, so offer the way to finish rather than pretending. */}
+      {!complete ? (
+        <div className="card home__unfinished">
+          <div>
+            <b>Your style is not finished.</b>
+            <div className="text-secondary">
+              Packing lists need the full picture to feel like yours.
+            </div>
+          </div>
+          <button type="button" className="pill" onClick={() => navigate('/survey')}>
+            Finish
+          </button>
+        </div>
+      ) : (
+        <section className="home__style">
+          <p className="micro-label">Your style</p>
+          <button type="button" className="home__style-card card" onClick={() => navigate('/style')}>
+            <span className="home__style-summary">{styleLine(profile)}</span>
+            <span className="home__chevron" aria-hidden="true">
+              →
+            </span>
+          </button>
+        </section>
+      )}
+
+      <section className="home__trips">
+        <p className="micro-label">My trips</p>
+
+        {trips.length === 0 ? (
+          <div className="card home__empty">
+            <b>No trips yet.</b>
+            <div className="text-secondary">
+              Planning a trip is the next thing being built. Once it is here,
+              every trip you plan will be listed on this screen.
+            </div>
+          </div>
+        ) : null}
+      </section>
+    </main>
+  )
+}
+
+/** A one-line reminder of the profile, so Home shows something personal. */
+function styleLine(profile) {
+  if (!profile) return 'Not set up yet'
+
+  const parts = ['runs', 'summer', 'coat']
+    .map((id) => {
+      const question = QUESTIONS.find((item) => item.id === id)
+      return question ? question.summary(profile[question.field]) : null
+    })
+    .filter(Boolean)
+
+  return parts.join(' · ')
+}

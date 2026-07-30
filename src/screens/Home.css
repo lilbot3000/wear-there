@@ -1,0 +1,117 @@
+/* S3 · Home — see docs/04-ux-design-spec.md */
+
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 100dvh;
+  padding: 28px 20px 32px;
+}
+
+.home__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.home__masthead {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.home__link {
+  padding: 4px 0;
+  border: none;
+  background: none;
+  color: var(--warm-neutral);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.home__link:hover {
+  color: var(--ink);
+}
+
+.home__bar {
+  max-width: 140px;
+}
+
+.home__warning {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-color: rgba(225, 29, 46, 0.35);
+}
+
+.home__unfinished {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ---------------------------------------------------------------- style */
+
+.home__style,
+.home__trips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home__style-card {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.home__style-card:hover {
+  border-color: var(--warm-neutral);
+}
+
+.home__style-summary {
+  min-width: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home__chevron {
+  flex: none;
+  color: var(--text-micro);
+  font-size: 16px;
+}
+
+/* ---------------------------------------------------------------- trips */
+
+.home__trips {
+  margin-top: 4px;
+}
+
+.home__empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home__style-card {
+    transition: none;
+  }
+}

@@ -99,9 +99,6 @@ export default function MyStyle({ justSaved }) {
       </ul>
 
       <div className="style-screen__actions">
-        <p className="style-screen__next">
-          Next up: planning a trip, so this turns into an actual packing list.
-        </p>
         <button type="button" className="button" onClick={() => navigate('/')}>
           Done
         </button>
