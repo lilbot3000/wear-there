@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { navigate, useRedirect } from '../lib/router.js'
-import { isProfileComplete, loadProfile } from '../lib/profile.js'
+import { isProfileComplete, isStorageAvailable, loadProfile } from '../lib/profile.js'
 import { QUESTIONS } from '../survey/questions.js'
 
 import './MyStyle.css'
@@ -16,6 +16,7 @@ import './MyStyle.css'
  */
 export default function MyStyle({ justSaved }) {
   const [profile, setProfile] = useState(() => loadProfile())
+  const [storageWorks] = useState(isStorageAvailable)
 
   // Re-read on return from an edit, since the survey writes straight to
   // storage rather than passing state back up.
@@ -40,10 +41,22 @@ export default function MyStyle({ justSaved }) {
         </h1>
         <p className="style-screen__intro">
           {justSaved
-            ? 'That is the only time you will answer these. Every trip from here is built on them.'
+            ? 'That is the only time you will answer these. Planning a trip and getting your packing list comes next.'
             : 'Tap anything to change it. Your next packing list picks the change up straight away.'}
         </p>
       </header>
+
+      {/* A silent failure here would look exactly like a successful save until
+          the next reload, so say it plainly instead. */}
+      {!storageWorks ? (
+        <div className="card style-screen__warning">
+          <b>This browser is not letting us save.</b>
+          <div className="text-secondary">
+            Your answers will work for now but disappear when you close the tab.
+            Private browsing is the usual cause — try a normal window.
+          </div>
+        </div>
+      ) : null}
 
       {!complete ? (
         <div className="card style-screen__unfinished">
@@ -86,9 +99,11 @@ export default function MyStyle({ justSaved }) {
       </ul>
 
       <div className="style-screen__actions">
-        {/* Planning a trip arrives in Phase 4; until then this is the way back. */}
+        <p className="style-screen__next">
+          Next up: planning a trip, so this turns into an actual packing list.
+        </p>
         <button type="button" className="button" onClick={() => navigate('/')}>
-          Back to start
+          Done
         </button>
       </div>
     </main>

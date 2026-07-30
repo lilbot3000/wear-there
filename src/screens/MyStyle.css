@@ -80,9 +80,26 @@
   font-size: 16px;
 }
 
+.style-screen__warning {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-color: rgba(225, 29, 46, 0.35);
+}
+
 .style-screen__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-top: auto;
   padding-top: 12px;
+}
+
+.style-screen__next {
+  margin: 0;
+  color: var(--text-micro);
+  font-size: 13px;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {

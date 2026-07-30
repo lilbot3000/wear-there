@@ -37,6 +37,25 @@ export const EMPTY_PROFILE = {
  */
 let memoryFallback = null
 
+/**
+ * Can we actually persist anything?
+ *
+ * Safari private browsing, and Chrome with site data blocked, both throw on
+ * write rather than failing quietly. Without this check the app would look
+ * like it saved and then lose everything on reload, which is exactly the kind
+ * of silent failure worth surfacing to the user instead of hiding.
+ */
+export function isStorageAvailable() {
+  try {
+    const probe = '__wearthere_probe__'
+    window.localStorage.setItem(probe, '1')
+    window.localStorage.removeItem(probe)
+    return true
+  } catch {
+    return false
+  }
+}
+
 export function loadProfile() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
