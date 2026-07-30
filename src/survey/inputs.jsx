@@ -194,7 +194,7 @@ export function SliderInput({ question, value, range, climate, onChange }) {
   const current = value ?? question.fallback
 
   // Neil's benchmark: a bare number is hard to answer, so translate it into a
-  // day they have lived — "About a typical May or October day in London."
+  // day they have lived — "A typical May or October day in London."
   // Recomputed live as the slider moves, from the cached climate data.
   const benchmark = describeAgainstClimate(current, climate)
 

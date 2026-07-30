@@ -141,8 +141,10 @@ export function describeAgainstClimate(valueC, climate) {
     .sort((a, b) => a.index - b.index)
     .map((m) => MONTHS[m.index])
 
+  // No hedging word in front of "typical" — it already carries the
+  // approximation, and the beyond-range lines below don't hedge either.
   const when = matches.length === 2 ? `${matches[0]} or ${matches[1]}` : matches[0]
-  return `About a typical ${when} day in ${climate.city}.`
+  return `A typical ${when} day in ${climate.city}.`
 }
 
 /* ----------------------------------------------------------------- cache */

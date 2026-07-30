@@ -189,7 +189,7 @@
 }
 
 /* The benchmark line: the slider value translated into a day at home
-   ("About a typical May or October day in London."). Slightly quieter than
+   ("A typical May or October day in London."). Slightly quieter than
    the caption, and card-backed so it reads as reference material. */
 .survey-slider__benchmark {
   margin: 8px 0 0;
