@@ -1,6 +1,13 @@
+import { isProfileComplete, loadProfile } from '../lib/profile.js'
+import { navigate } from '../lib/router.js'
+
 import './Welcome.css'
 
 export default function Welcome() {
+  // Someone returning with answers already saved shouldn't be invited to redo
+  // the survey. Phase 6 replaces this with the trips list.
+  const returning = isProfileComplete(loadProfile())
+
   return (
     <main className="welcome">
       <div className="welcome__body">
@@ -12,11 +19,21 @@ export default function Welcome() {
       </div>
 
       <div className="welcome__actions">
-        {/* Wired up in Phase 3, when the survey exists. */}
-        <button type="button" className="button">
-          Start my style survey
-        </button>
-        <p className="welcome__hint">2–3 minutes · answered once</p>
+        {returning ? (
+          <>
+            <button type="button" className="button" onClick={() => navigate('/style')}>
+              See my style
+            </button>
+            <p className="welcome__hint">Answered and saved. Change it any time.</p>
+          </>
+        ) : (
+          <>
+            <button type="button" className="button" onClick={() => navigate('/survey')}>
+              Start my style survey
+            </button>
+            <p className="welcome__hint">2–3 minutes · answered once</p>
+          </>
+        )}
       </div>
     </main>
   )

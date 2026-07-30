@@ -1,0 +1,92 @@
+/* S7 · My style — see docs/04-ux-design-spec.md */
+
+.style-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 100dvh;
+  padding: 28px 20px 32px;
+}
+
+.style-screen__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.style-screen__intro {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.style-screen__unfinished {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.style-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.style-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 15px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: var(--card);
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.style-row:hover {
+  border-color: var(--warm-neutral);
+}
+
+.style-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.style-row__value {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+  /* Staple lists can run long; keep rows to one tidy line. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.style-row__chevron {
+  flex: none;
+  color: var(--text-micro);
+  font-size: 16px;
+}
+
+.style-screen__actions {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .style-row {
+    transition: none;
+  }
+}
