@@ -96,6 +96,64 @@ function migrate(profile) {
   return { ...EMPTY_PROFILE, ...profile, schemaVersion: SCHEMA_VERSION }
 }
 
+/* Midpoint of the default comfort band (coat 9°, summer 22°). */
+const AVERAGE_MIDPOINT = 15.5
+
+/* How far a comfort band has to drift before it contradicts the stated
+ * tendency. Kept generous so nobody is called inconsistent for being slightly
+ * unusual — only for genuinely disagreeing with themselves. */
+const CONTRADICTION_DRIFT = 3
+
+/**
+ * A one-line read on how someone feels temperature, for the Home screen.
+ *
+ * Two answers describe the same thing from different angles: the hot/cold
+ * question asks how they see themselves, and the two threshold sliders show
+ * where their comfort actually sits. Usually those agree. When they don't —
+ * someone who says they run hot but wants it warmer than average before
+ * changing clothes — that's worth naming rather than quietly picking one.
+ *
+ * The thresholds are what the rest of the app trusts, since they are concrete
+ * numbers rather than self-assessment.
+ */
+export function describeTemperament(profile) {
+  if (!profile) return null
+
+  const summer = profile.summerThresholdC
+  const coat = profile.coatThresholdC
+  const tendency = profile.runsHotCold
+
+  if (summer == null || coat == null || !tendency) return null
+
+  // Positive drift means they need it warmer than average to be comfortable.
+  const drift = (summer + coat) / 2 - AVERAGE_MIDPOINT
+
+  const contradicts =
+    (tendency === 'hot' && drift > CONTRADICTION_DRIFT) ||
+    (tendency === 'cold' && drift < -CONTRADICTION_DRIFT)
+
+  const detail = `Summer clothes from ${summer}°, coat below ${coat}°`
+
+  if (contradicts) {
+    return {
+      headline: 'You are a special snowflake',
+      detail:
+        tendency === 'hot'
+          ? 'You say you run hot, but you want it warmer than most before changing. We go by your temperatures.'
+          : 'You say you run cold, but you are comfortable cooler than most. We go by your temperatures.',
+      contradicts: true,
+    }
+  }
+
+  const headline = {
+    hot: 'You run hot',
+    cold: 'You run cold',
+    average: 'You run about average',
+  }[tendency]
+
+  return { headline, detail, contradicts: false }
+}
+
 /**
  * Has this person answered enough to generate a packing list?
  *

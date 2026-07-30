@@ -82,14 +82,25 @@
   border-color: var(--warm-neutral);
 }
 
-.home__style-summary {
+.home__style-text {
+  display: flex;
   min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.home__style-headline {
   color: var(--ink);
-  font-size: 14px;
-  font-weight: 700;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.home__style-detail {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .home__chevron {

@@ -193,9 +193,15 @@ White screen, the trip's gradient bar animating (shimmer left to right), status 
 
 "Your list" heading; category micro-labels ("Tops", "Essentials"); each item is a card with checkbox, bold item name ("Linen shirts ×3"), and the one-line reason in grey ("Feels-like 31° and you're humidity-sensitive"). Ticking draws the oversized red ✓ and sinks the item to the bottom of its category; ticks persist instantly. "↻ Regenerate list" as a quiet secondary action at the bottom, with confirmation: "This writes a fresh list and clears your ticks."
 
-### S7 · My trips (screen 06)
+### S7 · Home / My trips (screen 06)
 
-"My trips" heading with "+ New" in warm neutral at the right. Each trip is a card: thumbnail placeholder, "Lisbon / 10–17 Aug · Beach", and the temperature dot at the right edge. Up to 10 trips; saving an 11th prompts a deletion. Swipe or overflow to delete, with undo toast. "My style" accessible from here — survey answers as an editable summary list ("Runs cold · Summer from 22° · Smart-casual"); tapping a row reopens that step.
+Home is where you land once a profile exists; Welcome is only shown to people who have not started the survey.
+
+**The style card.** Home leads with a plain-spoken read on how you feel temperature — "You run hot", "You run cold", "You run about average" — with the concrete thresholds beneath it in secondary text.
+
+There is a fourth state. The hot/cold question and the two threshold sliders describe the same thing from different angles, and usually agree. When they contradict — someone who says they run hot but wants it warmer than most before changing clothes — the card reads **"You are a special snowflake"** and explains the mismatch, noting the app goes by the temperatures rather than the self-assessment. The tolerance is deliberately generous (3° of drift from the average comfort midpoint), so a merely unusual profile is not accused of inconsistency; only a genuinely self-contradicting one is. `describeTemperament()` owns this.
+
+**The trips list.** "My trips" heading with "+ New" in warm neutral at the right. Each trip is a card: thumbnail placeholder, "Lisbon / 10–17 Aug · Beach", and the temperature dot at the right edge. Up to 10 trips; saving an 11th prompts a deletion. Swipe or overflow to delete, with undo toast. "My style" accessible from here — survey answers as an editable summary list ("Runs cold · Summer from 22° · Smart-casual"); tapping a row reopens that step.
 
 ## 5. States & edge cases
 

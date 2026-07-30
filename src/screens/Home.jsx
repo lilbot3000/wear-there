@@ -1,5 +1,9 @@
-import { QUESTIONS } from '../survey/questions.js'
-import { isProfileComplete, isStorageAvailable, loadProfile } from '../lib/profile.js'
+import {
+  describeTemperament,
+  isProfileComplete,
+  isStorageAvailable,
+  loadProfile,
+} from '../lib/profile.js'
 import { navigate } from '../lib/router.js'
 
 import './Home.css'
@@ -16,6 +20,7 @@ export default function Home() {
   const profile = loadProfile()
   const complete = isProfileComplete(profile)
   const storageWorks = isStorageAvailable()
+  const temperament = describeTemperament(profile)
   const trips = [] // Phase 6 loads these from storage.
 
   return (
@@ -57,7 +62,10 @@ export default function Home() {
         <section className="home__style">
           <p className="micro-label">Your style</p>
           <button type="button" className="home__style-card card" onClick={() => navigate('/style')}>
-            <span className="home__style-summary">{styleLine(profile)}</span>
+            <span className="home__style-text">
+              <span className="home__style-headline">{temperament?.headline}</span>
+              <span className="home__style-detail">{temperament?.detail}</span>
+            </span>
             <span className="home__chevron" aria-hidden="true">
               →
             </span>
@@ -80,18 +88,4 @@ export default function Home() {
       </section>
     </main>
   )
-}
-
-/** A one-line reminder of the profile, so Home shows something personal. */
-function styleLine(profile) {
-  if (!profile) return 'Not set up yet'
-
-  const parts = ['runs', 'summer', 'coat']
-    .map((id) => {
-      const question = QUESTIONS.find((item) => item.id === id)
-      return question ? question.summary(profile[question.field]) : null
-    })
-    .filter(Boolean)
-
-  return parts.join(' · ')
 }
