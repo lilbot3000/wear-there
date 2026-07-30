@@ -276,8 +276,16 @@ export function temperatureBar(feelsLikeC, profile = DEFAULT_PROFILE, stopCount 
  * Weather conditions win over raw temperature when they're the thing you'd
  * actually mention.
  *
- * Phase 4 wires the real forecast into `conditions`; until then the caller
- * can pass whatever it has, or nothing.
+ * On the banding: crossing a threshold does not mean the weather is extreme.
+ * The summer threshold is the point where someone reaches for shorts — the
+ * *start of pleasant summer*, not the start of discomfort. So the first
+ * stretch past it reads "Just right" and then "Warm", and the word "hot" is
+ * held back until a day is genuinely well past what they asked for. The cold
+ * side mirrors that: just under the coat threshold is "Cool", not "Bitter".
+ *
+ * Getting this wrong is subtle and quietly insulting — telling someone their
+ * idea of perfect weather is "hot for you" contradicts the one thing the app
+ * claims to know about them.
  */
 export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions = {}) {
   const { side, t, leaning } = temperatureIntensity(feelsLikeC, profile)
@@ -288,21 +296,23 @@ export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions =
 
   if (side === 'hot') {
     if (muggy && wet) return 'Muggy + brolly'
-    if (muggy) return t >= 0.55 ? 'Hot and sticky' : 'Warm and humid'
+    if (muggy) return t >= 0.6 ? 'Hot and sticky' : 'Warm and humid'
     if (wet) return 'Warm + brolly'
-    if (t >= 0.85) return 'Scorching for you'
-    if (t >= 0.55) return 'Properly hot'
-    if (t >= 0.25) return 'Hot for you'
-    return 'Warm for you'
+    if (t >= 0.9) return 'Scorching for you'
+    if (t >= 0.7) return 'Properly hot'
+    if (t >= 0.45) return 'Hot for you'
+    if (t >= 0.15) return 'Warm for you'
+    return 'Just right for you'
   }
 
   if (side === 'cold') {
     if (windy && t >= 0.5) return 'Biting wind chill'
     if (windy) return 'Cold and blowy'
     if (wet) return 'Cold + brolly'
-    if (t >= 0.85) return 'Bitter, full layers'
-    if (t >= 0.55) return 'Bundle up'
-    if (t >= 0.25) return 'Cold for you'
+    if (t >= 0.9) return 'Bitter, full layers'
+    if (t >= 0.7) return 'Bundle up'
+    if (t >= 0.45) return 'Properly cold'
+    if (t >= 0.15) return 'Cold for you'
     return 'Cool for you'
   }
 

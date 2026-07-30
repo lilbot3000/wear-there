@@ -40,6 +40,62 @@ const day = (overrides = {}) => ({
   ...overrides,
 })
 
+describe('crossing the summer threshold is not the same as being hot', () => {
+  /*
+   * Reported from the live app. Profile: summer clothes from 21°, runs
+   * average. A San Francisco week of 21–26° was labelled "Hot for you all
+   * week", when the traveller considered it perfect. The threshold marks
+   * where summer clothes start, not where discomfort starts, and the
+   * vocabulary has to respect that or it contradicts the one thing the app
+   * claims to know about someone.
+   */
+  const SUMMER_FROM_21 = { ...AVERAGE, summerThresholdC: 21, coatThresholdC: 10 }
+
+  const sanFrancisco = [26, 25, 24, 25, 23, 21].map((t) =>
+    day({ feelsLikeMax: t, humidityPct: 60, rainChancePct: 5, windSpeedKph: 12 }),
+  )
+
+  it('does not call a pleasant week hot', () => {
+    expect(readTrip(sanFrancisco, SUMMER_FROM_21).summary).not.toMatch(/hot/i)
+  })
+
+  it('describes that week as warm or perfect instead', () => {
+    expect(readTrip(sanFrancisco, SUMMER_FROM_21).summary).toMatch(/warm|perfect/i)
+  })
+
+  it('reads sitting right on the threshold as just right, not hot', () => {
+    expect(readDay(day({ feelsLikeMax: 21 }), SUMMER_FROM_21).label).toBe('Just right for you')
+  })
+
+  it('keeps a few degrees past the threshold as warm', () => {
+    for (const temp of [23, 24, 25, 26]) {
+      expect(readDay(day({ feelsLikeMax: temp }), SUMMER_FROM_21).label).toBe('Warm for you')
+    }
+  })
+
+  it('still says hot once a day is well past the threshold', () => {
+    expect(readDay(day({ feelsLikeMax: 30 }), SUMMER_FROM_21).label).toMatch(/hot/i)
+    expect(readDay(day({ feelsLikeMax: 34 }), SUMMER_FROM_21).label).toMatch(/scorching/i)
+  })
+
+  it('mirrors the restraint on the cold side', () => {
+    // Just under the coat threshold is cool, not bitter.
+    expect(readDay(day({ feelsLikeMax: 10 }), SUMMER_FROM_21).label).toBe('Cool for you')
+    expect(readDay(day({ feelsLikeMax: -2 }), SUMMER_FROM_21).label).toMatch(/bitter/i)
+  })
+
+  it('never disagrees with itself: headline and chips share a vocabulary', () => {
+    // A one-day trip's summary should describe that day the same way its chip does.
+    for (const temp of [21, 24, 27, 31, 35, 10, 4, -2]) {
+      const single = [day({ feelsLikeMax: temp })]
+      const { summary, days } = readTrip(single, SUMMER_FROM_21)
+      const chipIsHot = /hot|scorching/i.test(days[0].label)
+      const summaryIsHot = /hot|scorching/i.test(summary)
+      expect(summaryIsHot).toBe(chipIsHot)
+    }
+  })
+})
+
 describe('temperature thresholds', () => {
   it('treats the summer threshold itself as hot, not mild', () => {
     expect(readDay(day({ feelsLikeMax: 22 }), AVERAGE).side).toBe('hot')
@@ -220,8 +276,13 @@ describe('reading a whole trip', () => {
     expect(readTrip(week, AVERAGE).days).toHaveLength(3)
   })
 
-  it('summarises a hot week as hot', () => {
-    expect(readTrip(week, AVERAGE).summary).toMatch(/hot for you/i)
+  it('calls a genuinely hot week hot', () => {
+    const scorcher = [
+      day({ feelsLikeMax: 34 }),
+      day({ feelsLikeMax: 35 }),
+      day({ feelsLikeMax: 36 }),
+    ]
+    expect(readTrip(scorcher, AVERAGE).summary).toMatch(/scorching|properly hot/i)
   })
 
   it('mentions the wet day in the summary', () => {

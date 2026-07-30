@@ -138,18 +138,22 @@ export function readTrip(days, profile, homeDays = null) {
 /**
  * One sentence about the trip as a whole, for under the city name.
  * Leads with how it will feel, then the one condition worth flagging.
+ *
+ * This reads the trip's *typical* day through the same banding a single day
+ * gets, rather than counting how many days fall on the warm side. Counting
+ * sides was the bug behind "Hot for you all week" on a week of pleasant 21–26°
+ * days: every day was technically past the summer threshold, but none of them
+ * were hot. It is the largest line on the screen, so it is the one most worth
+ * getting right.
  */
 function summarise(read, profile) {
-  const sides = read.map((day) => day.side)
-  const hot = sides.filter((side) => side === 'hot').length
-  const cold = sides.filter((side) => side === 'cold').length
+  const typical = average(read.map((day) => day.feelsLike))
+  const { side, t } = temperatureIntensity(typical, profile)
 
-  let base
-  if (hot === read.length) base = 'Hot for you all week'
-  else if (cold === read.length) base = 'Cold for you throughout'
-  else if (hot > cold && hot > 0) base = 'Warm for you, mostly'
-  else if (cold > hot && cold > 0) base = 'Cool for you, mostly'
-  else base = 'Comfortable for you, mostly'
+  // "start to finish" works for a long weekend as well as a fortnight, where
+  // "all week" only suits one of them.
+  const consistent = read.every((day) => day.side === side)
+  const base = `${tripPhrase(side, t)}${consistent ? ', start to finish' : ', mostly'}`
 
   const muggyDays = read.filter((day) => day.muggy).length
   const wetDays = read.filter((day) => day.wet).length
@@ -166,6 +170,31 @@ function summarise(read, profile) {
     return `${base}, and the wind makes it bite.`
   }
   return `${base}.`
+}
+
+/**
+ * How the trip's typical day reads. Mirrors comfortLabel's banding, so the
+ * headline and the day chips can never disagree with each other — the summer
+ * threshold is where pleasant summer starts, not where heat starts.
+ */
+function tripPhrase(side, t) {
+  if (side === 'hot') {
+    if (t >= 0.9) return 'Scorching for you'
+    if (t >= 0.7) return 'Properly hot'
+    if (t >= 0.45) return 'Hot for you'
+    if (t >= 0.15) return 'Warm for you'
+    return 'Just about perfect for you'
+  }
+
+  if (side === 'cold') {
+    if (t >= 0.9) return 'Bitter for you'
+    if (t >= 0.7) return 'Properly cold'
+    if (t >= 0.45) return 'Cold for you'
+    if (t >= 0.15) return 'Chilly for you'
+    return 'Cool but fine'
+  }
+
+  return 'Comfortable for you'
 }
 
 /**
