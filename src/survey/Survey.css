@@ -187,3 +187,17 @@
   font-size: 14px;
   line-height: 1.5;
 }
+
+/* The benchmark line: the slider value translated into a day at home
+   ("About a typical May or October day in London."). Slightly quieter than
+   the caption, and card-backed so it reads as reference material. */
+.survey-slider__benchmark {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}

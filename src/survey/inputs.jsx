@@ -5,6 +5,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+import { describeAgainstClimate } from '../lib/climate.js'
 import { placeLabel, searchCities } from '../lib/geocode.js'
 
 /* ------------------------------------------------------------------ city */
@@ -189,8 +190,13 @@ export function MultiInput({ question, value, onChange }) {
 
 /* ---------------------------------------------------------------- slider */
 
-export function SliderInput({ question, value, range, onChange }) {
+export function SliderInput({ question, value, range, climate, onChange }) {
   const current = value ?? question.fallback
+
+  // Neil's benchmark: a bare number is hard to answer, so translate it into a
+  // day they have lived — "About a typical May or October day in London."
+  // Recomputed live as the slider moves, from the cached climate data.
+  const benchmark = describeAgainstClimate(current, climate)
 
   return (
     <div className="survey-slider">
@@ -209,6 +215,9 @@ export function SliderInput({ question, value, range, onChange }) {
         <span>{range.max}°</span>
       </div>
       <p className="survey-slider__caption">{question.caption(current)}</p>
+      {benchmark ? (
+        <p className="survey-slider__benchmark">{benchmark}</p>
+      ) : null}
     </div>
   )
 }

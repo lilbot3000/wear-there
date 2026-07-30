@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { fetchHomeClimate } from '../lib/climate.js'
 import { navigate, useRedirect } from '../lib/router.js'
 import { EMPTY_PROFILE, loadProfile, saveProfile } from '../lib/profile.js'
 import { QUESTIONS, TOTAL_STEPS, sliderRange } from './questions.js'
@@ -16,6 +17,7 @@ import './Survey.css'
  */
 export default function Survey({ step }) {
   const [profile, setProfile] = useState(() => loadProfile() ?? EMPTY_PROFILE)
+  const climate = useHomeClimate(profile.home)
 
   const index = step - 1
   const question = QUESTIONS[index]
@@ -85,6 +87,7 @@ export default function Survey({ step }) {
           question={question}
           profile={profile}
           value={value}
+          climate={climate}
           onChange={update}
         />
       </div>
@@ -106,7 +109,7 @@ export default function Survey({ step }) {
   )
 }
 
-function QuestionInput({ question, profile, value, onChange }) {
+function QuestionInput({ question, profile, value, climate, onChange }) {
   switch (question.type) {
     case 'city':
       return <CityInput value={value} onChange={onChange} />
@@ -122,10 +125,39 @@ function QuestionInput({ question, profile, value, onChange }) {
           question={question}
           value={value}
           range={sliderRange(question, profile)}
+          climate={climate}
           onChange={onChange}
         />
       )
     default:
       return null
   }
+}
+
+/**
+ * The home city's typical temperatures, fetched once home is known.
+ *
+ * The lookup starts the moment a home city exists — usually on step 1 — so by
+ * the time someone reaches the sliders on steps 3 and 4 it has already landed
+ * and the benchmark line appears instantly. Errors are swallowed: the
+ * benchmark is an aid, not a requirement, and the slider works without it.
+ */
+function useHomeClimate(home) {
+  const [climate, setClimate] = useState(null)
+
+  useEffect(() => {
+    if (!home) {
+      setClimate(null)
+      return undefined
+    }
+
+    const controller = new AbortController()
+    fetchHomeClimate(home, { signal: controller.signal })
+      .then((result) => setClimate(result))
+      .catch(() => {})
+
+    return () => controller.abort()
+  }, [home])
+
+  return climate
 }

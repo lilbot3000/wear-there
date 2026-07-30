@@ -14,8 +14,8 @@ Draft question set (final wording in UX spec):
 
 1. Where's home? *(city type-ahead — anchors all weather comparisons: "22°C in Lisbon" means something different to someone from Glasgow vs. someone from Athens. Enables phrases like "warmer than home right now")*
 2. Do you generally run hot, cold, or average? *(3-way)*
-3. At what temperature do you switch to summer clothes (shorts/dresses)? *(slider, °C)*
-4. At what temperature do you need a proper coat? *(slider, °C)*
+3. At what temperature do you switch to summer clothes (shorts/dresses)? *(slider, °C, benchmarked against home — "About a typical June day in London" — so the number means something)*
+4. At what temperature do you need a proper coat? *(slider, °C, same benchmark)*
 5. How much does humidity/mugginess bother you? *(scale 1–5)*
 6. Rain plan: hood, umbrella, or "I just get wet"? *(choice)*
 7. Your style, most days: casual / smart-casual / dressy / sporty *(choice, pick up to 2)*

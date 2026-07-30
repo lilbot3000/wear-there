@@ -155,6 +155,8 @@ Centered, calm, the full-spectrum gradient bar as the brand mark.
 
 Progress bar + "Step 3 of 11" micro-label. One question per screen in Bricolage. Options are full-width selection pills; selected fills warm neutral. "← Back" quiet at bottom-left, "Next" outlined at bottom-right. Each step saves immediately.
 
+**The temperature benchmark.** A bare number is hard to answer — most people don't know their thresholds in degrees. So under each temperature slider, a quiet card translates the current value into a day they have lived, using their home city from question 1: *"About a typical June or July day in London."* It updates live as the slider moves. Values beyond the local range anchor to the extremes instead (*"The hottest day there recently felt like 35°"*, or *"Hotter than anything London has felt in the last 3 years"*), which quietly flags a threshold their home never reaches. Data is Open-Meteo's free historical archive (last 3 whole years of daily feels-like highs), fetched once when home is chosen and cached, so it is ready by the time the sliders appear. If home is unset or the lookup fails, the sliders simply work without the card.
+
 ### S3 · New trip (screen 03)
 
 "Where and when?" heading; destination card with type-ahead (shows "Paris, France / Paris, Texas" disambiguation); Depart/Return cards side by side (dates beyond the 14-day forecast window disabled with: "Too far out for a real forecast. Check back nearer the time."); then the "Trip purpose · pick up to 2" micro-label over purpose pills (Beach · City break · Outdoors · Formal · Business · Family). "See my forecast" button at the bottom.
