@@ -1,6 +1,8 @@
 import Home from './screens/Home.jsx'
 import MyStyle from './screens/MyStyle.jsx'
+import NewTrip from './screens/NewTrip.jsx'
 import StyleGuide from './screens/StyleGuide.jsx'
+import TripForecast from './screens/TripForecast.jsx'
 import Welcome from './screens/Welcome.jsx'
 import Survey from './survey/Survey.jsx'
 import { QUESTIONS, TOTAL_STEPS } from './survey/questions.js'
@@ -34,6 +36,14 @@ function Screen({ path, query }) {
 
   if (path === '/survey' || path.startsWith('/survey/')) {
     return <SurveyRoute path={path} />
+  }
+
+  if (path === '/trip/new') {
+    return <NewTrip />
+  }
+
+  if (path.startsWith('/trip/')) {
+    return <TripForecast tripId={path.slice('/trip/'.length)} />
   }
 
   // Welcome is the pitch, and only first-timers need it. Anyone who has

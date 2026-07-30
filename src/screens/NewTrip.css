@@ -1,0 +1,100 @@
+/* S3 · New trip — see docs/04-ux-design-spec.md and design/wireframes.html (03) */
+
+.new-trip {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 100dvh;
+  padding: 28px 20px 32px;
+}
+
+.new-trip__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.new-trip__warning {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-color: rgba(225, 29, 46, 0.35);
+}
+
+.new-trip__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------------------- dates */
+
+.new-trip__dates {
+  display: flex;
+  gap: 10px;
+}
+
+.new-trip__date {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: var(--card);
+  cursor: pointer;
+}
+
+.new-trip__date input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px; /* 16px stops iOS Safari zooming on focus */
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.new-trip__date input:focus {
+  outline: none;
+}
+
+/* Safari renders an empty date input as a full-width placeholder that can
+   overflow a narrow column; clipping keeps the two cards even. */
+.new-trip__date input::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+.new-trip__note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------- purposes */
+
+.new-trip__purposes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.new-trip__hint {
+  margin: 2px 0 0;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------- actions */
+
+.new-trip__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+}

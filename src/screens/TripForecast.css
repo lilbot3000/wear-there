@@ -1,0 +1,139 @@
+/* S4 · Personalised forecast — wireframes 04 / 04b */
+
+.trip {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 100dvh;
+  padding: 24px 20px 32px;
+}
+
+.trip__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trip__back {
+  align-self: flex-start;
+  padding: 4px 0 8px;
+  border: none;
+  background: none;
+  color: var(--text-micro);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.trip__back:hover {
+  color: var(--ink);
+}
+
+.trip__city {
+  font-size: 26px;
+}
+
+.trip__meta {
+  margin: 0;
+  color: var(--text-micro);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.trip__purposes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.trip__purpose {
+  font-size: 12px;
+}
+
+.trip__bar {
+  margin-top: 6px;
+}
+
+.trip__summary {
+  margin: 2px 0 4px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+/* ----------------------------------------------------------------- days */
+
+.trip__days {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trip__day {
+  align-items: center;
+}
+
+.trip__day-left {
+  min-width: 0;
+}
+
+/* Chips must size to their own content, never to a fixed track — see the
+   note on .chip in components.css. */
+.trip__chip {
+  flex: none;
+}
+
+.trip__footnote {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.trip__footnote em {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------- states */
+
+.trip__status {
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.trip__error {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.trip__retry {
+  margin-top: 6px;
+}
+
+.trip__actions {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.trip__delete {
+  padding: 8px 0;
+  border: none;
+  background: none;
+  color: var(--text-micro);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.trip__delete:hover {
+  color: var(--accent);
+}

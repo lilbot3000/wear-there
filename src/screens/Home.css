@@ -94,6 +94,10 @@
   font-size: 16px;
 }
 
+.home__plan {
+  margin-top: 4px;
+}
+
 /* ---------------------------------------------------------------- trips */
 
 .home__trips {
@@ -104,6 +108,52 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.home__trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home__trip {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.home__trip:hover {
+  border-color: var(--warm-neutral);
+}
+
+.home__trip-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home__trip-city {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home__trip {
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

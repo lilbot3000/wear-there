@@ -9,13 +9,16 @@ terms and builds a packing list from there.
 
 ## Status
 
-Phase 2 of the [build guide](docs/05-build-guide.md) is complete: the project
-skeleton, the Welcome screen, and the Bright Line design system, all signed
-off against the wireframes.
+Phase 4 of the [build guide](docs/05-build-guide.md) is complete. The app now
+does the thing it exists to do: answer the survey once, plan a trip, and read
+the forecast in your own terms.
 
-The design system lives in [src/lib/temperature.js](src/lib/temperature.js) and
-[src/styles/](src/styles/), with a reference page at `/styleguide` (not linked
-from the app). Next up is the survey, then the forecast, then the packing list.
+- Design system in [src/lib/temperature.js](src/lib/temperature.js) and
+  [src/styles/](src/styles/), with a reference page at `/styleguide`.
+- The survey in [src/survey/](src/survey/), saved to localStorage.
+- Comfort mapping in [src/lib/comfort.js](src/lib/comfort.js), unit tested.
+
+Next is the AI packing list, then trip management.
 
 ## Running it locally
 
@@ -32,6 +35,7 @@ Other commands:
 npm run build     # production build into dist/
 npm run preview   # serve the production build locally
 npm run lint      # oxlint
+npm test          # vitest, unit tests for the comfort mapping
 ```
 
 ## Project layout
