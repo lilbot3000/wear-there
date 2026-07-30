@@ -44,13 +44,6 @@
 
 /* ---------------------------------------------------------------- style */
 
-.home__style,
-.home__trips {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .home__style-card {
   display: flex;
   width: 100%;
@@ -94,14 +87,50 @@
   font-size: 16px;
 }
 
-.home__plan {
-  margin-top: 4px;
+/* The temperature dot, per wireframe 06: red for Lisbon, blue for Reykjavík.
+   Slightly larger than the base dot so it reads at a glance. */
+.home__trip-dot {
+  width: 10px;
+  height: 10px;
 }
 
-/* ---------------------------------------------------------------- trips */
+/* -------------------------------------------------------------- sections */
 
-.home__trips {
-  margin-top: 4px;
+.home__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.home__section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.home__new {
+  flex: none;
+  padding: 4px 0;
+  border: none;
+  background: none;
+  color: var(--warm-neutral);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.home__new:hover {
+  color: var(--ink);
+}
+
+.home__note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .home__empty {

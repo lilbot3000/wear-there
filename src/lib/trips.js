@@ -45,6 +45,21 @@ export function saveTrip(trip) {
   return next
 }
 
+/**
+ * Update a trip in place, keeping its position in the list.
+ *
+ * Distinct from saveTrip, which moves a trip to the front. Recording a
+ * forecast snapshot shouldn't reshuffle someone's trips just because they
+ * opened one.
+ */
+export function updateTrip(id, changes) {
+  const next = loadTrips().map((trip) =>
+    trip.id === id ? { ...trip, ...changes } : trip,
+  )
+  writeTrips(next)
+  return next
+}
+
 export function deleteTrip(id) {
   const next = loadTrips().filter((trip) => trip.id !== id)
   writeTrips(next)

@@ -8,8 +8,8 @@ import {
 } from '../lib/forecast.js'
 import { loadProfile } from '../lib/profile.js'
 import { navigate, useRedirect } from '../lib/router.js'
-import { temperatureBar } from '../lib/temperature.js'
-import { deleteTrip, loadTrip } from '../lib/trips.js'
+import { tempColour, temperatureBar } from '../lib/temperature.js'
+import { deleteTrip, loadTrip, updateTrip } from '../lib/trips.js'
 
 import './TripForecast.css'
 
@@ -43,7 +43,23 @@ export default function TripForecast({ tripId }) {
           setState({ status: 'empty' })
           return
         }
-        setState({ status: 'ready', reading: readTrip(days, profile, homeDays) })
+
+        const reading = readTrip(days, profile, homeDays)
+        setState({ status: 'ready', reading })
+
+        // Record a snapshot so Home can show this trip's temperature dot
+        // without refetching every forecast on every visit. Updated in place,
+        // so opening a trip doesn't reshuffle the list.
+        updateTrip(trip.id, {
+          forecastSnapshot: {
+            feelsLike: reading.feelsLike,
+            // The trip's typical day, not its first — the dot should describe
+            // the week rather than whichever day happens to come first.
+            dotColour: tempColour(reading.feelsLike, profile).body,
+            summary: reading.summary,
+            fetchedAt: new Date().toISOString(),
+          },
+        })
       })
       .catch((error) => {
         if (error.name === 'AbortError') return
@@ -59,10 +75,6 @@ export default function TripForecast({ tripId }) {
   return (
     <main className="trip">
       <header className="trip__header">
-        <button type="button" className="trip__back" onClick={() => navigate('/')}>
-          ← Home
-        </button>
-
         <h1 className="heading heading--screen trip__city">{trip.destination.city}</h1>
 
         <p className="trip__meta">
@@ -116,6 +128,8 @@ export default function TripForecast({ tripId }) {
         <Reading reading={state.reading} profile={profile} />
       ) : null}
 
+      {/* Mirrors the survey's footer: a quiet action on the left, the way
+          onward as a button on the right. */}
       <div className="trip__actions">
         <button
           type="button"
@@ -126,6 +140,13 @@ export default function TripForecast({ tripId }) {
           }}
         >
           Delete this trip
+        </button>
+        <button
+          type="button"
+          className="button button--inline"
+          onClick={() => navigate('/')}
+        >
+          Home
         </button>
       </div>
     </main>

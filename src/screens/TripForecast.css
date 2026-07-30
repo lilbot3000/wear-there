@@ -14,21 +14,6 @@
   gap: 4px;
 }
 
-.trip__back {
-  align-self: flex-start;
-  padding: 4px 0 8px;
-  border: none;
-  background: none;
-  color: var(--text-micro);
-  font-family: var(--font-ui);
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.trip__back:hover {
-  color: var(--ink);
-}
-
 .trip__city {
   font-size: 26px;
 }
@@ -120,6 +105,10 @@
 }
 
 .trip__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: auto;
   padding-top: 20px;
 }

@@ -24,6 +24,7 @@ export default function Home() {
   const storageWorks = isStorageAvailable()
   const temperament = describeTemperament(profile)
   const trips = loadTrips()
+  const atCapacity = trips.length >= MAX_TRIPS
 
   return (
     <main className="home">
@@ -60,8 +61,10 @@ export default function Home() {
           </button>
         </div>
       ) : (
-        <section className="home__style">
-          <p className="micro-label">My style</p>
+        <section className="home__section">
+          <div className="home__section-head">
+            <h2 className="heading heading--screen">My style</h2>
+          </div>
           <button type="button" className="home__style-card card" onClick={() => navigate('/style')}>
             <span className="home__style-text">
               <span className="home__style-headline">{temperament?.headline}</span>
@@ -74,20 +77,27 @@ export default function Home() {
         </section>
       )}
 
-      {complete ? (
-        <button
-          type="button"
-          className="button home__plan"
-          onClick={() => navigate('/trip/new')}
-        >
-          Plan a trip
-        </button>
-      ) : null}
+      <section className="home__section">
+        {/* "+ New" carries the action, as in wireframe 06, rather than a
+            separate full-width button competing with it. */}
+        <div className="home__section-head">
+          <h2 className="heading heading--screen">My trips</h2>
+          {complete && !atCapacity ? (
+            <button
+              type="button"
+              className="home__new"
+              onClick={() => navigate('/trip/new')}
+            >
+              + New
+            </button>
+          ) : null}
+        </div>
 
-      <section className="home__trips">
-        <p className="micro-label">
-          My trips{trips.length > 0 ? ` · ${trips.length} of ${MAX_TRIPS}` : ''}
-        </p>
+        {atCapacity ? (
+          <p className="home__note">
+            That is all {MAX_TRIPS} slots used. Delete one to plan another.
+          </p>
+        ) : null}
 
         {trips.length === 0 ? (
           <div className="card home__empty">
@@ -113,9 +123,17 @@ export default function Home() {
                       {trip.purposes?.length > 0 ? ` · ${trip.purposes.join(', ')}` : ''}
                     </span>
                   </span>
-                  <span className="home__chevron" aria-hidden="true">
-                    →
-                  </span>
+                  {/* The trip's temperature at a glance, from the snapshot
+                      saved when its forecast last loaded. A trip not yet
+                      opened gets a neutral dot rather than a different shape,
+                      so the column stays even. */}
+                  <span
+                    className="dot home__trip-dot"
+                    style={{
+                      background: trip.forecastSnapshot?.dotColour ?? 'rgba(28, 28, 30, 0.15)',
+                    }}
+                    aria-hidden="true"
+                  />
                 </button>
               </li>
             ))}
