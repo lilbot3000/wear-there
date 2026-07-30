@@ -309,7 +309,7 @@ export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions =
   if (wet) return 'Mild + brolly'
   // "Close" is regional British for muggy and reads as ambiguous; say muggy.
   if (muggy) return 'Mild but muggy'
-  return leaning === 'hot' ? 'Comfortable' : 'Fresh but fine'
+  return leaning === 'hot' ? 'Comfortably warm' : 'Fresh but fine'
 }
 
 /* ---------------------------------------------------------- verification */
