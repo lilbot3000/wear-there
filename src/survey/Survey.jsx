@@ -68,10 +68,12 @@ export default function Survey({ step }) {
 
   return (
     <main className="survey">
-      <div className="progress" aria-hidden="true">
+      {/* The brand spectrum is revealed as you advance, rather than a grey bar
+          growing: the same gradient the Welcome screen opens with. */}
+      <div className="progress progress--spectrum" aria-hidden="true">
         <div
-          className="progress__fill"
-          style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
+          className="progress__unfilled"
+          style={{ left: `${(step / TOTAL_STEPS) * 100}%` }}
         />
       </div>
 
@@ -93,8 +95,8 @@ export default function Survey({ step }) {
       </div>
 
       <div className="survey__actions">
-        <button type="button" className="survey__back" onClick={goBack}>
-          ← Back
+        <button type="button" className="button button--inline" onClick={goBack}>
+          Back
         </button>
         <button
           type="button"

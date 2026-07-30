@@ -155,6 +155,13 @@ Centered, calm, the full-spectrum gradient bar as the brand mark.
 
 Progress bar + "Step 3 of 11" micro-label. One question per screen in Bricolage. Options are full-width selection pills; selected fills warm neutral. "← Back" quiet at bottom-left, "Next" outlined at bottom-right. Each step saves immediately.
 
+**Colour in the survey.** Most survey screens are deliberately monochrome, because nothing on them is a temperature. The exceptions earn it:
+
+- **The threshold sliders** carry the temperature spectrum across their own range — deep blue through pale neutral to red — with the thumb and the big numeral taking the colour of the current value. This is the one control in the app that *is* a temperature scale, so colouring it is the system working rather than decoration. It also teaches the colour language before the forecast screens speak it.
+- **The progress bar** reveals the full brand gradient as you advance, rather than growing a grey bar.
+
+Absolute spectrum (`spectrumColour()`), distinct from the personal ramps: `-10° #2A4585 → -2° #4E75C4 → 5° #8FB0E4 → 12° #C3D9F5 → 17° #F7D46A → 23° #F0952F → 29° #E2662F → 35° #D13C37`. The pale middle is what makes a track read as a range, but it is unreadable as text, so the numeral uses `spectrumTextColour()` — same hue, deepened only as far as the large-text contrast floor requires. Unlike the comfort chips there is no design reason to cross that floor here; this is a plain numeral, not the mockup palette.
+
 **The temperature benchmark.** A bare number is hard to answer — most people don't know their thresholds in degrees. So under each temperature slider, a quiet card translates the current value into a day they have lived, using their home city from question 1: *"A typical June or July day in London."* It updates live as the slider moves. Values beyond the local range anchor to the extremes instead (*"The hottest day there recently felt like 35°"*, or *"Hotter than anything London has felt in the last 3 years"*), which quietly flags a threshold their home never reaches. Data is Open-Meteo's free historical archive (last 3 whole years of daily feels-like highs), fetched once when home is chosen and cached, so it is ready by the time the sliders appear. If home is unset or the lookup fails, the sliders simply work without the card.
 
 ### S3 · New trip (screen 03)

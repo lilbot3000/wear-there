@@ -209,6 +209,33 @@
   transition: width 220ms ease;
 }
 
+/*
+ * Spectrum variant: the track holds the full brand gradient and an opaque
+ * panel covers what hasn't been reached, so advancing reveals colour rather
+ * than growing a grey bar. Painting the fill itself wouldn't work — the
+ * gradient would compress into whatever width had been reached.
+ */
+.progress--spectrum {
+  position: relative;
+  overflow: hidden;
+  background: var(--gradient-brand);
+}
+
+.progress__unfilled {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #ebebeb;
+  transition: left 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__unfilled {
+    transition: none;
+  }
+}
+
 /* --------------------------------------------------------- gradient bars */
 
 /* Decorative only — no text sits on these, so they carry the full ramp.

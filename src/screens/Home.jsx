@@ -25,11 +25,10 @@ export default function Home() {
 
   return (
     <main className="home">
+      {/* No "My style" link here: the card below goes to the same screen, and
+          one route to a destination is clearer than two. */}
       <header className="home__header">
         <h1 className="home__masthead">Wear There</h1>
-        <button type="button" className="home__link" onClick={() => navigate('/style')}>
-          My style
-        </button>
       </header>
 
       <div className="gradient-bar home__bar" role="presentation" />
@@ -60,7 +59,7 @@ export default function Home() {
         </div>
       ) : (
         <section className="home__style">
-          <p className="micro-label">Your style</p>
+          <p className="micro-label">My style</p>
           <button type="button" className="home__style-card card" onClick={() => navigate('/style')}>
             <span className="home__style-text">
               <span className="home__style-headline">{temperament?.headline}</span>

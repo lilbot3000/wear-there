@@ -69,7 +69,6 @@ export const QUESTIONS = [
     max: 32,
     step: 1,
     fallback: 22,
-    caption: (value) => `At ${value}° and above, you are in summer clothes.`,
     // Must stay above the coat threshold, or the "mild" band disappears.
     bounds: (profile) => ({ min: Math.max(12, (profile.coatThresholdC ?? 9) + 4) }),
     // Summaries sit under their question's label on "My style", so they state
@@ -88,7 +87,6 @@ export const QUESTIONS = [
     max: 18,
     step: 1,
     fallback: 9,
-    caption: (value) => `Below ${value}°, you want a proper coat.`,
     bounds: (profile) => ({ max: Math.min(18, (profile.summerThresholdC ?? 22) - 4) }),
     summary: (value) => (value == null ? 'Not set' : `Below ${value}°`),
   },

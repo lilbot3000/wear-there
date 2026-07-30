@@ -7,6 +7,11 @@ import { useEffect, useRef, useState } from 'react'
 
 import { describeAgainstClimate } from '../lib/climate.js'
 import { placeLabel, searchCities } from '../lib/geocode.js'
+import {
+  spectrumColour,
+  spectrumGradient,
+  spectrumTextColour,
+} from '../lib/temperature.js'
 
 /* ------------------------------------------------------------------ city */
 
@@ -198,15 +203,28 @@ export function SliderInput({ question, value, range, climate, onChange }) {
   // Recomputed live as the slider moves, from the cached climate data.
   const benchmark = describeAgainstClimate(current, climate)
 
+  // The track carries the temperature spectrum across its own range, and the
+  // thumb and the big number take the colour of the value they're sitting on.
+  // Colour here is information, not decoration: this is a temperature scale.
+  const trackStyle = {
+    '--slider-track': spectrumGradient(range.min, range.max),
+    '--slider-thumb': spectrumColour(current),
+  }
+
   return (
     <div className="survey-slider">
-      <div className="survey-slider__value">{current}°</div>
+      {/* The numeral takes a readable version of the track colour: same hue,
+          deepened only as far as legibility needs. */}
+      <div className="survey-slider__value" style={{ color: spectrumTextColour(current) }}>
+        {current}°
+      </div>
       <input
         type="range"
         min={range.min}
         max={range.max}
         step={range.step}
         value={current}
+        style={trackStyle}
         onChange={(event) => onChange(Number(event.target.value))}
         aria-label={question.question}
       />
@@ -214,7 +232,9 @@ export function SliderInput({ question, value, range, climate, onChange }) {
         <span>{range.min}°</span>
         <span>{range.max}°</span>
       </div>
-      <p className="survey-slider__caption">{question.caption(current)}</p>
+      {/* No restatement of the question here: "At 21° and above, you are in
+          summer clothes" only echoed the heading back. The benchmark below is
+          the line that actually tells you something. */}
       {benchmark ? (
         <p className="survey-slider__benchmark">{benchmark}</p>
       ) : null}

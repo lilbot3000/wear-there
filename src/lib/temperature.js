@@ -312,6 +312,85 @@ export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions =
   return leaning === 'hot' ? 'Comfortably warm' : 'Fresh but fine'
 }
 
+/* -------------------------------------------------------------- spectrum */
+
+/**
+ * Absolute temperature to colour.
+ *
+ * Everything above is *personal* — how a day sits against your thresholds.
+ * This is the opposite: a fixed scale from cold to hot, for UI that shows
+ * temperature as a range rather than a judgement. The survey's threshold
+ * sliders need it, because there the whole point is deciding where your
+ * personal bands fall, so they can't be coloured by bands that don't exist yet.
+ *
+ * Anchors are drawn from the same two ramps, meeting in a pale neutral around
+ * room temperature, so the survey teaches the colour language the forecast
+ * screens will later speak.
+ */
+const SPECTRUM = [
+  { c: -10, hex: '#2A4585' },
+  { c: -2, hex: '#4E75C4' },
+  { c: 5, hex: '#8FB0E4' },
+  { c: 12, hex: '#C3D9F5' },
+  { c: 17, hex: '#F7D46A' },
+  { c: 23, hex: '#F0952F' },
+  { c: 29, hex: '#E2662F' },
+  { c: 35, hex: '#D13C37' },
+]
+
+export function spectrumColour(celsius) {
+  if (celsius <= SPECTRUM[0].c) return SPECTRUM[0].hex
+
+  const last = SPECTRUM[SPECTRUM.length - 1]
+  if (celsius >= last.c) return last.hex
+
+  for (let i = 0; i < SPECTRUM.length - 1; i += 1) {
+    const from = SPECTRUM[i]
+    const to = SPECTRUM[i + 1]
+    if (celsius <= to.c) {
+      return mix(from.hex, to.hex, (celsius - from.c) / (to.c - from.c))
+    }
+  }
+
+  return last.hex
+}
+
+/**
+ * A left-to-right gradient across a temperature range, for a slider track.
+ * Sampled at fixed steps rather than using the raw anchors, so the gradient
+ * stays smooth whatever slice of the scale a given slider covers.
+ */
+export function spectrumGradient(minC, maxC, steps = 7) {
+  const stops = Array.from({ length: steps }, (_, index) =>
+    spectrumColour(minC + ((maxC - minC) * index) / (steps - 1)),
+  )
+  return `linear-gradient(90deg, ${stops.join(', ')})`
+}
+
+/**
+ * The same spectrum colour, but legible as text on white.
+ *
+ * The mild middle of the scale is deliberately pale — that's what makes a
+ * slider track read as a temperature range — but a pale blue numeral is
+ * unreadable. This keeps the hue and deepens it only as far as it must to
+ * clear the large-text contrast floor, so 10° still looks cool and 26° still
+ * looks warm; they just stay readable.
+ *
+ * Unlike the comfort chips, there is no design reason to cross the floor
+ * here: this is a plain numeral, not the mockup palette.
+ */
+export function spectrumTextColour(celsius, minRatio = 3.2) {
+  const base = spectrumColour(celsius)
+  if (contrastRatio(base, '#FFFFFF') >= minRatio) return base
+
+  for (let amount = 0.05; amount <= 1; amount += 0.05) {
+    const darkened = mix(base, '#1C1C1E', amount)
+    if (contrastRatio(darkened, '#FFFFFF') >= minRatio) return darkened
+  }
+
+  return '#1C1C1E'
+}
+
 /* ---------------------------------------------------------- verification */
 
 /** Relative luminance per WCAG 2.1. */
