@@ -38,7 +38,7 @@ export const QUESTIONS = [
     field: 'home',
     type: 'city',
     question: "Where's home?",
-    help: 'This anchors everything else. 22° reads differently depending on what you are used to, and it lets us tell you how a trip compares to home.',
+    help: 'Everything else is measured against home — 22° reads differently depending on what you are used to.',
     summary: (value) => (value ? placeLabel(value) : 'Not set'),
   },
 

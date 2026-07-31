@@ -29,7 +29,7 @@ Draft question set (final wording in UX spec):
 ### F2. New trip
 
 - Input: destination city (type-ahead search) + start and end dates + **trip purpose**.
-- Trip purpose *(pick up to 2)*: City break · Beach · Outdoors/hiking · Wedding or formal event · Business · Visiting family. Purpose directly shapes the packing list — a wedding adds formalwear (outfit, dress shoes, accessories); a hiking trip adds outdoor gear (boots, technical layers, daypack).
+- Trip purpose *(pick up to 2)*: City break · Beach · Outdoors/hiking · Festival · Wedding or formal event · Business · Visiting family. Purpose directly shapes the packing list — a wedding adds formalwear (outfit, dress shoes, accessories); a hiking trip adds outdoor gear (boots, technical layers, daypack).
 - Geocoding and forecast from Open-Meteo (free, keyless).
 - v1 supports trips **starting within the 14-day forecast window**. Dates beyond that show a friendly "Too far out for a real forecast. Check back nearer the time." message (climate-averages fallback is a v1.1 candidate).
 - Trip length capped at 14 days.
@@ -119,6 +119,8 @@ How to build the list:
 
 5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Business earns something you can walk into a meeting wearing. Beach earns the swim kit in rule 7.
 
+   Festival means camping in a field with no shelter and no laundry. It earns wellies or boots that can be ruined, a waterproof whatever the forecast says, something warm for a night outdoors that is colder than the same night indoors, and clothes they will not mind writing off. Do not dress them for a city break in a field.
+
    Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
 6. Every list has a bag to carry things in during the day, in Accessories. Match it to the trip: a daypack for outdoors or a walking-heavy city break, something smaller and smarter when the trip is formal or business. One bag, chosen — not a choice of bags.
 
@@ -195,6 +197,8 @@ rather than being written in from the start:
 | Swim section, and the towel pairing | Requested for hot trips. Towel follows swimwear everywhere; a Beach trip earns one regardless, since it is something to lie on. |
 | "a label containing 'or' is always wrong" | Rule 4 was not reaching item labels — "Crossbody bag or small city bag", "Hat or cap". Repeating it in the schema next to the label field fixed it. |
 | "Every item is one thing" | A formal entry read "Smart casual dress or trousers with smart top" — two suggestions and a shrug, where the point of the app is having an opinion. |
+| "Festival means camping in a field" | Added on user feedback. Without it a festival was packed like a city break — no wellies, no waterproof, nothing warm for a night outdoors. |
+| "a jumper is a Top or Outerwear, never a Bottom" | A festival list filed a wool jumper under Bottoms. |
 | "Formal means formal" | The same entry was also not formal. The model was treating a Formal purpose as an instruction to smarten up daywear rather than to pack for an event. |
 
 **How to change this prompt safely:** run the same trip three times before and

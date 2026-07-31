@@ -12,6 +12,7 @@ const PURPOSES = [
   'Beach',
   'City break',
   'Outdoors',
+  'Festival',
   'Formal',
   'Business',
   'Family',

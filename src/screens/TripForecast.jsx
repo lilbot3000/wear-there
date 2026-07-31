@@ -25,6 +25,12 @@ export default function TripForecast({ tripId }) {
   const [profile] = useState(() => loadProfile())
   const [state, setState] = useState({ status: 'loading' })
 
+  // Retrying has to change something the effect depends on. Setting the status
+  // back to 'loading' looked like a retry and wasn't — the effect's inputs were
+  // unchanged, so no request went out and the screen sat on "Reading…" forever.
+  // A dropped connection on a phone became a permanently broken trip.
+  const [attempt, setAttempt] = useState(0)
+
   useEffect(() => {
     if (!trip || !profile) return undefined
 
@@ -77,11 +83,13 @@ export default function TripForecast({ tripId }) {
       })
       .catch((error) => {
         if (error.name === 'AbortError') return
-        setState({ status: 'error' })
+        // Blaming the connection when the connection is fine sends people
+        // looking in the wrong place, so only say it when the browser agrees.
+        setState({ status: 'error', offline: navigator.onLine === false })
       })
 
     return () => controller.abort()
-  }, [trip, profile])
+  }, [trip, profile, attempt])
 
   useRedirect(trip ? null : '/')
   if (!trip) return null
@@ -117,12 +125,14 @@ export default function TripForecast({ tripId }) {
         <div className="card trip__error">
           <b>That didn&rsquo;t work.</b>
           <div className="text-secondary">
-            The forecast service didn&rsquo;t respond. Check your connection.
+            {state.offline
+              ? 'You are offline. Your saved trips still work — this one needs a connection.'
+              : 'The forecast service didn’t answer. That is usually momentary, so try again.'}
           </div>
           <button
             type="button"
             className="button button--inline trip__retry"
-            onClick={() => setState({ status: 'loading' })}
+            onClick={() => setAttempt((n) => n + 1)}
           >
             Try again
           </button>

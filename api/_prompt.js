@@ -36,7 +36,7 @@ export const LIST_SCHEMA = {
           name: {
             type: 'string',
             description:
-              'Short category name. Prefer Tops, Bottoms, Outerwear, Footwear, Accessories, Essentials. A trip purpose or the weather may earn its own — "Formal" for a wedding, "Swim" for a hot trip, "On the trail" for hiking.',
+              'Short category name. Prefer Tops, Bottoms, Outerwear, Footwear, Accessories, Essentials. A trip purpose or the weather may earn its own — "Formal" for a wedding, "Swim" for a hot trip, "On the trail" for hiking. Every item must actually belong to the category holding it: a jumper is a Top or Outerwear, never a Bottom.',
           },
           items: {
             type: 'array',
@@ -93,6 +93,8 @@ How to build the list:
 4. Every item is one thing. If the word "or" appears in an item label, the label is wrong — "a dress or trousers with a smart top" and "crossbody bag or small city bag" are both two suggestions and a shrug, in an app whose whole job is having an opinion. Decide, using what you know about them, and name the single item. If they genuinely need two things, that is two entries with two reasons.
 
 5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Business earns something you can walk into a meeting wearing. Beach earns the swim kit in rule 7.
+
+   Festival means camping in a field with no shelter and no laundry. It earns wellies or boots that can be ruined, a waterproof whatever the forecast says, something warm for a night outdoors that is colder than the same night indoors, and clothes they will not mind writing off. Do not dress them for a city break in a field.
 
    Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
 6. Every list has a bag to carry things in during the day, in Accessories. Match it to the trip: a daypack for outdoors or a walking-heavy city break, something smaller and smarter when the trip is formal or business. One bag, chosen — not a choice of bags.
