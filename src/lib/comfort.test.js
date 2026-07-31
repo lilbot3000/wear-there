@@ -302,3 +302,39 @@ describe('reading a whole trip', () => {
     expect(readTrip(mostlyMild, AVERAGE).summary).not.toMatch(/all week/i)
   })
 })
+
+describe('a day is not one temperature', () => {
+  // The screen showed only the high, so a 26° afternoon that fell to 4°
+  // looked like a warm day and nothing suggested packing a layer. The low is
+  // now carried through, and judged against the same personal bands as
+  // everything else.
+  const COLD_ONE = { ...AVERAGE, runsHotCold: 'cold' }
+
+  it('carries the air low through for display', () => {
+    const read = readDay(day({ airMin: 6, airMax: 24 }), AVERAGE)
+    expect(read.airMin).toBe(6)
+  })
+
+  it('flags a night that falls out of their comfort band', () => {
+    const read = readDay(day({ feelsLikeMax: 26, feelsLikeMin: 4 }), AVERAGE)
+    expect(read.side).toBe('hot')
+    expect(read.coldNight).toBe(true)
+  })
+
+  it('leaves a warm night unflagged', () => {
+    const read = readDay(day({ feelsLikeMax: 30, feelsLikeMin: 19 }), AVERAGE)
+    expect(read.coldNight).toBe(false)
+  })
+
+  it('judges the night against the person, not the thermometer', () => {
+    // 11° is inside an average person's mild band but below where someone who
+    // runs cold is comfortable — the premise of the app, applied after dark.
+    const night = { feelsLikeMax: 26, feelsLikeMin: 11 }
+    expect(readDay(day(night), AVERAGE).coldNight).toBe(false)
+    expect(readDay(day(night), COLD_ONE).coldNight).toBe(true)
+  })
+
+  it('does not flag anything when the forecast has no low', () => {
+    expect(readDay(day({ feelsLikeMin: undefined }), AVERAGE).coldNight).toBe(false)
+  })
+})

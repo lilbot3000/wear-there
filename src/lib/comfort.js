@@ -75,6 +75,11 @@ export function readDay(day, profile) {
     feelsLike,
     feelsLikeMin: day.feelsLikeMin,
     airMax: day.airMax,
+    airMin: day.airMin,
+    // A day is not one temperature. A 25° afternoon that falls to 6° needs a
+    // layer the daytime reading gives no hint of, so the drop is carried
+    // through as its own fact rather than being left in the raw forecast.
+    coldNight: isColdNight(day.feelsLikeMin, profile),
     humidityPct: conditions.humidityPct,
     rainChancePct: conditions.rainChancePct,
     windSpeedKph: day.windSpeedKph ?? 0,
@@ -92,6 +97,19 @@ export function readDay(day, profile) {
     }),
     rainNote: wet ? rainNote(profile, conditions.rainChancePct) : null,
   }
+}
+
+/**
+ * Does the night fall out of their comfort band?
+ *
+ * Uses the same personal banding as everything else, so "cold night" means
+ * cold for this person rather than cold on a thermometer. Someone who runs
+ * warm and someone who runs cold can get different answers about the same 12°
+ * evening, which is the entire premise of the app applied after dark.
+ */
+function isColdNight(feelsLikeMin, profile) {
+  if (typeof feelsLikeMin !== 'number' || !Number.isFinite(feelsLikeMin)) return false
+  return temperatureIntensity(feelsLikeMin, profile).side === 'cold'
 }
 
 /**

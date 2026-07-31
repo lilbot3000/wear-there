@@ -231,6 +231,15 @@ function dayDetail(day) {
   // quiet when it isn't.
   const parts = [`${Math.round(day.airMax)}°`]
 
+  // The low earns permanent space: a day is not one temperature, and a 25°
+  // afternoon that falls to 6° needs a layer the high gives no hint of.
+  // Called "low" rather than "overnight" on purpose — this is the coldest
+  // point of the calendar day, which lands around dawn, so the cold of
+  // *this* evening is actually tomorrow's low.
+  if (typeof day.airMin === 'number' && Number.isFinite(day.airMin)) {
+    parts.push(`low ${Math.round(day.airMin)}°`)
+  }
+
   if (Math.abs(day.feelsLike - day.airMax) >= 3) {
     parts.push(`feels like ${Math.round(day.feelsLike)}°`)
   }
@@ -239,6 +248,11 @@ function dayDetail(day) {
 
   if (day.wet) parts.push(`rain ${Math.round(day.rainChancePct)}%`)
   else if (day.windy) parts.push(`windy`)
+
+  // The number above is objective; this says whether it is cold *for you*,
+  // which is the part that decides whether a layer goes in the bag. Only on
+  // warm days, where the drop is the thing you would otherwise miss.
+  if (day.coldNight && day.side === 'hot') parts.push('cold by dawn')
 
   return parts.join(' · ')
 }
