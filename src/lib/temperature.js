@@ -155,9 +155,27 @@ export function sampleRamp(stops, t) {
  * both by 2°, since someone who runs cold needs it warmer before they're
  * comfortable at either end.
  */
+/**
+ * How far "I run hot" or "I run cold" moves the bands.
+ *
+ * Was 2°, which two real users proved too timid: both left the summer slider
+ * on its default, and at 25° the one who runs hot landed on t=0.417 against a
+ * band edge at 0.45 — so an average person and a hot-running person read
+ * identically, which is the app failing at its one job. 3° clears the band.
+ *
+ * Not more than 3: at 4° someone who runs cold stops finding 25° warm at all,
+ * and the self-assessment starts overruling the thresholds people actually
+ * chose rather than adjusting them.
+ */
+const TEMPERAMENT_SHIFT_C = 3
+
 export function comfortThresholds(profile = DEFAULT_PROFILE) {
   const shift =
-    profile.runsHotCold === 'cold' ? 2 : profile.runsHotCold === 'hot' ? -2 : 0
+    profile.runsHotCold === 'cold'
+      ? TEMPERAMENT_SHIFT_C
+      : profile.runsHotCold === 'hot'
+        ? -TEMPERAMENT_SHIFT_C
+        : 0
 
   return {
     coat: (profile.coatThresholdC ?? DEFAULT_PROFILE.coatThresholdC) + shift,
@@ -294,10 +312,21 @@ export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions =
   const muggy = humidityPct >= 70
   const wet = rainChancePct >= 50
 
+  // Rain, humidity and wind decorate the temperature word; they never replace
+  // it. Returning "Warm + brolly" for a 36° downpour, as this once did, threw
+  // away the reading the whole app exists to produce — the modifier fired
+  // first and the intensity was never consulted. The short words below exist
+  // so a decorated chip still fits: "Scorching + brolly" is about the width of
+  // "Comfortably warm", which is the longest chip the layout allows.
   if (side === 'hot') {
-    if (muggy && wet) return 'Muggy + brolly'
-    if (muggy) return t >= 0.6 ? 'Hot and sticky' : 'Warm and humid'
-    if (wet) return 'Warm + brolly'
+    const heat =
+      t >= 0.9 ? 'Scorching' : t >= 0.7 ? 'Very hot' : t >= 0.45 ? 'Hot' : t >= 0.15 ? 'Warm' : 'Mild'
+
+    // Rain outranks humidity on the chip because it changes what you carry,
+    // not just how you feel. Mugginess still shows on the day's detail line.
+    if (wet) return `${heat} + brolly`
+    if (muggy) return t >= 0.45 ? `${heat} + sticky` : `${heat} + humid`
+
     if (t >= 0.9) return 'Scorching for you'
     if (t >= 0.7) return 'Properly hot'
     if (t >= 0.45) return 'Hot for you'
@@ -306,9 +335,14 @@ export function comfortLabel(feelsLikeC, profile = DEFAULT_PROFILE, conditions =
   }
 
   if (side === 'cold') {
-    if (windy && t >= 0.5) return 'Biting wind chill'
-    if (windy) return 'Cold and blowy'
-    if (wet) return 'Cold + brolly'
+    const chill =
+      t >= 0.9 ? 'Bitter' : t >= 0.7 ? 'Very cold' : t >= 0.45 ? 'Cold' : t >= 0.15 ? 'Chilly' : 'Cool'
+
+    // On a cold day wind is the thing that actually catches people out, so it
+    // outranks rain here — the reverse of the hot side.
+    if (windy) return `${chill} + wind`
+    if (wet) return `${chill} + brolly`
+
     if (t >= 0.9) return 'Bitter, full layers'
     if (t >= 0.7) return 'Bundle up'
     if (t >= 0.45) return 'Properly cold'

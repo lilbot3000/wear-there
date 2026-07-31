@@ -338,3 +338,57 @@ describe('a day is not one temperature', () => {
     expect(readDay(day({ feelsLikeMin: undefined }), AVERAGE).coldNight).toBe(false)
   })
 })
+
+describe('modifiers decorate the temperature, they never replace it', () => {
+  // From a screenshot: a 33° day, feels-like 36°, 55% rain, labelled
+  // "Warm + brolly". The rain branch returned before intensity was consulted,
+  // so every wet hot day read as warm however hot it was.
+  const wet = { rainChancePct: 60 }
+
+  it('does not call a scorching day warm because it rains', () => {
+    const read = readDay(day({ feelsLikeMax: 36, ...wet }), AVERAGE)
+    expect(read.label).toBe('Scorching + brolly')
+  })
+
+  it('still says warm when it is actually warm', () => {
+    expect(readDay(day({ feelsLikeMax: 24, ...wet }), AVERAGE).label).toBe('Warm + brolly')
+  })
+
+  it('scales the cold side the same way', () => {
+    expect(readDay(day({ feelsLikeMax: -5, ...wet }), AVERAGE).label).toBe('Bitter + brolly')
+    expect(readDay(day({ feelsLikeMax: 8, ...wet }), AVERAGE).label).toBe('Cool + brolly')
+  })
+
+  it('keeps the plain phrasing when nothing needs flagging', () => {
+    expect(readDay(day({ feelsLikeMax: 36 }), AVERAGE).label).toBe('Scorching for you')
+  })
+})
+
+describe('running hot has to be visible in the words', () => {
+  // Two real users, both on the default 22° slider, read identically at 25°
+  // because the old 2° shift left the hot-running one at t=0.417 against a
+  // band edge of 0.45.
+  const hot = { ...AVERAGE, runsHotCold: 'hot' }
+  const cold = { ...AVERAGE, runsHotCold: 'cold' }
+
+  it('separates hot from average at everyday summer temperatures', () => {
+    const average = readDay(day({ feelsLikeMax: 25 }), AVERAGE).label
+    const runsHot = readDay(day({ feelsLikeMax: 25 }), hot).label
+
+    expect(average).toBe('Warm for you')
+    expect(runsHot).toBe('Hot for you')
+  })
+
+  it('still agrees when it is genuinely extreme', () => {
+    // Everyone is scorching at 34°. Personalisation should not manufacture a
+    // disagreement that does not exist.
+    expect(readDay(day({ feelsLikeMax: 34 }), AVERAGE).label).toBe('Scorching for you')
+    expect(readDay(day({ feelsLikeMax: 34 }), hot).label).toBe('Scorching for you')
+  })
+
+  it('does not let the self-assessment overrun the thresholds', () => {
+    // Someone who runs cold should still find 25° warm, not comfortable — the
+    // reason the shift stops at 3°.
+    expect(readDay(day({ feelsLikeMax: 25 }), cold).label).toBe('Just right for you')
+  })
+})
