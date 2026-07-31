@@ -200,7 +200,11 @@ White screen, the trip's gradient bar animating (shimmer left to right), status 
 
 ### S6 · Packing list (screen 05) — hero screen 2
 
-"Your list" heading; then the **fabrics note** — two or three sentences of plain prose under a "Fabrics" micro-label, saying what these conditions do to fabric and which one handles them ("linen dries fast and moves air, which is what 74% humidity demands"). It sits above the categories because it explains why the items below are what they are. Prose rather than a card, so it reads as advice instead of another thing to tick.
+"Your list" heading; then the **fabrics note** — one line under a "Fabrics" micro-label, in the shape *wear this, skip that*, anchored to one real figure: "Linen and cotton — they breathe in 74% humidity. Skip synthetics and anything heavy." It sits above the categories because it explains why the items below are what they are.
+
+Its length is the whole design of it. It began as a three-sentence paragraph and looked foreign, because nothing else on any screen in this app is longer than a sentence — it read as something to *read* rather than something to act on. Capped at 25 words, it lands at two rendered lines.
+
+Two shapes were considered and rejected. **Bullets** collide with the checkbox list directly beneath: a bulleted line and an unticked item are hard to tell apart at a glance. **Chips** would fit the app's vocabulary, but chip colour always encodes temperature, and a fabric chip would spend that meaning on something else.
 
 Then category micro-labels ("Tops", "Essentials"); each item is a card with checkbox, bold item name ("Linen shirts ×3"), and the one-line reason in grey ("Feels-like 31° and you're humidity-sensitive"). Ticking draws the oversized red ✓ and strikes the label through; ticks persist instantly. "↻ Regenerate list" as a quiet secondary action at the bottom, with confirmation: "This writes a fresh list and clears your ticks."
 

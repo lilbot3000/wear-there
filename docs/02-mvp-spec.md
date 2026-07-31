@@ -122,7 +122,7 @@ How to build the list:
    Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
 6. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
 
-7. The fabrics note comes first and earns its place. Say what these specific conditions do to fabric and which one handles it — heat with humidity is a different problem from dry heat, and cold with wind is different from still cold. Name one to avoid and why. It should read like something a friend who packs well would tell you, not a care label.
+7. The fabrics note is one line, not a paragraph. Nothing else on the screen is longer than a sentence, and a block of prose above the list looks like something to read rather than something to act on. Name the fabric, tie it to one number, say what to skip, stop. Heat with humidity is a different problem from dry heat, and cold with wind from still cold — pick the one that matters here and ignore the rest.
 
 8. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
 
