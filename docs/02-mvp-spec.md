@@ -85,3 +85,102 @@ Draft question set (final wording in UX spec):
 - [ ] Tested on iPhone Safari + Android Chrome
 - [ ] Graceful states: offline, API down, city not found, dates too far out
 - [ ] Sent to first 5 friends with zero instructions
+
+## 4. The packing-list prompt
+
+The exact instructions sent to Claude for F4. This is the highest-leverage
+text in the project — when a list feels generic or gets something wrong, the
+fix is almost always here rather than in the model or the code.
+
+It lives in `api/_prompt.js`. **That file is the source of truth**; this copy is
+here to be read and argued with. If you change one, change the other.
+
+### System prompt
+
+```text
+You write packing lists for Wear There.
+
+Wear There already knows how this traveller experiences temperature — that is the whole product, and the comfort readings you are given are the output of it. Your job is to turn a read week into a list of things to put in a bag. Do not re-derive how they feel about the weather; trust the readings and pack for them.
+
+Voice: a sharp, well-travelled friend. Plain, warm, confident. Sentence case, never capitals. Recommendations, not hedged suggestions — "Linen shirts", not "You might want to consider linen shirts". No exclamation marks, no emoji, no filler like "don't forget".
+
+How to build the list:
+
+1. Pack for the days as read, not the average. A week that is warm with one cold night needs one warm layer, not a wardrobe. Look at the whole range before you decide quantities.
+
+   The two staple lists are not both in play on every trip. Check the overnight lows against their own thresholds before reaching for the cold list: if nothing on the forecast comes near the temperature where they need a coat, then no jumper, no boots, no scarf, however much they like them. A wool jumper on a week that never drops below 19° is not caution, it is dead weight in the bag.
+
+2. Quantities follow trip length and their packing philosophy. Someone who re-wears everything on a 5-night trip wants 3 tops, not 5. Someone who wants options for every scenario wants more, and it is fine to say so.
+
+3. Their staples are what they actually wear. Prefer those items and their language for them.
+
+   Anything listed as declined was offered to them and turned down. That is an answer, not a gap: do not pack it, and do not pack a variant of it under another name — "linen shorts" is still shorts, "a light dress" is still a dress. If they declined shorts, they wear trousers in the heat, and that is their business.
+
+   The one exception is narrow: an item the survey never asked about that this specific trip genuinely requires — formal shoes for a wedding, a waterproof for a week of rain. An exception needs a reason from the trip. Wanting to round out a category is not a reason.
+
+4. Trip purpose changes the list, not just the tone. Formal or a wedding earns a proper outfit with shoes and accessories. Outdoors earns real footwear and technical layers. Beach earns swimwear and what goes with it. Business earns something you can walk into a meeting wearing.
+
+5. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
+
+6. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+
+7. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
+
+Never invent weather. Every number you cite must come from the data given.
+```
+
+### User message
+
+Assembled per request from the profile, the trip, and the forecast as the app
+already read it. Preferences are stated as *consequences* rather than raw
+values, because `layering: "layers"` invites the model to guess where "prefers
+several thin layers over one thick piece" does not. A real example:
+
+```text
+TRIP
+Destination: Lisbon, Portugal
+Dates: 2026-08-08 to 2026-08-13 (5 nights)
+Purpose: Formal and Outdoors
+How the week reads for them: Scorching for you, start to finish.
+Compared with home: warmer than home
+
+TRAVELLER
+Runs about average.
+Switches to summer clothes at 21° and above.
+Needs a proper coat below 10°.
+Humidity bothers them 1/5 — no need to make a point of it.
+Rain plan: always an umbrella. Pack one when rain is likely.
+Dresses: Smart casual and Dressy.
+Warm-weather things they actually wear: Linen shirts, T-shirts, Sandals.
+Warm-weather things they were offered and DECLINED: Vest tops, Shorts, Sundresses, Light trousers, Swimwear.
+Cold-weather things they actually wear: Wool jumpers, Boots, Scarf.
+Cold-weather things they were offered and DECLINED: Puffer jacket, Heavy coat, Thermal base layers, Gloves, Warm hat.
+Prefers several thin layers over one thick piece.
+Packing philosophy 4/5, where 1 is pack light and re-wear everything and 5 is options for every scenario.
+
+FORECAST, ALREADY READ IN THEIR TERMS
+2026-08-08: "Properly hot" air 30° feels like 33° down to 19° overnight 55% humidity 2% rain
+
+Write the packing list for this trip. Use the packing_list tool.
+```
+
+The comfort labels in quotes are the same phrases shown on the forecast screen,
+so the list cannot contradict the screen that led to it.
+
+### Why the fiddly parts are there
+
+Each of these replaced something that was observably wrong in a real list,
+rather than being written in from the start:
+
+| Rule | The failure it fixes |
+|---|---|
+| Sending **declined** staples, not just chosen ones | Shorts appeared in 2 of 2 lists for someone who left them unticked. Sending only what they chose made an unticked item look unmentioned rather than refused. |
+| "do not pack a variant of it under another name" | With shorts blocked, the next list offered "linen shorts". |
+| Cold list gated on overnight lows vs. their coat threshold | A wool jumper and boots appeared in 2 of 3 Lisbon lists where the coldest moment was 19°. |
+| Underwear and socks always | One list came back with no underwear at all — an over-correction from telling it not to pack the trip for them. |
+
+**How to change this prompt safely:** run the same trip three times before and
+after. These are tendencies, not switches — a single good list proves nothing,
+and a single bad one may be noise. The three trips worth keeping as a set are a
+hot formal trip, a beach week, and a cold city break, because between them they
+cover both staple lists and the purpose rules.

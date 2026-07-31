@@ -9,6 +9,8 @@
  * network or an API key.
  */
 
+import { QUESTIONS } from '../survey/questions.js'
+
 const ENDPOINT = '/api/generate-list'
 
 /** Give up rather than leave someone watching a bar forever. */
@@ -40,6 +42,12 @@ export async function generateList(trip, profile, days, extras = {}) {
           styles: profile.styles,
           warmStaples: profile.warmStaples,
           coldStaples: profile.coldStaples,
+          // What they were shown and left unticked. Sending only the ticked
+          // items made "shorts" look merely unmentioned rather than declined,
+          // and the model kept packing them. An explicit no is much harder to
+          // reason past than an absence.
+          warmStaplesDeclined: declined('warmStaples', profile.warmStaples),
+          coldStaplesDeclined: declined('coldStaples', profile.coldStaples),
           layering: profile.layering,
           packingPhilosophy: profile.packingPhilosophy,
           // The city only, never the coordinates — the function has no use for
@@ -146,6 +154,18 @@ export function listProgress(list) {
     total: items.length,
     checked: items.filter((item) => item.checked).length,
   }
+}
+
+/**
+ * The options someone was offered and did not tick.
+ *
+ * Reads the survey's own option lists so the two can't drift: adding a staple
+ * to questions.js automatically makes it something that can be declined.
+ */
+function declined(field, chosen) {
+  const question = QUESTIONS.find((item) => item.field === field)
+  if (!question?.options || !Array.isArray(chosen)) return []
+  return question.options.filter((option) => !chosen.includes(option))
 }
 
 /**

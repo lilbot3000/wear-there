@@ -131,6 +131,8 @@ function validate(body) {
       styles: list(profile.styles, 4),
       warmStaples: list(profile.warmStaples, 20),
       coldStaples: list(profile.coldStaples, 20),
+      warmStaplesDeclined: list(profile.warmStaplesDeclined, 20),
+      coldStaplesDeclined: list(profile.coldStaplesDeclined, 20),
       layering: text(profile.layering, 20),
       packingPhilosophy: number(profile.packingPhilosophy),
       homeCity: text(profile.homeCity, 80),
