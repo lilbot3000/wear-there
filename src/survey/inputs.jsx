@@ -118,14 +118,12 @@ export function CityInput({ value, onChange }) {
               >
                 <span className="survey-city__name">{place.city}</span>
                 <span className="text-secondary">{placeDetail(place)}</span>
-                {/* The postcode when there is one; coordinates only when two
-                    results are otherwise identical. Picking the wrong
-                    same-named village is a silent failure — you get a real
-                    forecast for a real town 200km from where you're going. */}
-                {place.postcode || place.coords ? (
-                  <span className="survey-city__pin">
-                    {place.postcode ?? place.coords}
-                  </span>
+                {/* Picking the wrong same-named village is a silent failure —
+                    you get a real forecast for a real town 200km away — and a
+                    postcode is the one thing people can check against an
+                    address. Shown only when the API has one. */}
+                {place.postcode ? (
+                  <span className="survey-city__pin">{place.postcode}</span>
                 ) : null}
               </button>
             </li>

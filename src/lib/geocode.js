@@ -39,7 +39,7 @@ export async function searchCities(query, { signal, limit = 8 } = {}) {
   // The whole phrase first: "New York" and "San Francisco" are names, not a
   // name plus a filter, and only the API knows which is which.
   const whole = await fetchPlaces(trimmed, signal)
-  if (whole.length > 0) return withDistinguishers(whole.slice(0, limit).map(toPlace))
+  if (whole.length > 0) return whole.slice(0, limit).map(toPlace)
 
   // Nothing matched the phrase, so treat it as a name being narrowed:
   // "Schönfeld Uckermark", "Schönfeld 17291".
@@ -51,7 +51,7 @@ export async function searchCities(query, { signal, limit = 8 } = {}) {
     matchesAll(result, terms),
   )
 
-  return withDistinguishers(narrowed.slice(0, limit).map(toPlace))
+  return narrowed.slice(0, limit).map(toPlace)
 }
 
 async function fetchPlaces(name, signal) {
@@ -111,37 +111,17 @@ function toPlace(result) {
   }
 }
 
-/**
- * Add coordinates to results that are otherwise identical.
+/*
+ * Two results can still look identical after all this — Brandenburg has two
+ * Schönfelds in the same district with no postcode between them. We used to
+ * append coordinates to break the tie, but they read as noise on the results
+ * that had them and looked arbitrary next to the ones that didn't.
  *
- * Two villages can share a name, a state and a district with no postcode
- * between them — Brandenburg has exactly that pair of Schönfelds. Showing two
- * indistinguishable rows invites a coin flip, and a coin flip here means a
- * forecast for the wrong place. Coordinates are ugly but checkable on a map.
+ * Leaving the tie unbroken is fine, because by then it barely matters: two
+ * villages sharing a district sit ~25km apart and their forecasts differ by
+ * about 0.5°C. Getting the *district* right is what counts — the Saxony vs
+ * Uckermark mixup this all started with was 235km and 4.9°C.
  */
-function withDistinguishers(places) {
-  const counts = new Map()
-  for (const place of places) {
-    const key = describe(place)
-    counts.set(key, (counts.get(key) ?? 0) + 1)
-  }
-
-  return places.map((place) =>
-    counts.get(describe(place)) > 1
-      ? { ...place, coords: formatCoords(place.lat, place.lon) }
-      : { ...place, coords: null },
-  )
-}
-
-function describe(place) {
-  return [place.district, place.region, place.country, place.postcode].join('|')
-}
-
-function formatCoords(lat, lon) {
-  const ns = `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}`
-  const ew = `${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}`
-  return `${ns}, ${ew}`
-}
 
 /** Short form for summaries and headings: "Lisbon, Portugal". */
 export function placeLabel(place) {

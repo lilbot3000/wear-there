@@ -135,8 +135,8 @@
   font-weight: 700;
 }
 
-/* The disambiguator — a postcode, or coordinates when nothing else separates
-   two results. Quiet by default; it only matters when you're checking. */
+/* The postcode. Quiet by default; it only matters when you're checking a
+   result against an address. */
 .survey-city__pin {
   margin-top: 2px;
   color: var(--text-micro);
