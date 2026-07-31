@@ -91,6 +91,56 @@ This is the only phase touching money, and it's pennies.
 
 ---
 
+## Open questions
+
+Things worth building that aren't decided yet. Each has enough investigation
+behind it to be picked up without starting over — but none of them block a phase.
+
+### Should we show when the weather models disagree?
+
+**What prompted it.** A trip to Schönfeld showed 34° in the app and 24° on
+AccuWeather for the same day. Neither was wrong: the underlying models genuinely
+disagreed by 11°C. Open-Meteo's default picked the hot end, AccuWeather blended
+toward the middle. The app showed one number with total confidence — and a chip
+reading "Properly hot" on a day that might be 18° is the app being wrong in
+exactly the way it promises not to be.
+
+**Can we build it? Yes — settled.** No second weather provider needed. Open-Meteo
+serves the individual models from the same endpoint we already call, via a
+`&models=` parameter. One extra request, no key, free at our scale. What was
+checked:
+
+- `ecmwf_ifs025` and `gfs_seamless` both cover the full 14-day window.
+  `icon_seamless` and `ukmo_seamless` stop at 7 days, so they can't anchor the
+  feature — they'd go blank exactly when uncertainty matters most.
+- Feels-like is available per model, not just raw temperature, so it works on the
+  number the app actually shows.
+- Purely additive — today's numbers keep coming from `best_match`.
+
+**Is it worth it? Measured.** Spread between the two models across 7 cities ×
+14 days: they differ by 5°+ on **8% of days**, 8°+ on **4%**. Most days they sit
+within 1–2°. So the flag would stay quiet and mean something when it fires, which
+is the argument for it. Disagreement grows with distance — about 1.5° at days
+1–7, about 3° at days 8–14.
+
+**Still undecided:**
+
+- *What to show.* A quiet per-day line ("could go either way — 18° or 32°") is
+  the obvious candidate, but it competes with the chip for attention, and the
+  chip is the product.
+- *Two models is a proxy, not a real measurement.* The rigorous version is an
+  ensemble — Open-Meteo also serves 51 perturbed ECMWF runs, giving actual
+  probability. Much more data per request and more work to summarise. Start
+  with the two-model spread and revisit if it proves too crude.
+- *What it means for the packing list.* An uncertain day arguably deserves
+  different advice — pack for both — rather than just a caveat. That's a
+  Phase 5 question, not a display one.
+
+Slotted against Phase 7. 🤖 *"Read the open question on model disagreement in
+the build guide and implement it."*
+
+---
+
 ## Ongoing habits
 
 - **One phase per session, commit and push at the end of each.** If something breaks, ask Claude to compare against the docs — they're the source of truth, so keep them updated when you change your mind about something.
