@@ -139,7 +139,10 @@ export const QUESTIONS = [
     field: 'warmStaples',
     type: 'multi',
     question: 'Which warm-weather things do you actually wear?',
-    help: 'Only tick what genuinely leaves the wardrobe. Skipping a few is fine.',
+    // The consequence has to be stated. Unticked is a veto, not a shrug —
+    // saying "skipping a few is fine" here led to a real trip where swimwear
+    // was silently ruled out of a beach week.
+    help: 'Tick what genuinely leaves the wardrobe. Anything you leave unticked, we will not pack — so this is how you rule things out as well as in.',
     options: [
       'Linen shirts',
       'T-shirts',
@@ -159,7 +162,7 @@ export const QUESTIONS = [
     field: 'coldStaples',
     type: 'multi',
     question: 'And which cold-weather things?',
-    help: 'Same again. Only what you really reach for.',
+    help: 'Same again — anything left unticked stays out of your lists. Only tick what you really reach for.',
     options: [
       'Wool jumpers',
       'Puffer jacket',

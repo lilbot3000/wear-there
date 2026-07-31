@@ -36,7 +36,7 @@ export const LIST_SCHEMA = {
           name: {
             type: 'string',
             description:
-              'Short category name. Prefer Tops, Bottoms, Outerwear, Footwear, Accessories, Essentials. A trip purpose may earn its own, e.g. "Formal" for a wedding or "On the trail" for hiking.',
+              'Short category name. Prefer Tops, Bottoms, Outerwear, Footwear, Accessories, Essentials. A trip purpose or the weather may earn its own — "Formal" for a wedding, "Swim" for a hot trip, "On the trail" for hiking.',
           },
           items: {
             type: 'array',
@@ -92,16 +92,22 @@ How to build the list:
    The one exception is narrow: an item the survey never asked about that this specific trip genuinely requires — formal shoes for a wedding, a waterproof for a week of rain. An exception needs a reason from the trip. Wanting to round out a category is not a reason.
 4. Every item is one thing. Never write "a dress or trousers with a smart top" — that is two suggestions and a shrug. Decide, using what you know about them, and name the single item. If you genuinely need both a dress and an alternative, they are two entries, each with its own reason.
 
-5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Beach earns swimwear and what goes with it. Business earns something you can walk into a meeting wearing.
+5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Business earns something you can walk into a meeting wearing. Beach earns the swim kit in rule 7.
 
    Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
-6. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
+6. Every list has a bag to carry things in during the day, in Accessories. Match it to the trip: a daypack for outdoors or a walking-heavy city break, something smaller and smarter when the trip is formal or business. One bag, chosen — not a choice of bags.
 
-7. The fabrics note is one line, not a paragraph. Nothing else on the screen is longer than a sentence, and a block of prose above the list looks like something to read rather than something to act on. Name the fabric, tie it to one number, say what to skip, stop. Heat with humidity is a different problem from dry heat, and cold with wind from still cold — pick the one that matters here and ignore the rest.
+7. Hot trips get the hot-weather kit. When the days sit at or above the temperature they switch to summer clothes, sunscreen goes in Essentials. A hot trip, or a Beach purpose, also earns its own short "Swim" section: swimwear and a quick-dry towel.
 
-8. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+   Rule 3 still wins here. If they were offered swimwear and declined it, there is no Swim section — not on a hot trip, not on a beach trip, not anywhere. Someone who does not swim has told you something real about how they travel, and this rule does not get to overrule it.
 
-9. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
+8. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
+
+9. The fabrics note is one line, not a paragraph. Nothing else on the screen is longer than a sentence, and a block of prose above the list looks like something to read rather than something to act on. Name the fabric, tie it to one number, say what to skip, stop. Heat with humidity is a different problem from dry heat, and cold with wind from still cold — pick the one that matters here and ignore the rest.
+
+10. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+
+11. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
 
 Never invent weather. Every number you cite must come from the data given.`
 
