@@ -1,0 +1,248 @@
+/* S5 · Generating and S6 · Packing list — see docs/04-ux-design-spec.md */
+
+.packing {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 100dvh;
+  padding: 28px 20px 32px;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.packing__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.packing__meta {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.packing__bar {
+  margin-top: 6px;
+}
+
+/* ------------------------------------------------------------ generating */
+
+.packing--generating {
+  justify-content: center;
+}
+
+.packing__generating-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* Sits slightly above centre, where the eye already is. */
+  margin-bottom: 12vh;
+}
+
+/*
+ * The trip's own gradient, shimmering left to right. A spinner would say
+ * "loading"; this says "your week is being read", using the one visual the
+ * app has been teaching since the survey.
+ */
+.packing__shimmer {
+  position: relative;
+  height: 8px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.packing__shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: packing-shimmer 1600ms ease-in-out infinite;
+}
+
+@keyframes packing-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.packing__status {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ----------------------------------------------------------------- items */
+
+.packing__category {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.packing__items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.packing__item {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  /* The oversized tick breaks out of its box by ~12px, so the row needs room
+     above it rather than clipping the one flourish in the system. */
+  gap: 12px;
+  padding: 14px 15px;
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.packing__item:hover {
+  border-color: var(--warm-neutral);
+}
+
+.packing__item .checkbox {
+  margin-top: 1px;
+  pointer-events: none;
+}
+
+.packing__item-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.packing__item-label {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.packing__item.is-checked .packing__item-label {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+.packing__item-why {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.packing__item.is-checked .packing__item-why {
+  color: var(--text-micro);
+}
+
+/* ------------------------------------------------------------ regenerate */
+
+.packing__regenerate {
+  margin-top: 6px;
+}
+
+.packing__regenerate-button {
+  padding: 6px 0;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.packing__regenerate-button:hover {
+  color: var(--ink);
+}
+
+.packing__confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.packing__confirm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.packing__cancel {
+  padding: 6px 0;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.packing__cancel:hover {
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------- chrome */
+
+.packing__error {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-color: rgba(225, 29, 46, 0.35);
+}
+
+.packing__retry {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* Matches the survey and forecast footers: quiet action left, way onward
+   right. */
+.packing__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.packing__back {
+  padding: 6px 0;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.packing__back:hover {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .packing__shimmer::after {
+    animation: none;
+  }
+
+  .packing__item {
+    transition: none;
+  }
+}

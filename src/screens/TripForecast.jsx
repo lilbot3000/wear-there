@@ -57,6 +57,20 @@ export default function TripForecast({ tripId }) {
             // the week rather than whichever day happens to come first.
             dotColour: tempColour(reading.feelsLike, profile).body,
             summary: reading.summary,
+            homeComparison: reading.homeComparison,
+            // The days as read, so the packing list can be written from the
+            // same reading the traveller just saw rather than refetching and
+            // risking a list that disagrees with the screen behind it.
+            days: reading.days.map((day) => ({
+              date: day.date,
+              airMax: day.airMax,
+              feelsLike: day.feelsLike,
+              feelsLikeMin: day.feelsLikeMin,
+              humidityPct: day.humidityPct,
+              rainChancePct: day.rainChancePct,
+              windSpeedKph: day.windSpeedKph,
+              label: day.label,
+            })),
             fetchedAt: new Date().toISOString(),
           },
         })
@@ -125,7 +139,20 @@ export default function TripForecast({ tripId }) {
       ) : null}
 
       {state.status === 'ready' ? (
-        <Reading reading={state.reading} profile={profile} />
+        <>
+          <Reading reading={state.reading} profile={profile} />
+
+          {/* The way onward from the payoff screen. Reads differently once a
+              list exists, so returning to a trip doesn't look like an offer to
+              rewrite what you already ticked. */}
+          <button
+            type="button"
+            className="button trip__generate"
+            onClick={() => navigate(`/trip/${trip.id}/list`)}
+          >
+            {trip.packingList ? 'See my packing list' : 'Generate my packing list'}
+          </button>
+        </>
       ) : null}
 
       {/* Mirrors the survey's footer: a quiet action on the left, the way

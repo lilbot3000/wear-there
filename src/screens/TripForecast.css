@@ -126,3 +126,9 @@
 .trip__delete:hover {
   color: var(--accent);
 }
+
+/* The way onward to the packing list. Sits clear of the footnote above it so
+   the reading finishes before the next step is offered. */
+.trip__generate {
+  margin-top: 8px;
+}

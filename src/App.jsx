@@ -1,6 +1,7 @@
 import Home from './screens/Home.jsx'
 import MyStyle from './screens/MyStyle.jsx'
 import NewTrip from './screens/NewTrip.jsx'
+import PackingList from './screens/PackingList.jsx'
 import StyleGuide from './screens/StyleGuide.jsx'
 import TripForecast from './screens/TripForecast.jsx'
 import Welcome from './screens/Welcome.jsx'
@@ -40,6 +41,12 @@ function Screen({ path, query }) {
 
   if (path === '/trip/new') {
     return <NewTrip />
+  }
+
+  // Checked before the forecast route below, which would otherwise swallow
+  // the whole tail as a trip id.
+  if (path.startsWith('/trip/') && path.endsWith('/list')) {
+    return <PackingList tripId={path.slice('/trip/'.length, -'/list'.length)} />
   }
 
   if (path.startsWith('/trip/')) {

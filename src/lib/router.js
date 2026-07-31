@@ -56,6 +56,13 @@ export function useRoute() {
   useEffect(() => {
     const onChange = () => setRoute(read())
     window.addEventListener('popstate', onChange)
+
+    // Catch up on anything that moved before this listener existed. Effects
+    // run child-first, so a screen that redirects on mount dispatches its
+    // popstate before this subscription is in place — without this the URL
+    // changes and the screen doesn't, which strands the redirect.
+    onChange()
+
     return () => window.removeEventListener('popstate', onChange)
   }, [])
 
