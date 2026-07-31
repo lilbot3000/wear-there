@@ -179,14 +179,10 @@ export function comfortThresholds(profile = DEFAULT_PROFILE) {
 
   return {
     coat: (profile.coatThresholdC ?? DEFAULT_PROFILE.coatThresholdC) + shift,
-    // Your perfect temperature is where warmth starts being warmth: at exactly
-    // this number a day reads "just right for you", and everything above it
-    // climbs from there. summerThresholdC is the pre-rename field, kept so
-    // profiles saved before the change keep working untouched.
-    summer:
-      (profile.perfectTempC ??
-        profile.summerThresholdC ??
-        DEFAULT_PROFILE.perfectTempC) + shift,
+    // At exactly your perfect temperature a day reads "just right for you",
+    // and warmth climbs from there. The old summerThresholdC is deliberately
+    // not accepted as a substitute — see the note in profile.js migrate().
+    summer: (profile.perfectTempC ?? DEFAULT_PROFILE.perfectTempC) + shift,
   }
 }
 

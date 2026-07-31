@@ -95,12 +95,15 @@ function migrate(profile) {
   const migrated = { ...EMPTY_PROFILE, ...profile, schemaVersion: SCHEMA_VERSION }
 
   // "When do you switch to summer clothes?" became "What's your perfect
-  // temperature?". The number carries over unchanged: both mark where warmth
-  // starts being warmth for that person, and re-asking would cost someone
-  // their answer to fix a problem in how it was phrased, not in what it held.
-  if (migrated.perfectTempC == null && profile.summerThresholdC != null) {
-    migrated.perfectTempC = profile.summerThresholdC
-  }
+  // temperature?", and the old answer is deliberately dropped rather than
+  // carried across. They are not the same number: the first user asked said
+  // she switches to summer clothes at 21° but is happiest at 26-27°. Reusing
+  // the old value would have told her a 33° day was scorching when for her it
+  // is merely hot, which is precisely the misreading this app exists to avoid.
+  //
+  // Dropping it leaves the profile incomplete, so the Home screen offers to
+  // finish it — one question, asked honestly, rather than a wrong answer
+  // nobody knew to correct.
   delete migrated.summerThresholdC
 
   return migrated
@@ -171,16 +174,31 @@ export function describeTemperament(profile) {
  * about someone's wardrobe — so completeness only requires the single-value
  * questions.
  */
+/**
+ * Which required answers are missing.
+ *
+ * Named separately from isProfileComplete because "what is missing" and
+ * "is anything missing" are different questions, and the Home screen can say
+ * something far more useful with the first.
+ */
+export function missingAnswers(profile) {
+  if (!profile) return REQUIRED_FIELDS
+  return REQUIRED_FIELDS.filter(
+    (field) => profile[field] === null || profile[field] === undefined,
+  )
+}
+
+const REQUIRED_FIELDS = [
+  'home',
+  'runsHotCold',
+  'perfectTempC',
+  'coatThresholdC',
+  'humiditySensitivity',
+  'rainPlan',
+  'layering',
+  'packingPhilosophy',
+]
+
 export function isProfileComplete(profile) {
-  if (!profile) return false
-  return [
-    'home',
-    'runsHotCold',
-    'perfectTempC',
-    'coatThresholdC',
-    'humiditySensitivity',
-    'rainPlan',
-    'layering',
-    'packingPhilosophy',
-  ].every((field) => profile[field] !== null && profile[field] !== undefined)
+  return missingAnswers(profile).length === 0
 }

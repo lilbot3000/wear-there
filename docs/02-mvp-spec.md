@@ -14,7 +14,9 @@ Draft question set (final wording in UX spec):
 
 1. Where's home? *(city type-ahead — anchors all weather comparisons: "22°C in Lisbon" means something different to someone from Glasgow vs. someone from Athens. Enables phrases like "warmer than home right now")*
 2. Do you generally run hot, cold, or average? *(3-way)*
-3. What is your perfect temperature? *(slider, °C, benchmarked against home — "A typical June day in London" — so the number means something. Deliberately not "when do you switch to summer clothes?", which measured wardrobe convention as much as warmth and biased the app by gender: men wear trousers in weather where women wear dresses.)*
+3. What is your perfect temperature? *(slider, °C, benchmarked against home — "A typical June day in London" — so the number means something.)*
+
+    Deliberately **not** "when do you switch to summer clothes?", which measured wardrobe convention as much as warmth and biased the app by gender — men wear trousers in weather where women wear dresses. The two are also genuinely different numbers, not a rewording: the first user asked switches to summer clothes at 21° but is happiest at 26–27°. On a 33° day that gap is the difference between "Scorching for you" and "Hot for you". Old answers are therefore **not** migrated; the question is re-asked.
 4. At what temperature do you need a proper coat? *(slider, °C, same benchmark)*
 5. How much does humidity/mugginess bother you? *(scale 1–5)*
 6. Rain plan: hood, umbrella, or "I just get wet"? *(choice)*

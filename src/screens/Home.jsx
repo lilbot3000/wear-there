@@ -1,7 +1,7 @@
 import { formatDateRange } from '../lib/forecast.js'
 import {
   describeTemperament,
-  isProfileComplete,
+  missingAnswers,
   isStorageAvailable,
   loadProfile,
 } from '../lib/profile.js'
@@ -20,7 +20,9 @@ import './Home.css'
  */
 export default function Home() {
   const profile = loadProfile()
-  const complete = isProfileComplete(profile)
+  const missing = missingAnswers(profile)
+  const complete = missing.length === 0
+  const onlyMissingPerfectTemp = missing.length === 1 && missing[0] === 'perfectTempC'
   const storageWorks = isStorageAvailable()
   const temperament = describeTemperament(profile)
   const trips = loadTrips()
@@ -51,9 +53,16 @@ export default function Home() {
       {!complete ? (
         <div className="card home__unfinished">
           <div>
-            <b>Your style is not finished.</b>
+            {/* A profile that was complete yesterday can be incomplete today,
+                because we replaced the summer-clothes question with the
+                perfect-temperature one and did not carry the old answer over —
+                they are not the same number. Saying so is better than implying
+                someone abandoned their own survey. */}
+            <b>{onlyMissingPerfectTemp ? 'One new question.' : 'Your comfort zone is not finished.'}</b>
             <div className="text-secondary">
-              Packing lists need the full picture to feel like yours.
+              {onlyMissingPerfectTemp
+                ? 'We changed how we ask about temperature, and your old answer would not have meant the same thing.'
+                : 'Packing lists need the full picture to feel like yours.'}
             </div>
           </div>
           <button type="button" className="pill" onClick={() => navigate('/survey')}>
