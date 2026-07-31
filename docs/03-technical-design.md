@@ -49,7 +49,7 @@ All persisted client-side as JSON in localStorage. Versioned with a `schemaVersi
   "schemaVersion": 1,
   "home": { "city": "London", "country": "United Kingdom", "lat": 51.51, "lon": -0.13 },
   "runsHotCold": "cold",            // "hot" | "average" | "cold"
-  "summerThresholdC": 22,            // switches to summer clothes at/above
+  "perfectTempC": 22,                // the temperature they would choose; warmth climbs from here
   "coatThresholdC": 9,               // needs proper coat at/below
   "humiditySensitivity": 4,          // 1–5
   "rainPlan": "umbrella",           // "hood" | "umbrella" | "getWet"
@@ -102,9 +102,11 @@ Storage keys: `wearthere.profile`, `wearthere.trips` (array, capped at 10, oldes
 ```
 input: day forecast + PreferenceProfile
 1. t = apparent_temperature (already includes humidity/wind)
-2. adjust: runsHot → t - 2°C band shift; runsCold → +2°C
+2. adjust: runsHot → bands shift -3°C; runsCold → +3°C
+   (was 2°, which two real users showed was too small to cross a band —
+    an average and a hot-running person read identically at 25°)
 3. classify against personal thresholds:
-     t ≥ summerThreshold        → "hot for you"
+     t ≥ perfectTemp           → "hot for you"
      t ≤ coatThreshold          → "coat weather for you"
      else                       → banded "mild"/"warm"/"cool" between them
 4. modifiers: humidity ≥ 70% AND sensitivity ≥ 4 → append "muggy" note

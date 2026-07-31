@@ -18,7 +18,7 @@ export const EMPTY_PROFILE = {
   schemaVersion: SCHEMA_VERSION,
   home: null,
   runsHotCold: null,
-  summerThresholdC: null,
+  perfectTempC: null,
   coatThresholdC: null,
   humiditySensitivity: null,
   rainPlan: null,
@@ -91,9 +91,19 @@ export function clearProfile() {
 /** Bring an older saved profile up to the current shape. */
 function migrate(profile) {
   if (!profile || typeof profile !== 'object') return null
-  // Only one version so far, so there is nothing to migrate yet. Future
-  // versions branch here on profile.schemaVersion.
-  return { ...EMPTY_PROFILE, ...profile, schemaVersion: SCHEMA_VERSION }
+
+  const migrated = { ...EMPTY_PROFILE, ...profile, schemaVersion: SCHEMA_VERSION }
+
+  // "When do you switch to summer clothes?" became "What's your perfect
+  // temperature?". The number carries over unchanged: both mark where warmth
+  // starts being warmth for that person, and re-asking would cost someone
+  // their answer to fix a problem in how it was phrased, not in what it held.
+  if (migrated.perfectTempC == null && profile.summerThresholdC != null) {
+    migrated.perfectTempC = profile.summerThresholdC
+  }
+  delete migrated.summerThresholdC
+
+  return migrated
 }
 
 /* Midpoint of the default comfort band (coat 9°, summer 22°). */
@@ -119,7 +129,7 @@ const CONTRADICTION_DRIFT = 3
 export function describeTemperament(profile) {
   if (!profile) return null
 
-  const summer = profile.summerThresholdC
+  const summer = profile.perfectTempC
   const coat = profile.coatThresholdC
   const tendency = profile.runsHotCold
 
@@ -132,7 +142,7 @@ export function describeTemperament(profile) {
     (tendency === 'hot' && drift > CONTRADICTION_DRIFT) ||
     (tendency === 'cold' && drift < -CONTRADICTION_DRIFT)
 
-  const detail = `Summer clothes from ${summer}°, coat below ${coat}°`
+  const detail = `Happiest at ${summer}°, coat below ${coat}°`
 
   if (contradicts) {
     return {
@@ -166,7 +176,7 @@ export function isProfileComplete(profile) {
   return [
     'home',
     'runsHotCold',
-    'summerThresholdC',
+    'perfectTempC',
     'coatThresholdC',
     'humiditySensitivity',
     'rainPlan',

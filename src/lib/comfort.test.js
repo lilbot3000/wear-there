@@ -23,7 +23,7 @@ import {
 /** Summer from 22°, coat below 9°, so mild runs 9–22. */
 const AVERAGE = {
   runsHotCold: 'average',
-  summerThresholdC: 22,
+  perfectTempC: 22,
   coatThresholdC: 9,
   humiditySensitivity: 3,
   rainPlan: 'umbrella',
@@ -49,7 +49,7 @@ describe('crossing the summer threshold is not the same as being hot', () => {
    * vocabulary has to respect that or it contradicts the one thing the app
    * claims to know about someone.
    */
-  const SUMMER_FROM_21 = { ...AVERAGE, summerThresholdC: 21, coatThresholdC: 10 }
+  const SUMMER_FROM_21 = { ...AVERAGE, perfectTempC: 21, coatThresholdC: 10 }
 
   const sanFrancisco = [26, 25, 24, 25, 23, 21].map((t) =>
     day({ feelsLikeMax: t, humidityPct: 60, rainChancePct: 5, windSpeedKph: 12 }),

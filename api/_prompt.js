@@ -169,8 +169,10 @@ function profileLines(profile) {
     )
   }
 
-  if (profile.summerThresholdC != null) {
-    lines.push(`Switches to summer clothes at ${profile.summerThresholdC}° and above.`)
+  if (profile.perfectTempC != null) {
+    lines.push(
+      `Their perfect temperature is ${profile.perfectTempC}° — anything above that is warm for them, and it climbs from there.`,
+    )
   }
   if (profile.coatThresholdC != null) {
     lines.push(`Needs a proper coat below ${profile.coatThresholdC}°.`)

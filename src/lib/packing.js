@@ -35,7 +35,7 @@ export async function generateList(trip, profile, days, extras = {}) {
       body: JSON.stringify({
         profile: {
           runsHotCold: profile.runsHotCold,
-          summerThresholdC: profile.summerThresholdC,
+          perfectTempC: profile.perfectTempC,
           coatThresholdC: profile.coatThresholdC,
           humiditySensitivity: profile.humiditySensitivity,
           rainPlan: profile.rainPlan,

@@ -102,7 +102,7 @@ const SPAN_C = 12
 /** Fallback profile, used until the Phase 3 survey provides a real one. */
 export const DEFAULT_PROFILE = {
   runsHotCold: 'average',
-  summerThresholdC: 22,
+  perfectTempC: 22,
   coatThresholdC: 9,
 }
 
@@ -179,7 +179,14 @@ export function comfortThresholds(profile = DEFAULT_PROFILE) {
 
   return {
     coat: (profile.coatThresholdC ?? DEFAULT_PROFILE.coatThresholdC) + shift,
-    summer: (profile.summerThresholdC ?? DEFAULT_PROFILE.summerThresholdC) + shift,
+    // Your perfect temperature is where warmth starts being warmth: at exactly
+    // this number a day reads "just right for you", and everything above it
+    // climbs from there. summerThresholdC is the pre-rename field, kept so
+    // profiles saved before the change keep working untouched.
+    summer:
+      (profile.perfectTempC ??
+        profile.summerThresholdC ??
+        DEFAULT_PROFILE.perfectTempC) + shift,
   }
 }
 

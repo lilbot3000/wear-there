@@ -59,12 +59,17 @@ export const QUESTIONS = [
   },
 
   {
-    id: 'summer',
-    label: 'Summer clothes',
-    field: 'summerThresholdC',
+    id: 'perfect',
+    label: 'Perfect temperature',
+    field: 'perfectTempC',
     type: 'slider',
-    question: 'When do you switch to summer clothes?',
-    help: 'The point where you reach for shorts, linen, or a dress without thinking about it.',
+    // Replaced "when do you switch to summer clothes?", which measured
+    // wardrobe convention as much as warmth: men wear trousers in weather
+    // where women wear dresses, so the same answer meant different things and
+    // it quietly biased the app by gender. What temperature you would choose
+    // is the same question for everyone.
+    question: "What's your perfect temperature?",
+    help: 'The day you would pick if you could choose the weather.',
     min: 12,
     max: 32,
     step: 1,
@@ -73,7 +78,7 @@ export const QUESTIONS = [
     bounds: (profile) => ({ min: Math.max(12, (profile.coatThresholdC ?? 9) + 4) }),
     // Summaries sit under their question's label on "My style", so they state
     // the answer alone rather than repeating the label back.
-    summary: (value) => (value == null ? 'Not set' : `${value}° and above`),
+    summary: (value) => (value == null ? 'Not set' : `${value}°`),
   },
 
   {
@@ -87,7 +92,7 @@ export const QUESTIONS = [
     max: 18,
     step: 1,
     fallback: 9,
-    bounds: (profile) => ({ max: Math.min(18, (profile.summerThresholdC ?? 22) - 4) }),
+    bounds: (profile) => ({ max: Math.min(18, (profile.perfectTempC ?? 22) - 4) }),
     summary: (value) => (value == null ? 'Not set' : `Below ${value}°`),
   },
 

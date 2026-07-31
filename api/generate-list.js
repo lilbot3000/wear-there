@@ -124,7 +124,7 @@ function validate(body) {
   return {
     profile: {
       runsHotCold: text(profile.runsHotCold, 20),
-      summerThresholdC: number(profile.summerThresholdC),
+      perfectTempC: number(profile.perfectTempC),
       coatThresholdC: number(profile.coatThresholdC),
       humiditySensitivity: number(profile.humiditySensitivity),
       rainPlan: text(profile.rainPlan, 20),
