@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { generateList, listProgress, sortedItems, toggleItem } from '../lib/packing.js'
+import { generateList, listProgress, toggleItem } from '../lib/packing.js'
 import { loadProfile } from '../lib/profile.js'
 import { navigate, useRedirect } from '../lib/router.js'
 import { temperatureBar } from '../lib/temperature.js'
@@ -112,12 +112,23 @@ export default function PackingList({ tripId }) {
     <main className="packing">
       <Header trip={trip} bar={bar} list={list} />
 
+      {/* Sets up everything below it: why these items and not other ones.
+          Optional, so lists saved before fabrics existed still open. */}
+      {list.fabrics ? (
+        <section className="packing__fabrics">
+          <p className="micro-label">Fabrics</p>
+          <p className="packing__fabrics-note">{list.fabrics}</p>
+        </section>
+      ) : null}
+
       {list.categories.map((category) => (
         <section key={category.name} className="packing__category">
           <p className="micro-label">{category.name}</p>
 
           <ul className="packing__items">
-            {sortedItems(category.items).map((item) => (
+            {/* Rendered in the order they arrived — ticking must never move
+                an item, or you lose your place mid-pack. */}
+            {category.items.map((item) => (
               <li key={item.id}>
                 <button
                   type="button"

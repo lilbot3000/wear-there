@@ -19,6 +19,11 @@
 export const LIST_SCHEMA = {
   type: 'object',
   properties: {
+    fabrics: {
+      type: 'string',
+      description:
+        'Two or three sentences on which fabrics suit this particular weather and why, and one to avoid. Concrete and physical — what the fabric does in these conditions ("linen dries fast and moves air, which is what 74% humidity needs"), not a list of adjectives. Cite a real figure from the forecast. This sits above the list and sets up everything under it.',
+    },
     categories: {
       type: 'array',
       minItems: 1,
@@ -65,7 +70,7 @@ export const LIST_SCHEMA = {
       },
     },
   },
-  required: ['categories'],
+  required: ['fabrics', 'categories'],
 }
 
 const SYSTEM = `You write packing lists for Wear There.
@@ -85,11 +90,18 @@ How to build the list:
    Anything listed as declined was offered to them and turned down. That is an answer, not a gap: do not pack it, and do not pack a variant of it under another name — "linen shorts" is still shorts, "a light dress" is still a dress. If they declined shorts, they wear trousers in the heat, and that is their business.
 
    The one exception is narrow: an item the survey never asked about that this specific trip genuinely requires — formal shoes for a wedding, a waterproof for a week of rain. An exception needs a reason from the trip. Wanting to round out a category is not a reason.
-4. Trip purpose changes the list, not just the tone. Formal or a wedding earns a proper outfit with shoes and accessories. Outdoors earns real footwear and technical layers. Beach earns swimwear and what goes with it. Business earns something you can walk into a meeting wearing.
-5. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
-6. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+4. Every item is one thing. Never write "a dress or trousers with a smart top" — that is two suggestions and a shrug. Decide, using what you know about them, and name the single item. If you genuinely need both a dress and an alternative, they are two entries, each with its own reason.
 
-7. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
+5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Beach earns swimwear and what goes with it. Business earns something you can walk into a meeting wearing.
+
+   Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
+6. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
+
+7. The fabrics note comes first and earns its place. Say what these specific conditions do to fabric and which one handles it — heat with humidity is a different problem from dry heat, and cold with wind is different from still cold. Name one to avoid and why. It should read like something a friend who packs well would tell you, not a care label.
+
+8. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+
+9. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
 
 Never invent weather. Every number you cite must come from the data given.`
 

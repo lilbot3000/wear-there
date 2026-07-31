@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  listProgress,
-  nightsBetween,
-  normaliseList,
-  sortedItems,
-  toggleItem,
-} from './packing.js'
+import { listProgress, nightsBetween, normaliseList, toggleItem } from './packing.js'
 
 /**
  * The list arrives from a model, so these tests are mostly about what happens
@@ -121,24 +115,44 @@ describe('toggleItem', () => {
   })
 })
 
-describe('sortedItems', () => {
-  it('sinks ticked items to the bottom', () => {
-    const items = [
-      { id: 'a', checked: true },
-      { id: 'b', checked: false },
-      { id: 'c', checked: true },
-      { id: 'd', checked: false },
-    ]
-    expect(sortedItems(items).map((i) => i.id)).toEqual(['b', 'd', 'a', 'c'])
+describe('ticking never reorders a category', () => {
+  // Items used to sink to the bottom when ticked, per wireframe 05. Packing
+  // happens while looking away from the phone, and a list that rearranges
+  // itself loses your place — so order is now fixed and this guards it.
+  it('keeps every item where it was after a tick', () => {
+    const list = normaliseList(RAW)
+    const before = list.categories[0].items.map((i) => i.label)
+    const after = toggleItem(list, 'c0i0').categories[0].items.map((i) => i.label)
+
+    expect(after).toEqual(before)
   })
 
-  it('is stable, so unticking returns an item to where it was', () => {
-    const items = [
-      { id: 'a', checked: false },
-      { id: 'b', checked: false },
-      { id: 'c', checked: false },
-    ]
-    expect(sortedItems(items).map((i) => i.id)).toEqual(['a', 'b', 'c'])
+  it('keeps order across several ticks and an untick', () => {
+    let list = normaliseList(RAW)
+    const before = list.categories[0].items.map((i) => i.id)
+
+    list = toggleItem(list, 'c0i1')
+    list = toggleItem(list, 'c0i0')
+    list = toggleItem(list, 'c0i1')
+
+    expect(list.categories[0].items.map((i) => i.id)).toEqual(before)
+    expect(list.categories[0].items[0].checked).toBe(true)
+    expect(list.categories[0].items[1].checked).toBe(false)
+  })
+})
+
+describe('fabrics note', () => {
+  it('is carried through when present', () => {
+    const list = normaliseList({ ...RAW, fabrics: 'Linen moves air; skip denim.' })
+    expect(list.fabrics).toBe('Linen moves air; skip denim.')
+  })
+
+  it('is null on older lists that predate it, rather than undefined', () => {
+    expect(normaliseList(RAW).fabrics).toBeNull()
+  })
+
+  it('treats a blank note as absent', () => {
+    expect(normaliseList({ ...RAW, fabrics: '   ' }).fabrics).toBeNull()
   })
 })
 

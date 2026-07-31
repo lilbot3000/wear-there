@@ -200,7 +200,11 @@ White screen, the trip's gradient bar animating (shimmer left to right), status 
 
 ### S6 · Packing list (screen 05) — hero screen 2
 
-"Your list" heading; category micro-labels ("Tops", "Essentials"); each item is a card with checkbox, bold item name ("Linen shirts ×3"), and the one-line reason in grey ("Feels-like 31° and you're humidity-sensitive"). Ticking draws the oversized red ✓ and sinks the item to the bottom of its category; ticks persist instantly. "↻ Regenerate list" as a quiet secondary action at the bottom, with confirmation: "This writes a fresh list and clears your ticks."
+"Your list" heading; then the **fabrics note** — two or three sentences of plain prose under a "Fabrics" micro-label, saying what these conditions do to fabric and which one handles them ("linen dries fast and moves air, which is what 74% humidity demands"). It sits above the categories because it explains why the items below are what they are. Prose rather than a card, so it reads as advice instead of another thing to tick.
+
+Then category micro-labels ("Tops", "Essentials"); each item is a card with checkbox, bold item name ("Linen shirts ×3"), and the one-line reason in grey ("Feels-like 31° and you're humidity-sensitive"). Ticking draws the oversized red ✓ and strikes the label through; ticks persist instantly. "↻ Regenerate list" as a quiet secondary action at the bottom, with confirmation: "This writes a fresh list and clears your ticks."
+
+**Ticked items keep their position.** This screen originally sank them to the bottom of their category, which reads well as a wireframe and badly in a suitcase: packing is done while looking away from the phone, and a list that rearranges itself under you loses your place. The tick, the strikethrough and the header count carry the progress instead.
 
 ### S7 · Home / My trips (screen 06)
 

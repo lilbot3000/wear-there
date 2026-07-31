@@ -121,7 +121,13 @@ export function normaliseList(raw) {
 
   if (categories.length === 0) throw new Error('The list came back empty.')
 
-  return { generatedAt: new Date().toISOString(), categories }
+  return {
+    generatedAt: new Date().toISOString(),
+    // Absent on lists generated before fabrics existed, so the screen treats
+    // it as optional rather than breaking on an older saved trip.
+    fabrics: typeof raw?.fabrics === 'string' && raw.fabrics.trim() ? raw.fabrics.trim() : null,
+    categories,
+  }
 }
 
 /** Tick or untick one item, leaving everything else alone. */
@@ -137,16 +143,15 @@ export function toggleItem(list, itemId) {
   }
 }
 
-/**
- * Ticked items sink to the bottom of their category, per wireframe 05.
+/*
+ * Items keep their position when ticked.
  *
- * Stable within each group, so unticking something returns it to where it was
- * rather than to the end of the list.
+ * Wireframe 05 had them sink to the bottom of their category, and that is how
+ * this shipped — but packing is a physical job done while looking away from
+ * the phone, and a list that rearranges itself under you loses your place.
+ * Order is now fixed; the tick, the strikethrough and the header count carry
+ * the progress instead.
  */
-export function sortedItems(items) {
-  return [...items].sort((a, b) => Number(a.checked) - Number(b.checked))
-}
-
 /** How far through the list someone is. */
 export function listProgress(list) {
   const items = (list?.categories ?? []).flatMap((category) => category.items)
