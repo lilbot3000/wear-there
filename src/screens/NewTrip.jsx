@@ -44,7 +44,15 @@ export default function NewTrip() {
   const length = start && end ? dayCount(start, end) : 0
   const tooLong = length > FORECAST_DAYS
 
-  const ready = destination && start && end && !tooLong && !atCapacity
+  // A date input's `min` is advisory — it greys out days in the picker but
+  // does not stop a typed or pasted value, and mobile pickers vary. Without
+  // this check a backwards range sailed through: it produces a negative day
+  // count, which is not greater than the limit, so "too long" was false and
+  // the button stayed enabled. The forecast then failed with a message about
+  // the connection, which is a hard thing to work back from.
+  const backwards = Boolean(start && end && end < start)
+
+  const ready = destination && start && end && !tooLong && !backwards && !atCapacity
 
   const togglePurpose = (name) =>
     setPurposes((current) =>
@@ -112,7 +120,12 @@ export default function NewTrip() {
               value={end}
               min={earliestReturn}
               max={latest}
-              onChange={(event) => setEnd(event.target.value)}
+              // Mirrors onDepartChange: an impossible range is corrected as
+              // it is made, rather than being allowed and complained about.
+              onChange={(event) => {
+                const value = event.target.value
+                setEnd(value && start && value < start ? start : value)
+              }}
             />
           </label>
         </div>
@@ -121,11 +134,13 @@ export default function NewTrip() {
             forecast-window caveat only belongs before dates are chosen, or
             when the trip has actually outrun it. */}
         <p className="new-trip__note">
-          {tooLong
-            ? `Forecasts only reach ${FORECAST_DAYS} days, so that is the longest trip we can read.`
-            : length > 0
-              ? `${length} ${length === 1 ? 'day' : 'days'}.`
-              : `Pick dates within the next ${FORECAST_DAYS} days — that is as far as forecasts reach.`}
+          {backwards
+            ? 'That return is before the departure. Pick a later one.'
+            : tooLong
+              ? `Forecasts only reach ${FORECAST_DAYS} days, so that is the longest trip we can read.`
+              : length > 0
+                ? `${length} ${length === 1 ? 'day' : 'days'}.`
+                : `Pick dates within the next ${FORECAST_DAYS} days — that is as far as forecasts reach.`}
         </p>
       </section>
 
