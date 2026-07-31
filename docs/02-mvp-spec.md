@@ -115,18 +115,28 @@ How to build the list:
    Anything listed as declined was offered to them and turned down. That is an answer, not a gap: do not pack it, and do not pack a variant of it under another name — "linen shorts" is still shorts, "a light dress" is still a dress. If they declined shorts, they wear trousers in the heat, and that is their business.
 
    The one exception is narrow: an item the survey never asked about that this specific trip genuinely requires — formal shoes for a wedding, a waterproof for a week of rain. An exception needs a reason from the trip. Wanting to round out a category is not a reason.
-4. Every item is one thing. Never write "a dress or trousers with a smart top" — that is two suggestions and a shrug. Decide, using what you know about them, and name the single item. If you genuinely need both a dress and an alternative, they are two entries, each with its own reason.
+4. Every item is one thing. If the word "or" appears in an item label, the label is wrong — "a dress or trousers with a smart top" and "crossbody bag or small city bag" are both two suggestions and a shrug, in an app whose whole job is having an opinion. Decide, using what you know about them, and name the single item. If they genuinely need two things, that is two entries with two reasons.
 
-5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Beach earns swimwear and what goes with it. Business earns something you can walk into a meeting wearing.
+5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Business earns something you can walk into a meeting wearing. Beach earns the swim kit in rule 7.
 
    Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
-6. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
+6. Every list has a bag to carry things in during the day, in Accessories. Match it to the trip: a daypack for outdoors or a walking-heavy city break, something smaller and smarter when the trip is formal or business. One bag, chosen — not a choice of bags.
 
-7. The fabrics note is one line, not a paragraph. Nothing else on the screen is longer than a sentence, and a block of prose above the list looks like something to read rather than something to act on. Name the fabric, tie it to one number, say what to skip, stop. Heat with humidity is a different problem from dry heat, and cold with wind from still cold — pick the one that matters here and ignore the rest.
+7. Hot trips get the hot-weather kit. Sunscreen goes in Essentials on any trip whose days reach the temperature they switch to summer clothes — every such trip, not only the beach ones, and not only the scorching ones. A hot trip, a Beach purpose, or a warm Outdoors trip also earns a short "Swim" section: lakes and rivers are half the point of being outside, and a swim is not only a beach thing.
 
-8. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+   Swimwear never travels without a quick-dry towel. Quick-dry specifically: a bath towel is the wrong object to carry to a lake and still be damp the next morning.
 
-9. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
+   A Beach trip earns a towel either way, swimwear or not — it is something to lie on as much as something to dry with. Anywhere else, no towel unless there is something to swim in.
+
+   Rule 3 still wins over all of this. If they were offered swimwear and declined it, there is no Swim section and no towel — not on a hot trip, not on a beach trip, not anywhere. Someone who does not swim has told you something real about how they travel, and this rule does not get to overrule it.
+
+8. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
+
+9. The fabrics note is one line, not a paragraph. Nothing else on the screen is longer than a sentence, and a block of prose above the list looks like something to read rather than something to act on. Name the fabric, tie it to one number, say what to skip, stop. Heat with humidity is a different problem from dry heat, and cold with wind from still cold — pick the one that matters here and ignore the rest.
+
+10. Essentials always includes underwear and socks, with counts that suit the trip length. They are too obvious to explain and too important to leave out — a list that forgets underwear is not a packing list. Skip socks only if every shoe on the list is a sandal.
+
+11. Beyond that, do not pack the trip for them. No packing cubes, no advice about the airport, no itemised toiletries — one "toiletries" line covers it. Clothes are the point.
 
 Never invent weather. Every number you cite must come from the data given.
 ```
@@ -180,6 +190,10 @@ rather than being written in from the start:
 | "do not pack a variant of it under another name" | With shorts blocked, the next list offered "linen shorts". |
 | Cold list gated on overnight lows vs. their coat threshold | A wool jumper and boots appeared in 2 of 3 Lisbon lists where the coldest moment was 19°. |
 | Underwear and socks always | One list came back with no underwear at all — an over-correction from telling it not to pack the trip for them. |
+| Bag in Accessories on every list | Nothing carried what you use during the day. Matched to the trip: daypack for outdoors, something smaller for city or formal. |
+| Sunscreen keyed to their summer threshold | It appeared only on obviously scorching trips, missing a 26° outdoors week. |
+| Swim section, and the towel pairing | Requested for hot trips. Towel follows swimwear everywhere; a Beach trip earns one regardless, since it is something to lie on. |
+| "a label containing 'or' is always wrong" | Rule 4 was not reaching item labels — "Crossbody bag or small city bag", "Hat or cap". Repeating it in the schema next to the label field fixed it. |
 | "Every item is one thing" | A formal entry read "Smart casual dress or trousers with smart top" — two suggestions and a shrug, where the point of the app is having an opinion. |
 | "Formal means formal" | The same entry was also not formal. The model was treating a Formal purpose as an instruction to smarten up daywear rather than to pack for an event. |
 

@@ -48,7 +48,7 @@ export const LIST_SCHEMA = {
                 label: {
                   type: 'string',
                   description:
-                    'The item, as a person would say it: "Linen shirts", "Waterproof jacket". No quantity here — that is its own field.',
+                    'The item, as a person would say it: "Linen shirts", "Waterproof jacket". One thing, never a choice — a label containing the word "or" ("Hat or cap") is always wrong; pick one. No quantity here, that is its own field.',
                 },
                 quantity: {
                   type: 'integer',
@@ -90,16 +90,20 @@ How to build the list:
    Anything listed as declined was offered to them and turned down. That is an answer, not a gap: do not pack it, and do not pack a variant of it under another name — "linen shorts" is still shorts, "a light dress" is still a dress. If they declined shorts, they wear trousers in the heat, and that is their business.
 
    The one exception is narrow: an item the survey never asked about that this specific trip genuinely requires — formal shoes for a wedding, a waterproof for a week of rain. An exception needs a reason from the trip. Wanting to round out a category is not a reason.
-4. Every item is one thing. Never write "a dress or trousers with a smart top" — that is two suggestions and a shrug. Decide, using what you know about them, and name the single item. If you genuinely need both a dress and an alternative, they are two entries, each with its own reason.
+4. Every item is one thing. If the word "or" appears in an item label, the label is wrong — "a dress or trousers with a smart top" and "crossbody bag or small city bag" are both two suggestions and a shrug, in an app whose whole job is having an opinion. Decide, using what you know about them, and name the single item. If they genuinely need two things, that is two entries with two reasons.
 
 5. Trip purpose changes the list, not just the tone. Outdoors earns real footwear and technical layers. Business earns something you can walk into a meeting wearing. Beach earns the swim kit in rule 7.
 
    Formal means formal: the thing you would actually wear to a wedding or a black-tie dinner, not a tidier version of daytime clothes. "Smart casual dress" is not formal — it is smart casual, which they already have covered. Name a proper outfit, proper shoes, and the one or two accessories that finish it. Someone who ticked "Dressy" wants to be the best-dressed person in the room, and someone who did not still needs to not look underdressed at the event they are attending.
 6. Every list has a bag to carry things in during the day, in Accessories. Match it to the trip: a daypack for outdoors or a walking-heavy city break, something smaller and smarter when the trip is formal or business. One bag, chosen — not a choice of bags.
 
-7. Hot trips get the hot-weather kit. When the days sit at or above the temperature they switch to summer clothes, sunscreen goes in Essentials. A hot trip, or a Beach purpose, also earns its own short "Swim" section: swimwear and a quick-dry towel.
+7. Hot trips get the hot-weather kit. Sunscreen goes in Essentials on any trip whose days reach the temperature they switch to summer clothes — every such trip, not only the beach ones, and not only the scorching ones. A hot trip, a Beach purpose, or a warm Outdoors trip also earns a short "Swim" section: lakes and rivers are half the point of being outside, and a swim is not only a beach thing.
 
-   Rule 3 still wins here. If they were offered swimwear and declined it, there is no Swim section — not on a hot trip, not on a beach trip, not anywhere. Someone who does not swim has told you something real about how they travel, and this rule does not get to overrule it.
+   Swimwear never travels without a quick-dry towel. Quick-dry specifically: a bath towel is the wrong object to carry to a lake and still be damp the next morning.
+
+   A Beach trip earns a towel either way, swimwear or not — it is something to lie on as much as something to dry with. Anywhere else, no towel unless there is something to swim in.
+
+   Rule 3 still wins over all of this. If they were offered swimwear and declined it, there is no Swim section and no towel — not on a hot trip, not on a beach trip, not anywhere. Someone who does not swim has told you something real about how they travel, and this rule does not get to overrule it.
 
 8. Reasons are specific or absent. A "why" that could apply to any trip is noise — cut it. Use the actual figures you were given.
 
