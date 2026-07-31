@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { describeAgainstClimate } from '../lib/climate.js'
-import { placeLabel, searchCities } from '../lib/geocode.js'
+import { placeDetail, placeLabel, searchCities } from '../lib/geocode.js'
 import {
   spectrumColour,
   spectrumGradient,
@@ -95,7 +95,9 @@ export function CityInput({ value, onChange }) {
 
       {status === 'empty' ? (
         <p className="text-secondary survey-city__note">
-          We couldn&rsquo;t find that one. Try the nearest big town.
+          We couldn&rsquo;t find that one. Try adding the region or postcode
+          &mdash; &ldquo;Sch&ouml;nfeld Uckermark&rdquo; &mdash; or search the
+          nearest big town.
         </p>
       ) : null}
 
@@ -115,9 +117,16 @@ export function CityInput({ value, onChange }) {
                 onClick={() => onChange(place)}
               >
                 <span className="survey-city__name">{place.city}</span>
-                <span className="text-secondary">
-                  {[place.region, place.country].filter(Boolean).join(', ')}
-                </span>
+                <span className="text-secondary">{placeDetail(place)}</span>
+                {/* The postcode when there is one; coordinates only when two
+                    results are otherwise identical. Picking the wrong
+                    same-named village is a silent failure — you get a real
+                    forecast for a real town 200km from where you're going. */}
+                {place.postcode || place.coords ? (
+                  <span className="survey-city__pin">
+                    {place.postcode ?? place.coords}
+                  </span>
+                ) : null}
               </button>
             </li>
           ))}
