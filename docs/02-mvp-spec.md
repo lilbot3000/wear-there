@@ -78,7 +78,7 @@ Draft question set (final wording in UX spec):
 | Climate averages for far-future trips | Extra data source | v1.1 |
 | Native iOS/Android apps | Web reaches everyone free | Only with real traction |
 | Sharing lists between users | Screenshot covers it | v2 |
-| °F support | Audience is UK friends | v1.1 toggle, trivial |
+| °F support | Audience is UK friends | Phase 8 in the build guide. Not "trivial" as this row first claimed — that was written before the packing list existed, and the prompt sends Celsius the model then quotes back inside free-form text. Half a session. |
 
 ## 3. Launch checklist
 

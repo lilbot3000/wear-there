@@ -91,6 +91,57 @@ This is the only phase touching money, and it's pennies.
 
 ---
 
+## Phase 8 · Fahrenheit (~half a session)
+
+Deliberately after the friend test. Your first friends are UK-based, so this
+buys nothing until an American one turns up — and the friend test will surface
+things you cannot predict, which deserve the session more.
+
+**It is not the formatting change it looks like.** All the logic — bands,
+intensity, colours, the ±3° temperament shift — works in Celsius internally and
+never needs to change. Only about six places in the app actually render a
+temperature. That part is an afternoon. The part that is not:
+
+**The packing-list prompt sends Celsius, and the model writes those numbers
+into free-form text.** It produces reasons like *"drops to 4° at night"* — text
+we neither control nor can post-process reliably. If the screen says °F and the
+list says °C, the app contradicts itself in the one place people trust it most.
+So the conversion has to happen at the API boundary, not in the UI.
+
+Two smaller snags worth knowing before you start:
+
+- **The slider stores whole Celsius numbers** (12–32). In °F that range is
+  54–90, and 1°F steps produce fractional Celsius. It has to become unit-aware
+  and stop rounding to integers, or thresholds drift a degree every time
+  someone edits them.
+- **The climate benchmark converts too** — "A typical June day in London", "the
+  hottest day there recently felt like 35°".
+
+1. 🙋 **Decide how the unit gets chosen.** Auto-detect from the home country
+   (US → °F) is invisible and right most of the time; an explicit toggle
+   handles the American living in London. The recommendation is auto-detect as
+   the default *with* a toggle to override — but a toggle means a 12th survey
+   question, and that survey has been kept deliberately tight. Your call, and
+   it changes what gets built.
+2. 🤖 *"Add Fahrenheit support. Keep Celsius as the internal unit everywhere —
+   comfort bands, colours and intensity must not change. Add a units field to
+   the profile, a small units.js with the conversion and a formatTemp helper,
+   and use it at every display site. Make the threshold slider unit-aware:
+   convert its range and step, and stop rounding the stored Celsius value to an
+   integer. Convert at the API boundary too, and tell the model which unit to
+   write its reasons in."*
+3. 🤖 *"Add tests: a Celsius profile and its Fahrenheit equivalent must produce
+   identical comfort labels and colours, and a threshold must survive a
+   round-trip through the slider in either unit without drifting."*
+4. 🙋 Generate one packing list in each unit and read the *reasons*, not just
+   the headline numbers. That is where a missed conversion will show.
+
+**Checkpoint:** switching units changes every number on screen and every number
+inside the packing list, and changes no comfort verdict — "Hot for you" stays
+"Hot for you".
+
+---
+
 ## Open questions
 
 Things worth building that aren't decided yet. Each has enough investigation
